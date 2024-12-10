@@ -13,21 +13,23 @@ public:
 
     void run() {
         sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "QUAN LY DIEM SINH VIEN", sf::Style::Close | sf::Style::Resize);
-
         while (isRunning) {
             switch (page) {
                     case 0:
                     //page = ScreenDiem::showDK(window) ; 
                 page = BaseScreen::startWindow(window); 
+                
                 //page = ScreenMonHoc::showSubject(window); // Gọi hàm tĩnh cho trang khởi động
                 //page = ScreenLopHoc::showStudent(window) ; 
                  //page = ScreenMonHoc::addSubject(window) ; 
                 break;
              case 1:
-                 page = ScreenLopHoc::showStudent(window) ; 
+                
+                //  page = ScreenLopHoc::showStudent(window) ; 
+                page = ScreenLopHoc::choiseclass(window) ;
                  break;
             case 2:
-                page = ScreenLopHoc::showClass(window) ; 
+                // page = ScreenLopHoc::showClass(window) ; 
                 break;
             case 3:
                 page = ScreenMonHoc::showSubject(window) ;
@@ -37,10 +39,10 @@ public:
                 page = ScreenMonHoc::addSubject(window) ; 
                  break;
              case 5:
-                page = ScreenLopHoc::showStudent(window); // Gọi hàm tĩnh cho trang in danh sách 2
+                // page = ScreenLopHoc::showStudent(window, ma); // Gọi hàm tĩnh cho trang in danh sách 2
                 break;
             case 6:
-                page = ScreenLopHoc::addStudent(window) ; 
+                // page = ScreenLopHoc::addStudent(window ) ; 
                 break ; 
             case 7: 
                 // page = ScreenLopHoc::showClass(sf::RenderWindow& window)
@@ -51,12 +53,14 @@ public:
             case 9 :
                 break ; 
             case 10 :
-                page = ScreenDiem::showDK(window) ; 
+                // page = ScreenDiem::showDK(window) ; 
+                page = ScreenDiem::nhapdk(window) ;
                 break ;
             case 11 :
                 break ; 
             case 12 : 
                 page = ScreenDiem::showDiem(window) ; 
+
                 break ; 
             default:
                 isRunning = false; // Nếu không có trang nào phù hợp, thoát ứng dụng

@@ -19,8 +19,12 @@ public:
     // Hàm hiển thị màn hình nhập lớp
     static int addTC(sf::RenderWindow& window);
     static int showTC(sf::RenderWindow& window);
-    static int InTC(sf::RenderWindow& window , LopTinChi& selectedTC );
-    static int  fixTC(sf::RenderWindow& window, LopTinChi& selectedTC);
+    static int InTC(sf::RenderWindow& window , LopTinChi* tc );
+    static int  fixTC(sf::RenderWindow& window, LopTinChi* tc);
+
+
+    // phan nhap diem 
+    static int nhapdiem(sf::RenderWindow& window) ; 
 };
 
 #endif // BASE_SCREEN_LOP_TIN_CHI_H

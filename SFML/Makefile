@@ -29,6 +29,7 @@ SRC = Page.cpp \
       Lop.cpp\
       SinhVien.cpp\
       DangKy.cpp\
+      LopTinChi.cpp\
       app.cpp \
       main.cpp
 

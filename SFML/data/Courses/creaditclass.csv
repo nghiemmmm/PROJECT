@@ -1,0 +1,5 @@
+CreditClassID,CourseID,AcademicYear,Semester,Group,MinStudents,MaxStudents,ClassCancelled,RegisteredStudents
+1,MATH101,2024,1,1,10,30,false,"StudentID1;StudentID2;StudentID3"
+2,CS102,2024,1,2,15,40,true,"StudentID4;StudentID5"
+3,PHY103,2024,2,1,5,20,false,"StudentID6;StudentID7;StudentID8;StudentID9"
+4,BIO104,2025,1,1,10,25,false,""

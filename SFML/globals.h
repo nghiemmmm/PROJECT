@@ -22,9 +22,12 @@ using namespace std;
 // khai bao lop tin chi 
     extern std::vector<Text> TCList;
     extern std::vector<Button> buttonTC;
+    extern std::vector<Button> buttonTC1;
 
+    extern std::vector<Text> TCList1;
+    extern std::vector<Text> TCList2;
+    extern std::vector<Text> TCList3;
 //khai báo mang kiem tra các file các lớp  kiểu filefath có so luong bang so lop 
-    extern fsys::path arrfile[MAXLOPSV] ; 
  #endif // GLOBALS_H
 
 

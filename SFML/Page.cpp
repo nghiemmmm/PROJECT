@@ -1,9 +1,56 @@
 #include "Page.h"
 #include <SFML/Graphics.hpp>
+#include"FileNFoder.h" 
+#include"DataUtils.h"
+#include"BuiltClasses.h"
+namespace fsys = std::filesystem;
 
-
+fsys::path classPath1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\course.csv";
+fsys::path subjectPath1 = "D:\\du an\\SFML\\SFML\\subjects.csv";
+fsys::path creaditclass1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\creaditclass.csv" ; 
+fsys::path student2 = "D:\\du an\\SFML\\SFML\\data\\Classes\\23CTT1.csv";
+fsys::path student3 = "D:\\du an\\SFML\\SFML\\data\\Classes\23CTT2.csv" ; 
+fsys::path dk2 = "D:\\du an\\SFML\\SFML\\data\\Courses\\dangky.csv" ; 
+TinhchiList& list = TinhchiList::getInstance();
+DS_LOPSV& listclass =  DS_LOPSV::getInstance(); 
 int BaseScreen::startWindow(sf::RenderWindow& window) {
-    // Khởi tạo font
+      // do lu lieu vao lop san 
+    if (listclass.isEmpty(listclass)) {
+        cout << "lop  đang rỗng!" << endl;
+        Data::getlop(classPath1 ,listclass) ;
+    } else {
+        cout << "Cây không rỗng!" << endl;
+    }
+//     // do du lieu vao cay san 
+//      if (AVLTreeMH::getInstance().isEmpty(AVLTreeMH::getInstance().root)) {
+//         cout << "Cây đang rỗng!" << endl;
+//         Data::getmonhoc(subjectPath1);
+//     } else {
+//         cout << "Cây không rỗng!" << endl;
+//     }
+//     // do du lieu vao lop tin chi 
+//     if (TinhchiList::getInstance().isEmpty()) {
+//         cout << "list  đang rỗng!" << endl;
+//         Data::gettc(creaditclass1) ; 
+//     } else {
+//         cout << "list  không rỗng!" << endl;
+//     }
+//    // do sinh vien vao 2 lop dau 
+    // Data::getstudent(student2 ,listclass) ;
+//     Data::getstudent1(student3) ;
+//     // do du lieu sinh vien dang ki vao 2 lop dau 
+//     Data::getdk(dk2) ; 
+//     Data::getdk1(dk2) ;
+    //
+    // cout << endl ;
+    cout << listclass.n ; 
+    // cout << endl ;  
+    // cout << "o day " ; 
+    listclass.HienThiDanhSachLop() ; 
+    // listclass.nodes[0].FIRST.In() ; 
+    // list.Nodes[0]->Dssvdk.inDanhSach() ; 
+    cout << "den day " ; 
+     // Khởi tạo font
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Handle error if font cannot be loaded

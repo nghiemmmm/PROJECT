@@ -190,31 +190,13 @@ int ScreenMonHoc::showSubject(sf::RenderWindow& window) {
     pageText.setCharacterSize(20);
     pageText.setFillColor(sf::Color::Black);
     pageText.setPosition(750.f, 833.f);
-    //  //hiệu để kiểm soát hiển thị
-    // static bool isDataLoaded = false;
-
+   
     // if (AVLTreeMH::getInstance().isEmpty(AVLTreeMH::getInstance().root)) {
     //     cout << "Cây đang rỗng!" << endl;
-    //     Data::getmonhoc(subjectPath); // Nạp dữ liệu
-    //     isDataLoaded = true;          // Đánh dấu đã nạp dữ liệu
-    //     cout << "Hiển thị dữ liệu ngay sau khi nạp:" << endl;
-    //     Data::displaymonhoc(subjectPath, font); // Hiển thị ngay sau khi nạp
+    //     Data::getmonhoc(subjectPath);
     // } else {
-    //     if (!isDataLoaded) { // Chỉ hiển thị nếu dữ liệu chưa từng được nạp
-    //         cout << "Cây không rỗng!" << endl;
-    //         isDataLoaded = true; // Đánh dấu đã hiển thị
-    //     } else {
-    //         cout << "Dữ liệu đã được hiển thị trước đó!" << endl;
-    //     }
+    //     cout << "Cây không rỗng!" << endl;
     // }
-
-    if (AVLTreeMH::getInstance().isEmpty(AVLTreeMH::getInstance().root)) {
-        cout << "Cây đang rỗng!" << endl;
-        Data::getmonhoc(subjectPath);
-    } else {
-        cout << "Cây không rỗng!" << endl;
-    }
-    // Data::getmonhoc(subjectPath);
     cout << "Cay AVL sau khi nhap du lieu: ";
     AVLTreeMH::getInstance().InOrder(AVLTreeMH::getInstance().root);
     Data::displaymonhoc(subjectPath, font);

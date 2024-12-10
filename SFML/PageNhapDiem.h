@@ -7,11 +7,17 @@
 
 class ScreenDiem : public BaseScreen {
 public:
-    static int showDK(sf::RenderWindow& window); 
+    static int showDK(sf::RenderWindow& window , string& masv); 
+    static int nhapdk(sf::RenderWindow& window);
     static int showDiem(sf::RenderWindow& window);
-    static int showPage15(sf::RenderWindow& window);
-    static int showPage16(sf::RenderWindow& window);
-    static int showPage17(sf::RenderWindow& window);
+    static int Indiem(sf::RenderWindow& window  , int& vitri );
+    static int baseIn(sf::RenderWindow& window);
+    static int baseIn1(sf::RenderWindow& window);
+    static int diemMH(sf::RenderWindow& window);
+    static int diemTB(sf::RenderWindow& window);
+    static int diemTK(sf::RenderWindow& window);
+    
+    
 };
 
 

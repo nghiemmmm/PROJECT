@@ -6,5 +6,8 @@ std::vector<Button>  Buttonclass;
 std::vector<Text> subjectList;      // Định nghĩa biến toàn cục
 std::vector<Button> buttonsubject;  // Định nghĩa biến toàn cục
 std::vector<Text> TCList;
+std::vector<Text> TCList1;
+std::vector<Text> TCList2;
+std::vector<Text> TCList3;
 std::vector<Button> buttonTC;
-fsys::path arrfile[MAXLOPSV] ;
+std::vector<Button> buttonTC1;

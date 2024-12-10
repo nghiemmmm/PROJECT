@@ -26,15 +26,18 @@ public:
 
 
     static int showClass(sf::RenderWindow& window);
-    static int addClass(sf::RenderWindow& window);
-    static int InClass(sf::RenderWindow& window , LopSV& selectedlop) ; 
+    static int addClass(sf::RenderWindow& window); 
+    static int InClass(sf::RenderWindow& window , LopSV& selectedlop) ;
     static int fixClass(sf :: RenderWindow& window, LopSV& selectedlop) ; 
 
 
-    static int addStudent(sf::RenderWindow& window);
-    static int showStudent(sf::RenderWindow& window );
-    static int InStudent(sf::RenderWindow& window , SinhVien& a) ; 
-    static int fixStudent(sf :: RenderWindow& window,  SinhVien& a) ; 
+    static int addStudent(sf::RenderWindow& window , int& vitri );
+    // static int addStudent(sf::RenderWindow& window , DanhSachSV& sv);
+    static int showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& listclass );
+    static int InStudent(sf::RenderWindow& window , SinhVien& a , int& vitri) ; 
+    static int fixStudent(sf :: RenderWindow& window,  SinhVien& a , int& vitri) ; 
+
+    static int choiseclass(sf::RenderWindow& window) ; 
 };
 
 // class ScreenLopHoc_NhapSV : public BaseScreenLopHoc {

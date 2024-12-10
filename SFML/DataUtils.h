@@ -40,8 +40,8 @@ static bool isNumber( std::string& str) ;
 
 // 
 // xu ly lop 
-     static void getlop(fsys::path filepath);
-     static void displaylop(fsys::path filepath , sf::Font& font) ; 
+     static void getlop(fsys::path filepath , DS_LOPSV& listclass);
+     static void displaylop( sf::Font& font ) ; 
      static void getStudentData(sf::Font& font, const std::string& malop);
      static std::string getClassName(const std::string& malop);
      static bool addlophoc(fsys::path filepath, sf::Font& font, std::vector<std::string>& newRow);
@@ -57,22 +57,33 @@ static bool isNumber( std::string& str) ;
      static void updateMonHoc(fsys::path filepath, const std::string& mamhToUpdate, const std::vector<std::string>& newRow) ; 
      static MonHoc displaySubjectInfo(int j) ;
      // studennt 
-     static LinkedListSV  getstudent(fsys::path filepath) ; 
+     static void getstudent(fsys::path filepath , DS_LOPSV& listclass ) ; 
+     static void getstudent1(fsys::path filepath) ; 
      static bool addstudent(fsys::path filepath, sf::Font& font, std::vector<std::string>& newRow) ; 
      static void deletstudent(fsys::path filepath, string& masv);
      static SinhVien displayStudentInfo(int j ,  vector<Text> StudentList) ;
-     static std::pair<std::vector<Text>, std::vector<Button>> displaystudent(fsys::path filepath, sf::Font& font);
+     static std::pair<std::vector<Text>, std::vector<Button>> displaystudent(DanhSachSV& sv, sf::Font& font);
      static void updatestudent(fsys::path filepath, const std::string& masvToUpdate, const std::vector<std::string>& newRow) ; 
 
 
      // lop tinh chi 
      static void  gettc(fsys::path filepath) ;
      static void displaytc(fsys::path filepath ,  sf::Font& font) ; 
+     static void displaytc1(TinhchiList& list ,  sf::Font& font) ; 
      static bool add(fsys::path filepath ,  sf::Font& font ,std::vector<std::string>& newRow ) ; 
      static void deleteall(fsys::path filepath, string &key) ; 
      static void update(fsys::path filepath, const std::string& keyToUpdate, const std::vector<std::string>& newRow) ; 
      static LopTinChi displayTCInfo(int j) ;
      //void static fixTC(sf::RenderWindow& window, LopTinChi selectedtc) ;
+
+     static void displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ; 
+     static void displaytchuy(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ;
+     // dang ky 
+     static void getdk(fsys::path filepath) ; 
+     static void getdk1(fsys::path filepath) ;
+     // nhap diem 
+     static void displaydiem(listDK& list) ; 
+     static string formatFloat(float value) ;
 
 
 
