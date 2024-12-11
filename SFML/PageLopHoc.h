@@ -33,7 +33,7 @@ public:
 
     static int addStudent(sf::RenderWindow& window , int& vitri );
     // static int addStudent(sf::RenderWindow& window , DanhSachSV& sv);
-    static int showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& listclass );
+    static int showStudent(sf::RenderWindow& window  , string ma );
     static int InStudent(sf::RenderWindow& window , SinhVien& a , int& vitri) ; 
     static int fixStudent(sf :: RenderWindow& window,  SinhVien& a , int& vitri) ; 
 

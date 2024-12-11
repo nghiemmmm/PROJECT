@@ -29,7 +29,7 @@ public:
                 page = ScreenLopHoc::choiseclass(window) ;
                  break;
             case 2:
-                // page = ScreenLopHoc::showClass(window) ; 
+                page = ScreenLopHoc::showClass(window) ; 
                 break;
             case 3:
                 page = ScreenMonHoc::showSubject(window) ;
@@ -61,6 +61,9 @@ public:
             case 12 : 
                 page = ScreenDiem::showDiem(window) ; 
 
+                break ; 
+            case 13 : 
+                page = ScreenDiem::baseIn(window) ;  
                 break ; 
             default:
                 isRunning = false; // Nếu không có trang nào phù hợp, thoát ứng dụng

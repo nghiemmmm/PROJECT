@@ -62,7 +62,7 @@ static bool isNumber( std::string& str) ;
      static bool addstudent(fsys::path filepath, sf::Font& font, std::vector<std::string>& newRow) ; 
      static void deletstudent(fsys::path filepath, string& masv);
      static SinhVien displayStudentInfo(int j ,  vector<Text> StudentList) ;
-     static std::pair<std::vector<Text>, std::vector<Button>> displaystudent(DanhSachSV& sv, sf::Font& font);
+     static void displaystudent(int vitri, sf::Font& font);
      static void updatestudent(fsys::path filepath, const std::string& masvToUpdate, const std::vector<std::string>& newRow) ; 
 
 
@@ -79,7 +79,7 @@ static bool isNumber( std::string& str) ;
      static void displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ; 
      static void displaytchuy(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ;
      // dang ky 
-     static void getdk(fsys::path filepath) ; 
+     static void getdk(fsys::path filepath ,TinhchiList& dsTC ) ; 
      static void getdk1(fsys::path filepath) ;
      // nhap diem 
      static void displaydiem(listDK& list) ; 

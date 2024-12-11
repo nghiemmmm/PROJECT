@@ -59,7 +59,6 @@ void BaseScreenLopHoc::drawMainMenu1(sf::RenderWindow& window) {
 
 }
 int ScreenLopHoc::showClass(sf::RenderWindow& window) {
-     DS_LOPSV::getInstance().nodes[0].FIRST.In() ; 
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về -1 nếu không tải được font
@@ -188,20 +187,29 @@ int ScreenLopHoc::InClass(sf::RenderWindow& window , LopSV& selectedLop  ){
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 // Kiểm tra các nút được nhấn
                 if (sua.isClicked(mousePos)) {
+                    if(DS_LOPSV::getInstance().KiemTraLopCoSinhVien(DS_LOPSV::getInstance(),selectedLop.MALOP)){
+                        Data::popup("LOP NAY DA CO SINH VIEN KHONG DUOC THAO TAC ") ;
+                    }else{
                     fixClass(window,selectedLop);
                     Data::popup("THAY DOI THANH CONG ") ; 
                     break ; 
+                }
                 }
                 if (thoat.isClicked(mousePos)) {
                    return 1 ; 
                 }
                  if (xoa.isClicked(mousePos)) {
+                        if(DS_LOPSV::getInstance().KiemTraLopCoSinhVien(DS_LOPSV::getInstance(),selectedLop.MALOP)){
+                            Data::popup("LOP NAY DA CO SINH VIEN KHONG DUOC THAO TAC ") ;
+
+                        }else{
                         if(Data::confirm("BAN CO CHAC CHAN XOA LOP NAY KHONG ")){
                            DS_LOPSV::getInstance().XoaLopSV(selectedLop.MALOP) ; 
                              // xoa trong trong file 
                             Data::deletemonhoc(classPath ,selectedLop.MALOP ) ; 
                             Data::popup("DA XOA LOP THANH CONG ") ; 
                         }
+                 }
                  }
         }
         // Vẽ các thành phần lên màn hình
@@ -269,6 +277,10 @@ int ScreenLopHoc::addClass(sf::RenderWindow& window) {
                         Data::popup("Tên lop  không được quá 15 ký tự!");
                         continue;  // Quay lại nhập lại mà không tiến hành thêm
                     }
+                    if(DS_LOPSV::getInstance().KTMaLopVaTenLop(DS_LOPSV::getInstance(),malopInput,tenlopInput)){
+                        Data::popup("MA LOP VA TEN LOP NAY DA TON TAI ") ; 
+                        continue ; 
+                    }
                      if (!malopInput.empty() && !tenlopInput.empty() ) {
                         DS_LOPSV::getInstance().ThemLopSV(LopSV(malopInput, tenlopInput)); 
                         // Tạo một vector chứa các giá trị cần thêm vào CSV
@@ -298,6 +310,7 @@ int ScreenLopHoc::addClass(sf::RenderWindow& window) {
                 } else {
                     std::cout << "Tệp CSV lớp đã tồn tại: " << studentFile << std::endl;
                 }
+                    Data::popup("THEM THANH CONG ") ; 
                     }
                 }
             }
@@ -400,26 +413,16 @@ int  ScreenLopHoc::fixClass(sf :: RenderWindow& window, LopSV& selectedlophoc){
     return 0 ;
  } 
 int ScreenLopHoc::choiseclass(sf::RenderWindow& window ){
-    // cout << "o day " ; 
-    // cout << DS_LOPSV::getInstance().nodes[0].MALOP ; 
-
-    // if(DS_LOPSV::getInstance().nodes[0].FIRST.head ==  NULL){
-    //     cout << "NO RONG " ; 
-    // }else{
-    //     cout << "KO RONG" ; 
-    // }
-    // cout << "Địa chỉ listclass3: " << &listclass3 << endl;
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về -1 nếu không tải được font
     }
-     // Xóa dữ liệu cũ trong các vector trước khi thêm dữ liệu mới
-    classList.clear();
-    Buttonclass.clear();
-
-    // Khởi tạo các nút điều hướng
-    Button nextPageBtn(901.f, 833.f, 92.f, 62.f, "Next", font, sf::Color::Red, 15);
-    Button prevPageBtn(606.f, 833.f, 92.f, 62.f, "Prev", font, sf::Color::Red, 15);
+    InputField inputField(333.f, 201.f, 158.f, 62.f, font);
+    Text lop(138.f , 208.f , 158.f, 62.f, "LOP : "  ,font, sf::Color(255, 182, 193), 15 )  ;
+    Button tim(507.f , 224.f ,158.f, 62.f, "TIM "  , font, sf::Color(255, 182, 193), 15) ;
+    // // Khởi tạo các nút điều hướng
+    // Button nextPageBtn(901.f, 833.f, 92.f, 62.f, "Next", font, sf::Color::Red, 15);
+    // Button prevPageBtn(606.f, 833.f, 92.f, 62.f, "Prev", font, sf::Color::Red, 15);
 
     Button them(264.f , 149.f ,  151.f , 28.f , "THEM" , font, sf::Color(255, 182, 193), 15 ) ; 
     Button xoa(477.f , 149.f ,  151.f , 28.f , "XOA" , font, sf::Color(255, 182, 193), 15 ) ; 
@@ -428,111 +431,106 @@ int ScreenLopHoc::choiseclass(sf::RenderWindow& window ){
     Button sua(722.f , 149.f ,  151.f , 28.f , "SUA" , font, sf::Color(255, 182, 193), 15 ) ; 
 
     // Khởi tạo các nhãn
-    Text ma(217.f , 281.f , 539.f , 46.f , "MA LOP " , font , sf :: Color :: Red , 15) ; 
-    Text lop(756.f , 281.f , 539.f , 46.f , "TEN LOP " , font , sf :: Color :: Red , 15) ; 
+    // Text ma(217.f , 281.f , 539.f , 46.f , "MA LOP " , font , sf :: Color :: Red , 15) ; 
+    // Text lop(756.f , 281.f , 539.f , 46.f , "TEN LOP " , font , sf :: Color :: Red , 15) ; 
 
     // Tạo đối tượng sf::Text để hiển thị số trang
-    sf::Text pageText;
-    pageText.setFont(font);
-    pageText.setCharacterSize(20);
-    pageText.setFillColor(sf::Color::Black);
-    pageText.setPosition(750.f, 833.f);
-    Data::displaylop(font) ;
+    // sf::Text pageText;
+    // pageText.setFont(font);
+    // pageText.setCharacterSize(20);
+    // pageText.setFillColor(sf::Color::Black);
+    // pageText.setPosition(750.f, 833.f);
+    // Data::displaylop(font) ;
     
     int displayFrom = 0;
     int itemsPerPage = 10;
-
+    inputField.setSelected(true);
     while (window.isOpen()) {
         sf::Event event;
         int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(classList.size()));
-        
+        if (inputField.isSelected()) inputField.textCursor(inputField.getInput());
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                inputField.handleMouseClick(mousePos);
+                // if (nextPageBtn.isClicked(mousePos)) {
+                //     if (displayFrom + itemsPerPage < static_cast<int>(classList.size())) {
+                //         displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
+                //     }
+                // }
 
-                if (nextPageBtn.isClicked(mousePos)) {
-                    if (displayFrom + itemsPerPage < static_cast<int>(classList.size())) {
-                        displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
-                    }
-                }
-
-                if (prevPageBtn.isClicked(mousePos)) {
-                    if (displayFrom - itemsPerPage >= 0) {
-                        displayFrom -= itemsPerPage; // Quay lại trang trước
-                    }
+                // if (prevPageBtn.isClicked(mousePos)) {
+                //     if (displayFrom - itemsPerPage >= 0) {
+                //         displayFrom -= itemsPerPage; // Quay lại trang trước
+                //     }
+                // }
+                if(tim.isClicked(mousePos)){
+                    string ma = inputField.getInput() ; 
+                    showStudent(window,ma) ; 
+                    return 1 ; 
                 }
                 if(thoat.isClicked(mousePos)){
                     return 0 ; 
                 }
-                //Kiểm tra nếu một trong các nút môn học trong buttonsubject được nhấn
-                for (int i = displayFrom; i < displayLimit && i < Buttonclass.size(); i++) {
-                        if (Buttonclass[i].isClicked(mousePos)) {
-                            cout << "den day " ;  
-                            // string ma = Buttonclass[i].getText() ; 
-                            // showStudent(window , ma , listclass) ;  
-                            // // Dừng vòng lặp sau khi tìm thấy môn học được nhấn
-                            cout << "den day " ; 
-                        return 2 ; 
-                        }
-                        }
+                // //Kiểm tra nếu một trong các nút môn học trong buttonsubject được nhấn
+                // for (int i = displayFrom; i < displayLimit && i < Buttonclass.size(); i++) {
+                //         if (Buttonclass[i].isClicked(mousePos)) {
+                //             cout << "den day " ;  
+                //             string ma = Buttonclass[i].getText() ; 
+                //             showStudent(window) ;  
+                //             // Dừng vòng lặp sau khi tìm thấy môn học được nhấn
+                //             cout << "den day " ; 
+                //         return 2 ; 
+                //         }
+                //         }
             }
-        }
-        //Tính số trang hiện tại và tổng số trang
-        int currentPage = (displayFrom / itemsPerPage) + 1;
-        int totalPages = (classList.size() + itemsPerPage - 1) / itemsPerPage;
 
-        // Cập nhật nội dung văn bản hiển thị số trang
-        pageText.setString("Page " + std::to_string(currentPage) + " / " + std::to_string(totalPages));
+        // //Tính số trang hiện tại và tổng số trang
+        // int currentPage = (displayFrom / itemsPerPage) + 1;
+        // int totalPages = (classList.size() + itemsPerPage - 1) / itemsPerPage;
+
+        // // Cập nhật nội dung văn bản hiển thị số trang
+        // pageText.setString("Page " + std::to_string(currentPage) + " / " + std::to_string(totalPages));
+        inputField.processInput(event);
+            }       
         window.clear(sf::Color::White);
         // Vẽ menu chính  
         BaseScreenLopHoc::drawMainMenu1(window);
-         for (int i = displayFrom; i < displayLimit; i++){
-            if (classList.size() <= i && Buttonclass.size() <= i)
-                break;
-            classList[i].draw(window);
-            Buttonclass[i].draw(window) ; 
-    }
+    //      for (int i = displayFrom; i < displayLimit; i++){
+    //         if (classList.size() <= i && Buttonclass.size() <= i)
+    //             break;
+    //         classList[i].draw(window);
+    //         Buttonclass[i].draw(window) ; 
+    // }
         //Vẽ các nút và thông tin trang
-        nextPageBtn.draw(window);
-        prevPageBtn.draw(window);
-        window.draw(pageText);
-        ma.draw(window); 
+        // nextPageBtn.draw(window);
+        // prevPageBtn.draw(window);
+        // window.draw(pageText);
+        // ma.draw(window);
+        tim.draw(window) ; 
         lop.draw(window) ;
+        inputField.draw(window) ; 
         window.display();
     }
     return 0;
 } 
 
-int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& listclass){
-   if(listclass.nodes[0].FIRST.head == NULL){
-                                cout << "NO RONG " ; 
-                            }else{
-                                cout << "KO RONG " ; 
-                            }
-    SinhVien sv1("123456", "Nguyen", "A", "Nam", "0987654321");
-    listclass.nodes[0].FIRST.insertSV(sv1) ; 
-//    DS_LOPSV& listclass10 =  DS_LOPSV::getInstance() ;
-// cout << "Địa chỉ listclass3: " << &listclass3 << endl;
+int ScreenLopHoc::showStudent(sf::RenderWindow& window , string ma ){
+    StudentList.clear() ;
+    ButtonStudent.clear() ; 
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
     } 
-    Text lop(120.f , 201.f ,158.f , 62.f , ma , font , sf :: Color :: Red , 15 ) ;
+    // Text lop(120.f , 201.f ,158.f , 62.f , "LOP DAY " , font , sf :: Color :: Red , 15 ) ;
     InputField inputField(330.f, 210.f, 158.f, 62.f, font);
     // Tạo dropdown với các mục
     std::vector<std::string> items = {"Item 1", "Item 2", "Item 3"};
     Dropdown dropdown(537.f, 201.f, 200.f, 40.f, font, items, &inputField);
-
     Button thoat(1202.f , 149.f ,  84.f , 28.f , "THOAT" , font, sf::Color(255, 182, 193), 15 ) ;
-    // Tạo đối tượng Text để hiển thị thông tin lớp
-    //Text lop(362.f, 235.f, 158.f, 62.f, "Lop: " + tenlop, font, sf::Color::Red, 15);
-    Button nextPageBtn(901.f, 833.f, 92.f, 62.f, "Next", font, sf :: Color :: Red , 15);
-    Button prevPageBtn(606.f, 833.f, 92.f, 62.f, "Prev", font, sf :: Color :: Red , 15 );
-    // Button addBtn(1155.f, 221.f, 136.f, 54.f, "ADD", font, sf :: Color :: Red , 15) ;
-    Button them(264.f , 149.f ,  151.f , 28.f , "THEM" , font, sf::Color(255, 182, 193), 15 ) ; 
-    int vitri ; 
+    int vitri = 0  ; 
     int temp = DS_LOPSV::getInstance().KTMaLop(DS_LOPSV::getInstance(),ma,DS_LOPSV::getInstance().n);
         if(temp != 0){
             if(temp == -1)
@@ -542,46 +540,30 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
                 vitri = temp;
                 }
             } 
-            cout << "o day " ; 
+    cout << "o day " ; 
     cout << vitri ; 
-    // listclass8.nodes[0].FIRST.In() ;
-    // arrfile[vitri] = student1 ; 
-    if(DS_LOPSV::getInstance().nodes[0].FIRST.head == NULL){
-        cout << "NO RONG " ; 
-    }
-    // cout << listclass3.nodes[0].MALOP ;  
-    // cout << &listclass3.nodes[0].FIRST ; 
-    // DanhSachSV sv = listclass3.nodes[0].FIRST ; 
-    DanhSachSV sv  ;
-    if(sv.head == NULL){
-        cout << "NO RONG " ; 
-    }
-   fsys::path studentFile = classDir / (DS_LOPSV::getInstance().nodes[vitri].TENLOP + ".csv"); 
-   cout << endl ; 
-   cout << 1 ; 
-    cout << studentFile ;
-    cout << endl ;
-    cout << 1 ;  
-    std::pair<std::vector<Text>, std::vector<Button>> SV =  Data::displaystudent(sv, font);  
-    // std::pair<std::vector<Text>, std::vector<Button>> SV =  Data::displaystudent(student1,  font);  
-    std :: vector<Text> StudenList ; 
-    std :: vector<Button> ButtonStudent ;
-    // Sao chép dữ liệu từ `SV` vào `StudentList` và `ButtonStudent`
-    StudenList = SV.first;       // Sao chép toàn bộ vector `Text` từ SV
-    ButtonStudent = SV.second;     // Sao chép toàn bộ vector `Button` từ SV
+    // Tạo đối tượng Text để hiển thị thông tin lớp
+    Text lop(362.f, 235.f, 158.f, 62.f, DS_LOPSV::getInstance().nodes[vitri].TENLOP , font, sf::Color::Red, 15);
+    Button nextPageBtn(901.f, 833.f, 92.f, 62.f, "Next", font, sf :: Color :: Red , 15);
+    Button prevPageBtn(606.f, 833.f, 92.f, 62.f, "Prev", font, sf :: Color :: Red , 15 );
+    Button them(264.f , 149.f ,  151.f , 28.f , "THEM" , font, sf::Color(255, 182, 193), 15 ) ; 
+     DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance(),DS_LOPSV::getInstance().nodes[0].MALOP) ; 
+    cout << "O DAU " ; 
+    fsys::path studentFile = classDir / (DS_LOPSV::getInstance().nodes[vitri].TENLOP + ".csv"); 
+    Data::displaystudent(vitri, font);  
      // Khởi tạo các nhãn
     Text Ma(8.f, 355.f, 272.f, 61.f, "MA SINH VIEN ", font, sf::Color::Red, 15);
     Text ho(273.f, 355.f, 272.f, 61.f, "HO", font, sf::Color::Red, 15);
     Text ten(543.f, 355.f, 272.f, 61.f, "TEN", font, sf::Color::Red, 15);
     Text phai(820.f, 355.f, 272.f, 61.f, "PHAI", font, sf::Color::Red, 15);
     Text sdt(1089.f, 355.f, 272.f, 61.f, "SDT", font, sf::Color::Red, 15);
+   
     // Tạo đối tượng sf::Text để hiển thị số trang
     sf::Text pageText;
     pageText.setFont(font);
     pageText.setCharacterSize(20);
     pageText.setFillColor(sf::Color::Black);
     pageText.setPosition(750.f, 833.f); // Vị trí giữa nút Next và Prev
-    // DanhSachSV sv ;
     cout << ButtonStudent.size() ; 
     cout << 1 ; 
     int displayFrom = 0;
@@ -590,7 +572,7 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
     while (window.isOpen()) {
         sf::Event event;
         if (inputField.isSelected()) inputField.textCursor(inputField.getInput());
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(StudenList.size()));
+        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(StudentList.size()));
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
@@ -598,9 +580,8 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 dropdown.handleClick(sf::Mouse::getPosition(window)); // Xử lý nhấp chuột
                 inputField.handleMouseClick(mousePos);
-                
                 if (nextPageBtn.isClicked(mousePos)) {
-                    if (static_cast<std::vector<Text>::size_type>(displayFrom + itemsPerPage) < StudenList.size()) {
+                    if (static_cast<std::vector<Text>::size_type>(displayFrom + itemsPerPage) < StudentList.size()) {
                         displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
                     }
                 }
@@ -613,6 +594,7 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
 
                 if (them.isClicked(mousePos)) {
                     addStudent(window ,vitri ); 
+                    break ; 
                 }
                 if(thoat.isClicked(mousePos)){
                     return 0  ; 
@@ -632,7 +614,7 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
             }
         // Tính số trang hiện tại và tổng số trang
         int currentPage = (displayFrom / itemsPerPage) + 1;
-        int totalPages = (StudenList.size() + itemsPerPage - 1) / itemsPerPage;
+        int totalPages = (StudentList.size() + itemsPerPage - 1) / itemsPerPage;
         // Cập nhật nội dung văn bản hiển thị số trang
         pageText.setString("Page " + std::to_string(currentPage) + " / " + std::to_string(totalPages));
         inputField.processInput(event);// Xử lý nhập liệu cho trường nhập liệu
@@ -642,9 +624,9 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
         BaseScreenLopHoc::drawMainMenu1(window) ; 
             // Hiển thị các sinh viên trong trang hiện tại
             for (int i = displayFrom; i < displayLimit; i++) {
-                 if (StudenList.size() <= i && ButtonStudent.size() <= i)
+                 if (StudentList.size() <= i && ButtonStudent.size() <= i)
                 break;
-                    StudenList[i].draw(window);
+                    StudentList[i].draw(window);
                 ButtonStudent[i].draw(window) ; 
                 // StudenList[i].draw(window);
                 // ButtonStudent[i].draw(window) ; 
@@ -667,6 +649,8 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
     return 0;
     } // Trả về 0 nếu không có lỗi
     int ScreenLopHoc::addStudent(sf::RenderWindow& window , int& vitri ) {
+        cout << "HU HU " ; 
+     DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance(),DS_LOPSV::getInstance().nodes[0].MALOP) ; 
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
@@ -721,7 +705,7 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
 
                     if (!maLop.empty() && !tenSV.empty() && !hoSV.empty() && !phaiSV.empty() && !sdtSV.empty()) { 
                         SinhVien a ={maLop,tenSV,hoSV,phaiSV,sdtSV} ; 
-                        DS_LOPSV::getInstance().nodes[vitri].FIRST.insertSV(a) ; 
+                        DS_LOPSV::getInstance().themSV( DS_LOPSV::getInstance(), DS_LOPSV::getInstance().nodes[0].MALOP , a) ;
                         // sv.insertSV(a) ; 
                         // sv.In() ; 
                         std::vector<std::string> newRow = { maLop,tenSV,hoSV,phaiSV,sdtSV}; 
@@ -741,30 +725,18 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
             }
 
             Ma.processInput(event);
-            if (Ma.chooseNextField()) {
-                Ten.setSelected(true);
-            }
             Ten.processInput(event);
-            if (Ten.chooseNextField()) {
-                Ho.setSelected(true);
-            }
             Ho.processInput(event);
-            if (Ho.chooseNextField()) {
-                Phai.setSelected(true);
-            }
             Phai.processInput(event);
-            if (Phai.chooseNextField()) {
-                SDT.setSelected(true);
-            }
             SDT.processInput(event);
 
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             // Chuyển đổi trạng thái chọn cho các trường nhập liệu
-            Ma.setSelected(Ma.isSelected() && !saveBtn.isClicked(mousePos));
-            Ten.setSelected(Ten.isSelected() && !saveBtn.isClicked(mousePos));
-            Ho.setSelected(Ho.isSelected() && !saveBtn.isClicked(mousePos));
-            Phai.setSelected(Phai.isSelected() && !saveBtn.isClicked(mousePos));
-            SDT.setSelected(SDT.isSelected() && !saveBtn.isClicked(mousePos));
+            // Ma.setSelected(Ma.isSelected() && !saveBtn.isClicked(mousePos));
+            // Ten.setSelected(Ten.isSelected() && !saveBtn.isClicked(mousePos));
+            // Ho.setSelected(Ho.isSelected() && !saveBtn.isClicked(mousePos));
+            // Phai.setSelected(Phai.isSelected() && !saveBtn.isClicked(mousePos));
+            // SDT.setSelected(SDT.isSelected() && !saveBtn.isClicked(mousePos));
         }
 
         // Vẽ các thành phần lên màn hình
@@ -792,6 +764,8 @@ int ScreenLopHoc::showStudent(sf::RenderWindow& window , string& ma , DS_LOPSV& 
     return 0;
 }
 int ScreenLopHoc::InStudent(sf::RenderWindow& window , SinhVien& selectedsv , int& vitri){
+    cout << "DAY ROI " ; 
+    DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance(),DS_LOPSV::getInstance().nodes[0].MALOP) ;
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về -1 nếu không tải được font
@@ -837,10 +811,11 @@ int ScreenLopHoc::InStudent(sf::RenderWindow& window , SinhVien& selectedsv , in
 
                  if (xoa.isClicked(mousePos)) {
                     if(Data::confirm("BAN CO CHAC CHAN XOA SINH VIEN NAY KHONG ")){
-                        DS_LOPSV::getInstance().nodes[vitri].FIRST.deleteSV(selectedsv) ; 
+                        DS_LOPSV::getInstance().deleteSV(DS_LOPSV::getInstance(), DS_LOPSV::getInstance().nodes[0].MALOP , selectedsv.MASV ) ; 
                         Data::deletemonhoc(studentFile ,selectedsv.MASV ) ; 
                         Data::popup("DA XOA THANH CONG ") ;
-                        return 1  ;
+                        return 5  ;
+                        // ham dung dc 
                  }
         }
         }
@@ -875,6 +850,8 @@ int ScreenLopHoc::InStudent(sf::RenderWindow& window , SinhVien& selectedsv , in
     return 0 ; 
 }
 int ScreenLopHoc::fixStudent(sf :: RenderWindow& window, SinhVien& selectedsv , int& vitri)  {
+    cout  << "DAY LAAA" ; 
+    DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance(),DS_LOPSV::getInstance().nodes[0].MALOP) ;
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1  ; // Trả về lỗi nếu không tải được font
@@ -949,7 +926,7 @@ int ScreenLopHoc::fixStudent(sf :: RenderWindow& window, SinhVien& selectedsv , 
                         std::vector<std::string> newRow = {selectedsv.MASV, tenSV, hoSV,phaiSV , sdtSV};
                         Data::updateMonHoc(studentFile, selectedsv.MASV, newRow);
                         selectedsv = {selectedsv.MASV, tenSV, hoSV,phaiSV , sdtSV};
-                      DS_LOPSV::getInstance().nodes[vitri].FIRST.SuaSinhVien(selectedsv) ; 
+                       DS_LOPSV::getInstance().SuaSinhVien(DS_LOPSV::getInstance(), DS_LOPSV::getInstance().nodes[0].MALOP , selectedsv.MASV ,selectedsv ) ; 
                     }
                 }
                  if(thoat.isClicked(mousePos)){
@@ -965,27 +942,10 @@ int ScreenLopHoc::fixStudent(sf :: RenderWindow& window, SinhVien& selectedsv , 
             // if (Ma.chooseNextField()) {
             //     Ten.setSelected(true);
             // }
-            Ten.processInput(event);
-            if (Ten.chooseNextField()) {
-                Ho.setSelected(true);
-            }
-            Ho.processInput(event);
-            if (Ho.chooseNextField()) {
-                Phai.setSelected(true);
-            }
-            Phai.processInput(event);
-            if (Phai.chooseNextField()) {
-                SDT.setSelected(true);
-            }
-            SDT.processInput(event);
-
-            // sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            // Chuyển đổi trạng thái chọn cho các trường nhập liệu
-            // Ma.setSelected(Ma.isSelected() && !ghi.isClicked(mousePos));
-            // Ten.setSelected(Ten.isSelected() && !ghi.isClicked(mousePos));
-            // Ho.setSelected(Ho.isSelected() && !ghi.isClicked(mousePos));
-            // Phai.setSelected(Phai.isSelected() && !ghi.isClicked(mousePos));
-            // SDT.setSelected(SDT.isSelected() && !ghi.isClicked(mousePos));
+            // Ten.processInput(event);
+            // Ho.processInput(event);
+            // Phai.processInput(event);
+            // SDT.processInput(event);
         }
         window.clear(sf::Color::White);
          // Vẽ menu chính

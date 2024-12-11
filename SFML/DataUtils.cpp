@@ -102,7 +102,7 @@ void Data::getmonhoc(fsys::path filepath) {
     // Đóng tệp sau khi xử lý
     file.close();
 }
-void Data::getstudent(fsys::path filepath ,DS_LOPSV& listclass  ) {
+void Data::getstudent(fsys::path filepath , DS_LOPSV& listclass  ) {
     // Kiểm tra nếu tệp có tồn tại
     std::ifstream file(filepath.generic_string());
     if (!file.is_open()) {
@@ -138,7 +138,7 @@ void Data::getstudent(fsys::path filepath ,DS_LOPSV& listclass  ) {
         sv.PHAI = studentList.cnt[i][3];
         sv.SODT = studentList.cnt[i][4];
 
-        listclass.nodes[0].FIRST.insertSV(sv) ; 
+        DS_LOPSV::getInstance().themSV(DS_LOPSV::getInstance() , DS_LOPSV::getInstance().nodes[0].MALOP ,sv) ;
         
           // Gán danh sách sinh viên vừa tạo cho lớp `lop`
           // duyẹt tu dau đen cuoi loi coi lop nao còn trong gan 
@@ -146,6 +146,7 @@ void Data::getstudent(fsys::path filepath ,DS_LOPSV& listclass  ) {
     // Đóng tệp sau khi xử lý
     file.close();
     }
+     DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance() , DS_LOPSV::getInstance().nodes[0].MALOP) ; 
     // listclass2.nodes[0].FIRST.setHead(sinhvien.getHead()) ;  
     // sinhvien.setHead(nullptr) ; 
 
@@ -195,7 +196,7 @@ void Data::getstudent1(fsys::path filepath) {
     // Đóng tệp sau khi xử lý
     file.close();
     }
-    DS_LOPSV::getInstance().nodes[1].FIRST.head = sinhvien.getHead() ; 
+    // DS_LOPSV::getInstance().nodes[1].FIRST.head = sinhvien.getHead() ; 
     sinhvien.setHead(nullptr) ; 
     return; 
 }
@@ -243,15 +244,12 @@ void Data::gettc(fsys::path filepath) {
             std::cerr << "Error parsing data at line " << i + 1 << ": " << e.what() << ". Skipping...\n";
             continue; // Bỏ qua dòng nếu có lỗi
         }
-
-        // Thêm môn học vào cây AVL
-       TinhchiList::getInstance().addTC(tc);
+       TinhchiList::getInstance().addTC(TinhchiList::getInstance() , tc);
     }
-
     // Đóng tệp sau khi xử lý
     file.close();
 }
-void Data::getdk(fsys::path filepath){
+void Data::getdk(fsys::path filepath , TinhchiList& dsTC){
      // Kiểm tra nếu tệp có tồn tại
     std::ifstream file(filepath.generic_string());
     if (!file.is_open()) {
@@ -279,52 +277,52 @@ void Data::getdk(fsys::path filepath){
         dk.MASV = studentList.cnt[i][0]; // Cột 0 là MAMH
         dk.Diem = std::stof(studentList.cnt[i][1]); // Cột 1 là TENMH
         dk.Huy_Dang_Ky = false ;  
-        list.themDangKy(dk) ; 
+        TinhchiList::getInstance().themdk(TinhchiList::getInstance() , TinhchiList::getInstance().Nodes[0]->MALOPTC , dk ) ; 
         file.close();
     }
-    list.inDanhSach() ; 
-    list2.Nodes[0]->Dssvdk.head = list.getHead() ; 
-    // Sau khi chuyển, "ngắt kết nối" giữa list và danh sách mà nó kiểm soát
-    list.setHead(nullptr);
+    // list.inDanhSach() ; 
+    // list2.Nodes[0]->Dssvdk.head = list.getHead() ; 
+    // // Sau khi chuyển, "ngắt kết nối" giữa list và danh sách mà nó kiểm soát
+    // list.setHead(nullptr);
     return ; 
 }
-void Data::getdk1(fsys::path filepath){
-     // Kiểm tra nếu tệp có tồn tại
-    std::ifstream file(filepath.generic_string());
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filepath.generic_string() << std::endl;
-        //return;
-    }
-    // Đọc nội dung file CSV
-    csvFile studentList(filepath);
-    studentList.readFile();
-    // Kiểm tra nếu file không chứa dữ liệu
-    if (studentList.cnt.empty()) {
-        std::cerr << "Failed to load data from file: " << filepath.generic_string() << std::endl;
-        //return;
-    }
-    listDK list ; 
-    // Duyệt qua từng dòng dữ liệu trong tệp CSV
-    for (size_t i = 1; i < studentList.cnt.size(); ++i) {
-        DangKy dk;
-        // Kiểm tra độ dài mỗi dòng trong CSV để đảm bảo có đủ số lượng cột
-        if (studentList.cnt[i].size() < 2) {
-            std::cerr << "Invalid data at line " << i + 1 << ". Skipping...\n";
-            continue; // Bỏ qua dòng nếu thiếu dữ liệu
-        }
-        // Đọc và gán giá trị cho các trường trong MonHoc
-        dk.MASV = studentList.cnt[i][0]; // Cột 0 là MAMH
-        dk.Diem = std::stof(studentList.cnt[i][1]); // Cột 1 là TENMH
-        dk.Huy_Dang_Ky = false ;  
-        list.themDangKy(dk) ; 
-        file.close();
-    }
-    list.inDanhSach() ; 
-    list2.Nodes[1]->Dssvdk.head = list.getHead() ; 
-    // Sau khi chuyển, "ngắt kết nối" giữa list và danh sách mà nó kiểm soát
-    list.setHead(nullptr);
-    return ; 
-}
+// void Data::getdk1(fsys::path filepath){
+//      // Kiểm tra nếu tệp có tồn tại
+//     std::ifstream file(filepath.generic_string());
+//     if (!file.is_open()) {
+//         std::cerr << "Failed to open file: " << filepath.generic_string() << std::endl;
+//         //return;
+//     }
+//     // Đọc nội dung file CSV
+//     csvFile studentList(filepath);
+//     studentList.readFile();
+//     // Kiểm tra nếu file không chứa dữ liệu
+//     if (studentList.cnt.empty()) {
+//         std::cerr << "Failed to load data from file: " << filepath.generic_string() << std::endl;
+//         //return;
+//     }
+//     listDK list ; 
+//     // Duyệt qua từng dòng dữ liệu trong tệp CSV
+//     for (size_t i = 1; i < studentList.cnt.size(); ++i) {
+//         DangKy dk;
+//         // Kiểm tra độ dài mỗi dòng trong CSV để đảm bảo có đủ số lượng cột
+//         if (studentList.cnt[i].size() < 2) {
+//             std::cerr << "Invalid data at line " << i + 1 << ". Skipping...\n";
+//             continue; // Bỏ qua dòng nếu thiếu dữ liệu
+//         }
+//         // Đọc và gán giá trị cho các trường trong MonHoc
+//         dk.MASV = studentList.cnt[i][0]; // Cột 0 là MAMH
+//         dk.Diem = std::stof(studentList.cnt[i][1]); // Cột 1 là TENMH
+//         dk.Huy_Dang_Ky = false ;  
+//         list.themDangKy(dk) ; 
+//         file.close();
+//     }
+//     list.inDanhSach() ; 
+//     list2.Nodes[1]->Dssvdk.head = list.getHead() ; 
+//     // Sau khi chuyển, "ngắt kết nối" giữa list và danh sách mà nó kiểm soát
+//     list.setHead(nullptr);
+//     return ; 
+// }
 //ham hien thi 
 // void Data::displaylop(fsys::path filepath , sf::Font& font) {
 //       if (!fsys::exists(filepath)) {
@@ -530,17 +528,13 @@ void Data::displaymonhoc(fsys::path filepath, sf::Font& font) {
 //     }
 //      return {StudentList, StudentButton};
 // }
-std::pair<std::vector<Text>, std::vector<Button>> Data::displaystudent(DanhSachSV& sv, sf::Font& font) {
-    if (sv.isEmpty()) {
-       cout << "LIST RONG" ; 
-    }
+void  Data::displaystudent(int vitri, sf::Font& font) {
     cout << "da di den day " ; 
-    vector<Text> StudentList ; 
-    vector<Button> StudentButton  ;
 
     float yPosition = 410.f;
-
-     for (PTRSV p = sv.getHead(); p != nullptr; p = p->next) {
+    cout << "NE " ; 
+     DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance(),DS_LOPSV::getInstance().nodes[0].MALOP) ; 
+     for (PTRSV p = DS_LOPSV::getInstance().nodes[vitri].FIRST.getHead(); p != nullptr; p = p->next) {
         if (p->sv.MASV.empty() || p->sv.HO.empty() || p->sv.TEN.empty() || p->sv.PHAI.empty() || p->sv.SODT.empty()) {
             cout << "Invalid student data" << endl;
             continue; // Bỏ qua node không hợp lệ
@@ -566,18 +560,17 @@ std::pair<std::vector<Text>, std::vector<Button>> Data::displaystudent(DanhSachS
 
         float buttonWidth = std::max(150.f, static_cast<float>(MASV.size() * 10));  // Thay đổi chiều rộng nút dựa trên độ dài chuỗi
         Button button(68.f, yPosition, buttonWidth, 58.f, MASV, font, sf::Color::Red, 15);
-        StudentButton.push_back(button);
-        StudentButton.push_back(button);
-        StudentButton.push_back(button);
-        StudentButton.push_back(button);
-        StudentButton.push_back(button);
+        ButtonStudent.push_back(button);
+        ButtonStudent.push_back(button);
+        ButtonStudent.push_back(button);
+        ButtonStudent.push_back(button);
+        ButtonStudent.push_back(button);
 
         //yPosition = (static_cast<int>(yPosition) + 100) % 422 + 422;
         yPosition = (static_cast<int>(yPosition) + 100) ;
         if (yPosition > 800)
             yPosition = 410.f;
     }
-     return {StudentList, StudentButton};
 }
 void Data::displaytc1(TinhchiList& list, sf::Font& font) {
     if (list.isEmpty()) {
@@ -655,10 +648,14 @@ void Data::displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int ho
         }
 
         // Tính số sinh viên đăng ký (dựa trên số sinh viên hiện tại trong danh sách đăng ký)
-        int soSinhVienDangKi = tc->soSvMax - tc->soSvMin;  // Ví dụ, có thể thay đổi theo cách tính thực tế của bạn
-
+        // int soSinhVienDangKi = tc->soSvMax - tc->soSvMin;  // Ví dụ, có thể thay đổi theo cách tính thực tế của bạn
+         int soSinhVienDangKi = tc->Dssvdk.size(tc->Dssvdk) ;   // Ví dụ, có thể thay đổi theo cách tính thực tế của bạn
+        cout << soSinhVienDangKi ;
         // Xác định lớp có "TRONG" hay không (chưa đầy sinh viên)
-        std::string trong = (soSinhVienDangKi < tc->soSvMax) ? "Yes" : "No";
+        int trong1 = tc->soSvMax - soSinhVienDangKi ; 
+        string trong = std::to_string(trong1) ; 
+        // std::string trong = (soSinhVienDangKi < tc->soSvMax) ? "Yes" : "No";
+        cout << trong1 ;
 
         // In thông tin ra console
         std::cout << "MALOPTC: " << tc->MALOPTC << "\n"

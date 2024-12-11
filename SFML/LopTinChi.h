@@ -48,21 +48,55 @@ public:
         static TinhchiList instance;
         return instance;
     }
-
-
+// ham lien quan den tinh chi 
      LopTinChi* newTC(LopTinChi& tc) {
         LopTinChi* p = new LopTinChi(tc);
         // *p = tc;
         return p;
     }
 
-    void addTC(LopTinChi& tc) {
-        if (n >= MAX_LTC) {
-            return;  // Danh sách đầy, không thể thêm
-        }
-        Nodes[n] = newTC(tc);
-        n++;
+   void addTC(TinhchiList& dsTC, LopTinChi& tc) {
+    if (dsTC.n >= MAX_LTC) {
+        cout << "Danh sách lớp tín chỉ đã đầy.\n"; 
+        return;  // Danh sách đầy, không thể thêm
     }
+
+    // Cập nhật MALOPTC cho lớp tín chỉ
+    tc.MALOPTC = (dsTC.n == 0) ? 1 : dsTC.Nodes[dsTC.n - 1]->MALOPTC + 1;
+
+    // Thêm lớp tín chỉ vào danh sách
+    dsTC.Nodes[dsTC.n] = newTC(tc);  // Thêm lớp tín chỉ vào vị trí n
+
+    // Tăng số lượng lớp tín chỉ
+    dsTC.n++;
+
+    // In thông tin lớp đã thêm vào
+    cout << "Đã thêm lớp tín chỉ thành công: MALOPTC = " << tc.MALOPTC
+         << ", MAMH = " << tc.MAMH ; 
+       
+}
+void removeTC(TinhchiList& dsTC , int index) {
+    if (index < 0 || index >= dsTC.n) {
+        cout << "Chỉ số không hợp lệ.\n";
+        return;  // Kiểm tra chỉ số hợp lệ
+    }
+
+    // Xóa lớp tín chỉ tại chỉ số index
+    delete dsTC.Nodes[index];
+
+    // Di chuyển các phần tử sau vị trí index lên một vị trí trước đó
+    for (int i = index; i < dsTC.n - 1; i++) {
+        dsTC.Nodes[i] = dsTC.Nodes[i + 1];
+    }
+
+    // Gán nullptr cho phần tử cuối cùng
+    dsTC.Nodes[n - 1] = nullptr;
+
+    // Giảm số lượng lớp tín chỉ
+    --dsTC.n;
+    
+    cout << "Lớp tín chỉ đã được xóa thành công.\n";
+}
     /*
     int MALOPTC = ( TinhchiList::getInstance().n == 0 ) ? TinhchiList::getInstance().Nodes[TinhchiList::getInstance().n - 1 ] -> MALOPTC + 1 
     */
@@ -83,28 +117,6 @@ bool kiemTraTrungLich(const LopTinChi &ltc, const List_LTC &listLTC) {
     return true; // Không trùng lịch
 }
    */
-  
-
-    int findTC(int ma) {  // Tìm lớp theo `MALOPTC`
-        for (int i = 0; i < n; i++) {
-            if (Nodes[i]->MALOPTC == ma) {
-                return i;
-            }
-        }
-        return -1;  // Không tìm thấy
-    }
-
-    void removeTC(int index) {
-        if (index < 0 || index >= n) {
-            return;  // Kiểm tra chỉ số hợp lệ
-        }
-        delete Nodes[index];
-        for (int i = index; i < n - 1; i++) {
-            Nodes[i] = Nodes[i + 1];
-        }
-        Nodes[--n] = nullptr;
-    }
-
     void bubbleSortTC() {  // Sắp xếp các lớp theo `MALOPTC` tăng dần
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -181,25 +193,28 @@ int KTLOPTC(TinhchiList& list, std::string& nienKhoa, int hocKy, int nhom, std::
 
     // Duyệt qua danh sách lớp tín chỉ
     for (int i = 0; i < list.n; ++i) {
-        LopTinChi* tc = list.Nodes[i];  // Lấy lớp tín chỉ tại vị trí i
-
         // Kiểm tra các điều kiện lọc
-        if (tc->NienKhoa == nienKhoa && tc->HocKy == hocKy && tc->Nhom == nhom && tc->MAMH == maMon) {
+        if (list.Nodes[i]->NienKhoa == nienKhoa && list.Nodes[i]->HocKy == hocKy && list.Nodes[i]->Nhom == nhom && list.Nodes[i]->MAMH == maMon) {
             return i; // Trả về chỉ số lớp tín chỉ nếu tìm thấy
         }
     }
-
     // Nếu không tìm thấy lớp tín chỉ thỏa mãn các điều kiện
     std::cout << "Không tìm thấy lớp tín chỉ với thông tin đã nhập.\n";
     return 0 ; // Trả về -1 nếu không tìm thấy lớp tín chỉ
 }
-
-
-void updateTC(LopTinChi& newTC) {
-    int index = findTC(newTC.MALOPTC);  // Tìm lớp tín chỉ theo MALOPTC
+int findTC(TinhchiList& dsTC , int ma) {  // Tìm lớp theo `MALOPTC`
+        for (int i = 0; i < dsTC.n; i++) {
+            if (dsTC.Nodes[i]->MALOPTC == ma) {
+                return i;
+            }
+        }
+        return -1;  // Không tìm thấy
+    }
+void updateTC(TinhchiList& dsTC , LopTinChi& newTC) {
+    int index = findTC( dsTC, newTC.MALOPTC);  // Tìm lớp tín chỉ theo MALOPTC
     if (index != -1) {  // Kiểm tra nếu lớp tín chỉ được tìm thấy
         LopTinChi* tc = Nodes[index];
-        
+        // ko gan lại vi khong can thiet thay the con trô 
         // Cập nhật thông tin của lớp tín chỉ từ đối tượng mới
         tc->MAMH = newTC.MAMH;
         tc->NienKhoa = newTC.NienKhoa;
@@ -214,13 +229,40 @@ void updateTC(LopTinChi& newTC) {
         std::cout << "Lớp tín chỉ không tồn tại.\n";
     }
 }
-int findTCByNienKhoaHocKy(string nienKhoa, int hocKy) {
-    for (int i = 0; i < n; i++) {
-        if (Nodes[i]->NienKhoa == nienKhoa && Nodes[i]->HocKy == hocKy) {
-            return i;  // Trả về chỉ số nếu tìm thấy
-        }
+
+// ham dang ky 
+void themdk(TinhchiList& dsTC , int& malop ,  DangKy &dangKy){
+    int index = findTC(dsTC, malop);
+    if (index == -1) {
+        std::cout << "Lớp tín chỉ không tồn tại.\n";
+        return;
     }
-    return -1;  // Không tìm thấy
+
+    // Lấy lớp tín chỉ từ danh sách TinhchiList
+    LopTinChi* tc = dsTC.Nodes[index];  
+
+    // Thêm đăng ký vào danh sách đăng ký của lớp tín chỉ
+    tc->Dssvdk.addDK(dangKy);  // Sử dụng hàm addDK đã định nghĩa để thêm đăng ký
+
+    std::cout << "Đã thêm đăng ký thành công cho lớp tín chỉ: MALOPTC = " << malop << "\n";
+    }
+// Hàm xóa đăng ký từ lớp tín chỉ trong TinhchiList
+void removedk(TinhchiList& dsTC, int malop, string masv)
+{
+    // Tìm lớp tín chỉ có MALOPTC là malop
+    int index = findTC(dsTC, malop);
+    if (index == -1) {
+        std::cout << "Lớp tín chỉ không tồn tại.\n";
+        return;
+    }
+
+    // Lấy lớp tín chỉ từ danh sách TinhchiList
+    LopTinChi* tc = dsTC.Nodes[index];
+
+    // Xóa đăng ký từ danh sách đăng ký của lớp tín chỉ
+    tc->Dssvdk.removeDK(masv);  // Gọi hàm xóa đăng ký đã định nghĩa để xóa đăng ký
+
+    std::cout << "Đã xóa đăng ký thành công cho lớp tín chỉ: MALOPTC = " << malop << "\n";
 }
 };
 

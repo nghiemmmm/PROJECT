@@ -11,44 +11,71 @@ fsys::path creaditclass1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\creaditclass.c
 fsys::path student2 = "D:\\du an\\SFML\\SFML\\data\\Classes\\23CTT1.csv";
 fsys::path student3 = "D:\\du an\\SFML\\SFML\\data\\Classes\23CTT2.csv" ; 
 fsys::path dk2 = "D:\\du an\\SFML\\SFML\\data\\Courses\\dangky.csv" ; 
-TinhchiList& list = TinhchiList::getInstance();
-DS_LOPSV& listclass =  DS_LOPSV::getInstance(); 
+// TinhchiList& list = TinhchiList::getInstance();
+// DS_LOPSV& listclass =  DS_LOPSV::getInstance(); 
 int BaseScreen::startWindow(sf::RenderWindow& window) {
       // do lu lieu vao lop san 
-    if (listclass.isEmpty(listclass)) {
+    if (DS_LOPSV::getInstance().isEmpty(DS_LOPSV::getInstance())) {
         cout << "lop  đang rỗng!" << endl;
-        Data::getlop(classPath1 ,listclass) ;
+        Data::getlop(classPath1 ,DS_LOPSV::getInstance()) ;
     } else {
         cout << "Cây không rỗng!" << endl;
     }
-//     // do du lieu vao cay san 
-//      if (AVLTreeMH::getInstance().isEmpty(AVLTreeMH::getInstance().root)) {
-//         cout << "Cây đang rỗng!" << endl;
-//         Data::getmonhoc(subjectPath1);
-//     } else {
-//         cout << "Cây không rỗng!" << endl;
-//     }
-//     // do du lieu vao lop tin chi 
-//     if (TinhchiList::getInstance().isEmpty()) {
-//         cout << "list  đang rỗng!" << endl;
-//         Data::gettc(creaditclass1) ; 
-//     } else {
-//         cout << "list  không rỗng!" << endl;
-//     }
+    // do du lieu vao cay san 
+     if (AVLTreeMH::getInstance().isEmpty(AVLTreeMH::getInstance().root)) {
+        cout << "Cây đang rỗng!" << endl;
+        Data::getmonhoc(subjectPath1);
+    } else {
+        cout << "Cây không rỗng!" << endl;
+    }
+    // do du lieu vao lop tin chi 
+    if (TinhchiList::getInstance().isEmpty()) {
+        cout << "list  đang rỗng!" << endl;
+        Data::gettc(creaditclass1) ; 
+    } else {
+        cout << "list  không rỗng!" << endl;
+    }
 //    // do sinh vien vao 2 lop dau 
-    // Data::getstudent(student2 ,listclass) ;
+    Data::getstudent(student2 ,DS_LOPSV::getInstance()) ;
 //     Data::getstudent1(student3) ;
 //     // do du lieu sinh vien dang ki vao 2 lop dau 
-//     Data::getdk(dk2) ; 
+    Data::getdk(dk2 ,TinhchiList::getInstance() ) ; 
 //     Data::getdk1(dk2) ;
-    //
+// test lop voi sinh vien 
     // cout << endl ;
-    cout << listclass.n ; 
-    // cout << endl ;  
-    // cout << "o day " ; 
-    listclass.HienThiDanhSachLop() ; 
-    // listclass.nodes[0].FIRST.In() ; 
-    // list.Nodes[0]->Dssvdk.inDanhSach() ; 
+    // if( DS_LOPSV::getInstance().nodes[0].FIRST.getHead() == NULL){
+    //     cout << "NO RONG " ; 
+    // }else{
+    //     DS_LOPSV::getInstance().nodes[0].FIRST.In() ; 
+    // }
+    // DanhSachSV sinhvien ; 
+    // SinhVien sv1("SV001", "Nguyen", "An", "Nam", "0123456789");
+    // sinhvien.insertSV(sv1) ;
+    // DS_LOPSV::getInstance().nodes[0].FIRST.createNode(sv1) ;
+    // if( DS_LOPSV::getInstance().nodes[0].FIRST.getHead() == NULL){
+    //     cout << "NO RONG " ; 
+    // }else{
+    //     DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance() , sinhvien ) ; 
+    // }
+    // cout << DS_LOPSV::getInstance().n ; 
+    // // cout << endl ; 
+    // SinhVien sv1("SV001", "Nguyen", "An", "Nam", "0123456789");
+    // string a = "23CTT2001" ;
+    //  DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance() , DS_LOPSV::getInstance().nodes[0].MALOP) ; 
+    //  DS_LOPSV::getInstance().SuaSinhVien(DS_LOPSV::getInstance(), DS_LOPSV::getInstance().nodes[0].MALOP , a , sv1 ) ; 
+    //  cout << endl ;
+    //   DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance() , DS_LOPSV::getInstance().nodes[0].MALOP) ; 
+    // DS_LOPSV::getInstance().HienThiDanhSachLop() ; 
+// test lop tinh chi 
+    // LopTinChi lopTinChi1(1, "MATH102", "2024", 1, 1, 10, 40, false);
+    // TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance()) ; 
+    // TinhchiList::getInstance().updateTC(TinhchiList::getInstance(),lopTinChi1) ;
+    // TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance()) ;
+    DangKy dangKy2("23CTT2001", 8.5f, true);
+    TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ;
+    TinhchiList::getInstance().removedk(TinhchiList::getInstance() , TinhchiList::getInstance().Nodes[0]->MALOPTC ,dangKy2.MASV) ;
+    TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ; 
+
     cout << "den day " ; 
      // Khởi tạo font
     sf::Font font;
@@ -105,7 +132,7 @@ int BaseScreen::startWindow(sf::RenderWindow& window) {
                     return 10;  // Input grades page
                 }
                 else if (nhapBC.isClicked(mousePos)) {
-                    return 7;  // Input grades page
+                    return 13;  // Input grades page
                 }
                 
             }

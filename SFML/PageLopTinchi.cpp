@@ -58,7 +58,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Return error if font can't be loaded
     }
-
     // Create Text and InputField objects
     Text hocki(237.f, 358.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
     Text monhoc(237.f, 445.f, 158.f, 58.f, "MON HOC", font, sf::Color::Red, 20);
@@ -77,9 +76,8 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     InputField Nhom(1032.f, 445.f,271.f, 47.f, font);
     InputField SVmin(1032.f, 569.f,271.f, 47.f, font);
     InputField Huy(1032.f, 688.f, 271.f, 47.f, font);
-
     // Save button
-    Button saveBtn(1094.f, 763.f, 134.f, 78.f, "SAVE", font, sf::Color::Red, 15);
+    // Button saveBtn(1094.f, 763.f, 134.f, 78.f, "SAVE", font, sf::Color::Red, 15);
     Button them(264.f , 149.f ,  151.f , 28.f , "THEM" , font, sf::Color::Red, 15 ) ; 
     Button xoa(477.f , 149.f ,  151.f , 28.f , "XOA" , font, sf::Color::Red, 15 ) ; 
     Button ghi(944.f , 149.f ,  151.f , 28.f , "GHI" , font, sf::Color::Red, 15 ) ; 
@@ -87,7 +85,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     Button sua(722.f , 149.f ,  151.f , 28.f , "SUA" , font, sf::Color::Red, 15 ) ; 
     std::vector<std::string> items = {"Item 1", "Item 2", "Item 3"};
     Dropdown dropdown(389.f, 500.f, 200.f, 40.f, font, items, &Matc);
-
     // Initial selection state
     HocKi.setSelected(true);
     MonHoc.setSelected(true);
@@ -97,7 +94,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     Nhom.setSelected(true);
     SVmin.setSelected(true);
     Huy.setSelected(true);
-
     // Main loop for handling window events and rendering
     while (window.isOpen()) {
         sf::Event event;
@@ -131,7 +127,7 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                     return 8 ; 
                 }
                 // Check if SAVE button is clicked
-                if (saveBtn.isClicked(mousePos)) {
+                if (ghi.isClicked(mousePos)) {
                     std::string hocKi = HocKi.getInput();
                     std::string monHoc = MonHoc.getInput();
                     std::string matc = Matc.getInput();
@@ -151,17 +147,15 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                         int svMaxInt = std::stoi(svMax);
                         bool huy = false;
                         LopTinChi tc( matcInt,monHoc,nienKhoa,hocKiInt,nhomInt,svMinInt,svMaxInt,huy) ; 
-                        TinhchiList::getInstance().addTC(tc) ; 
+                        TinhchiList::getInstance().addTC(TinhchiList::getInstance(),tc) ; 
                          std::vector<std::string> newRow = {hocKi, monHoc, matc , svMax , nienKhoa , nhom , svMin , huy1}; 
                           if (Data::add(creaditclass, font, newRow)) {
                     std::cout << "thanh cong " << std::endl;
                 } else {
                     std::cerr << "not load" << std::endl;
-        }
-
-                    //    // ham goi xu li dua vao cau truc 
                     }
-                     Data::popup("THEM THANH CONG TINH CHI  ") ;
+                    Data::popup("THEM THANH CONG TINH CHI  ") ;
+                    }
                 }
             }
 
@@ -175,22 +169,19 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
             SVmin.processInput(event);
             Huy.processInput(event);
 
-
-              sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            // Chuyển đổi trạng thái chọn cho các trường nhập liệu
-            HocKi.setSelected(HocKi.isSelected() && !ghi.isClicked(mousePos));
-            MonHoc.setSelected(MonHoc.isSelected() && !ghi.isClicked(mousePos));
-            Matc.setSelected(Matc.isSelected() && !ghi.isClicked(mousePos));
-            SVmax.setSelected(SVmax.isSelected() && !ghi.isClicked(mousePos));
-            NienKhoa.setSelected(NienKhoa.isSelected() && !ghi.isClicked(mousePos));
-            Nhom.setSelected(Nhom.isSelected() && !ghi.isClicked(mousePos));
-            Huy.setSelected(Huy.isSelected() && !ghi.isClicked(mousePos));
+            //   sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            // // Chuyển đổi trạng thái chọn cho các trường nhập liệu
+            // HocKi.setSelected(HocKi.isSelected() && !ghi.isClicked(mousePos));
+            // MonHoc.setSelected(MonHoc.isSelected() && !ghi.isClicked(mousePos));
+            // Matc.setSelected(Matc.isSelected() && !ghi.isClicked(mousePos));
+            // SVmax.setSelected(SVmax.isSelected() && !ghi.isClicked(mousePos));
+            // NienKhoa.setSelected(NienKhoa.isSelected() && !ghi.isClicked(mousePos));
+            // Nhom.setSelected(Nhom.isSelected() && !ghi.isClicked(mousePos));
+            // Huy.setSelected(Huy.isSelected() && !ghi.isClicked(mousePos));
         }
-
         // Render the screen
         window.clear(sf::Color::White);
         BaseScreenLopTinChi::drawMainMenu3(window); // Draw base menu or background
-
         // Draw the UI elements
        // title.draw(window);
         hocki.draw(window);
@@ -210,10 +201,7 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
         Nhom.draw(window);
         SVmin.draw(window);
         Huy.draw(window);
-
-        saveBtn.draw(window);
-
-        // Display everything
+        // saveBtn.draw(window);
         window.display();
     }
     
@@ -240,7 +228,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     Text svmin(876.f, 236.f, 170.f, 59.f, "SO SV MIN ", font, sf::Color::Red, 20);
     Text svmax(1046.f, 236.f, 170.f, 59.f, "SO SV MAX ", font, sf::Color::Red, 20);
     Text huy(1176.f, 236.f, 170.f, 59.f, "HUY LOP", font, sf::Color::Red, 20);
-
     
     // Tạo đối tượng sf::Text để hiển thị số trang
     sf::Text pageText;
@@ -248,9 +235,7 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     pageText.setCharacterSize(20);
     pageText.setFillColor(sf::Color::Black);
     pageText.setPosition(750.f, 833.f);
-
    
-    // Data::gettc(creaditclass) ;  
     TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
     Data::displaytc1(TinhchiList::getInstance(), font ) ;
     cout << TCList.size() ;
@@ -282,18 +267,18 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
 
                 if (them.isClicked(mousePos)) {
                     addTC(window) ; 
+                    return 8 ; 
                 }
                 // Kiểm tra nếu một trong các nút môn học trong buttonsubject được nhấn
                 for (int i = displayFrom; i < displayLimit && i < buttonTC.size(); i++) {
                         if (buttonTC[i].isClicked(mousePos)) {
                             cout << 12 ; 
                             int  matc = std::stoi(buttonTC[i].getText());
-                            int vitri = TinhchiList::getInstance().findTC(matc) ; 
+                            int vitri = TinhchiList::getInstance().findTC(TinhchiList::getInstance(),matc) ; 
                             LopTinChi* tc  = TinhchiList::getInstance().Nodes[vitri] ; 
                             InTC(window,tc);  // Hiển thị thông tin môn học tương ứng
-                           break ; 
-                        }
-                        return 8 ; 
+                            return 8 ;
+                        } 
                         }
             }
         }
@@ -317,15 +302,11 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
             buttonTC[i].draw(window) ; 
          //window.display();
     }
-
         //Vẽ các nút và thông tin trang
-        
         nextPageBtn.draw(window);
         prevPageBtn.draw(window);
         window.draw(pageText);
         matc.draw(window); 
-        
-
         hocki.draw(window) ;
         mamon.draw(window) ;
         svmax.draw(window) ;
@@ -333,7 +314,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
         nhom.draw(window) ;
         svmin.draw(window) ;
         huy.draw(window) ;
-
         //Chỉ gọi window.display() một lần sau khi vẽ xong
         window.display();
     }
@@ -342,12 +322,17 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
 
 int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
     cout << 1;
-
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Return -1 if the font can't be loaded
     }
     cout << tc->MALOPTC ; 
+    int vitri ; 
+    int temp = TinhchiList::getInstance().findTC(TinhchiList::getInstance(),tc->MALOPTC) ;
+    if(temp != -1){
+        vitri = temp ; 
+    }
+    string maloptc = std::to_string(tc->MALOPTC) ; 
     // Interface components
     Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP TC ", font, sf::Color::Red, 15);
     Text hocki(237.f, 358.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
@@ -364,8 +349,6 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
     Button ghi(944.f, 149.f, 151.f, 28.f, "GHI", font, sf::Color::Red, 15);
     Button thoat(1202.f, 149.f, 84.f, 28.f, "THOAT", font, sf::Color::Red, 15);
     Button sua(722.f, 149.f, 151.f, 28.f, "SUA", font, sf::Color::Red, 15);
-
-
 
     // Input fields for each entry
     Text HocKi(428.f, 358.f, 271.f, 47.f, std::to_string(tc->HocKy), font, sf::Color::Red, 15);
@@ -384,21 +367,23 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
                 window.close();
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
                 // Check if any buttons are clicked
                 if (sua.isClicked(mousePos)) {
                     // Handle "SUA" button click
-                   
                    fixTC(window , tc) ; 
+                   return 8 ; 
                 }
                 if (thoat.isClicked(mousePos)) {
                     window.close();  // Close the window when "THOAT" is clicked
                 }
 
                 if (xoa.isClicked(mousePos)) {
-                    // Handle "XOA" button click (delete functionality)
-                    // Ensure proper deletion logic is implemented
-                    window.close();  // Close the window when "XOA" is clicked
+                    if(Data::confirm("BAN CO CHAN CHAN HUY LOP TINH CHI NAY KHONG ")){
+                        TinhchiList::getInstance().removeTC(TinhchiList::getInstance(),vitri) ;
+                        Data::deletemonhoc(creaditclass , maloptc) ; 
+                        Data::popup("DA HUY THANH CONG LOP TIN CHI " ) ; 
+                        return 8 ; 
+                    }
                 }
             }
         }
@@ -445,8 +430,6 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1 ; // Trả về lỗi nếu không tải được font
     }
-
-
     // Các thành phần giao diện
     Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP HOC", font, sf::Color::Red, 15);
     Text hocki1(259.f, 291.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
@@ -457,7 +440,6 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
     Text nhom1(259.f, 502.f, 158.f, 58.f, "NHOM  ", font, sf::Color::Red, 20);
     Text svmin1(259.f, 617.f, 158.f, 58.f, "SO SINH VIEN MIN ", font, sf::Color::Red, 20);
     Text huy1(259.f, 768.f, 158.f, 58.f, "HUY LOP", font, sf::Color::Red, 20);
-
     // InputFields
     std::vector<InputField> inputFields = {
         InputField(757.f, 291.f, 271.f, 47.f, font),
@@ -469,36 +451,22 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
         InputField(541.f, 699.f, 271.f, 47.f, font),
         InputField(514.f, 772.f, 271.f, 47.f, font)
     };
-
     // Các text components của lớp học
     EditableText hocki2(428.f, 291.f, std::to_string(tc->HocKy), font, &inputFields[0]);
-    // EditableText matc2(428.f, 424.f, 158.f, 58.f, std::to_string(a.MALOPTC), font, sf::Color::Red, 20);
+    Text matc2(428.f, 424.f, 158.f, 58.f, std::to_string(tc->MALOPTC), font, sf::Color::Red, 20);
     EditableText mamon2(428.f, 560.f,  tc->MAMH, font,&inputFields[1]); // Đã là string
     EditableText svmax2(428.f, 688.f, std::to_string(tc->soSvMax), font,&inputFields[2]);
     EditableText nienkhoa2(428.f, 363.f, tc->NienKhoa, font,&inputFields[3]); // Đã là string
     EditableText nhom2(428.f, 502.f, std::to_string(tc->Nhom), font,&inputFields[4]);
     EditableText svmin2(428.f, 617.f, std::to_string(tc->soSvMin), font, &inputFields[5]);
     EditableText huy2(428.f, 768.f, tc->HuyLop ? "YES" : "NO", font, &inputFields[6]); // Convert bool to "YES" or "NO"
-
-    // // InputFields
-    // std::vector<InputField> inputFields = {
-    //     InputField(757.f, 291.f, 271.f, 47.f, font),
-    //     InputField(514.f, 370.f, 271.f, 47.f, font),
-    //     InputField(541.f, 429.f, 271.f, 47.f, font),
-    //     InputField(514.f, 502.f, 271.f, 47.f, font),
-    //     InputField(541.f, 567.f, 271.f, 47.f, font),
-    //     InputField(514.f, 623.f, 271.f, 47.f, font),
-    //     InputField(541.f, 699.f, 271.f, 47.f, font),
-    //     InputField(514.f, 772.f, 271.f, 47.f, font)
-    // };
-
+    string maloptc = std::to_string(tc->MALOPTC) ; 
     // Các nút chức năng
     Button them(264.f, 149.f, 151.f, 28.f, "THEM", font, sf::Color::Red, 15);
     Button xoa(477.f, 149.f, 151.f, 28.f, "XOA", font, sf::Color::Red, 15);
     Button ghi(944.f, 149.f, 151.f, 28.f, "GHI", font, sf::Color::Red, 15);
     Button thoat(1202.f, 149.f, 84.f, 28.f, "THOAT", font, sf::Color::Red, 15);
     Button sua(722.f, 149.f, 151.f, 28.f, "SUA", font, sf::Color::Red, 15);
-
     // // Set các trường đã chọn
     // for (auto& field : inputFields) {
     //     field.setSelected(true);
@@ -524,10 +492,15 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
             huy2.update(event);
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
+                hocki2.handleMouseClick(mousePos);
+                mamon2.handleMouseClick(mousePos);
+                svmax2.handleMouseClick(mousePos);
+                nienkhoa2.handleMouseClick(mousePos);
+                nhom2.handleMouseClick(mousePos);
+                svmin2.handleMouseClick(mousePos);
+                huy2.handleMouseClick(mousePos);
                 // Kiểm tra nếu nút "GHI" được nhấn
                 if (ghi.isClicked(mousePos)) {
-                    
                     string hocki = hocki2.getText() ; 
                     string mamon = mamon2.getText() ; 
                     string svmax = svmax2.getText() ; 
@@ -536,24 +509,24 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
                     string svmin = svmin2.getText() ; 
                     string huy = huy2.getText() ; 
                     
-
-
                     // Kiểm tra thay đổi ở các trường
                     if (hocki != std::to_string(tc->HocKy) || nienkhoa != tc->NienKhoa || 
                         nhom != std::to_string(tc->Nhom) ||
                         mamon != tc->MAMH || svmin != std::to_string(tc->soSvMin) ||
-                        svmax != std::to_string(tc->soSvMax) || huy != std::to_string(tc->HuyLop)) {
-                        
+                        svmax != std::to_string(tc->soSvMax) || huy != std::to_string(tc->HuyLop)) {       // Chuyển `std::string` thành `int`
+                        int hocKiInt = std::stoi(hocki);
+                        int nhomInt = std::stoi(nhom);
+                        int svMinInt = std::stoi(svmin);
+                        int svMaxInt = std::stoi(svmax);
+                        bool huy1 = false ;
                         // // Cập nhật dữ liệu vào CSV
-                        // std::vector<std::string> newRow = {
-                        //     a.MALOPTC,hocki, mamon, nhom, 
-                        //     svmax, svmin, nienkhoa, huy
-                        // };
-                        //Data::update(classPath, a.MALOPTC, newRow);
-
-                        // selectedtc = {a.MALOPTC,hocki, mamon, nhom, 
-                        //     svmax, svmin, nienkhoa, huy};
+                        std::vector<std::string> newRow = {maloptc,hocki, mamon, nhom,svmax, svmin, nienkhoa, huy };
+                        Data::update(creaditclass,maloptc, newRow);
+                        int matcInt = tc->MALOPTC ;
+                        LopTinChi tc( matcInt,mamon,nienkhoa,hocKiInt,nhomInt,svMinInt,svMaxInt,huy1) ; 
                         // xu li logic trong ham 
+                        TinhchiList::getInstance().updateTC(TinhchiList::getInstance(),tc) ;
+                        Data::popup("HIEU CHINH THANH CONG ") ; 
                     }
                 }
                  if(thoat.isClicked(mousePos)){
@@ -566,9 +539,9 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
             }
 
             // Xử lý nhập liệu cho các input field
-            for (auto& field : inputFields) {
-                field.processInput(event);
-            }
+            // for (auto& field : inputFields) {
+            //     field.processInput(event);
+            // }
     }
         window.clear(sf::Color::White);
          // Draw the base screen and menu
@@ -584,8 +557,14 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
         nhom1.draw(window);
         svmin1.draw(window);
         huy1.draw(window);
-
-
+        matc2.draw(window) ; 
+    hocki2.draw(window) ; 
+    mamon2.draw(window) ; 
+    svmax2.draw(window) ; 
+    nienkhoa2.draw(window) ; 
+    nhom2.draw(window) ; 
+    svmin2.draw(window) ; 
+    huy2.draw(window) ; 
         window.display();
 }
     return 0 ; 

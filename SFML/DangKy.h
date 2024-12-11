@@ -32,26 +32,27 @@ typedef NodeDK* PTRDK;
 // DanhSachDangKy - Quản lý danh sách đăng ký sinh viên
 class listDK
 {
-public :
+private :
     PTRDK head; // Con trỏ tới node đầu tiên của danh sách
 
 public:
     // Constructor
     listDK() : head(nullptr) {}
+
     PTRDK getHead() {return head;}
     void setHead(PTRDK newhead) {head = newhead;}
 
     // Thêm đăng ký vào danh sách
-    void themDangKy(DangKy &dangKy)
+    void addDK(DangKy &dangKy)
     {
-        NodeDK *newNode = new NodeDK(dangKy);
+        PTRDK newNode = new NodeDK(dangKy);
         if (head == nullptr)
         {
             head = newNode;
         }
         else
         {
-            NodeDK *temp = head;
+            PTRDK temp = head;
             while (temp->next != nullptr)
             {
                 temp = temp->next;
@@ -59,25 +60,21 @@ public:
             temp->next = newNode;
         }
     }
+// HAM NAY PHAI DI CHUYEN 
     bool isEmpty(listDK& list)
-        {
-	return(list.head == NULL ? true : false);
-        }
-
-
+    {
+	    return(list.head == NULL ? true : false);
+    }
     int size(listDK& list) {
-
 	int cnt = 0;
-
-	if (list.head == NULL)
+	if (list.getHead() == NULL)
 		return cnt;
 
-	for (PTRDK k = list.head ; k != NULL; k = k->next) {
+	for (PTRDK k = list.getHead() ; k != NULL; k = k->next) {
 		cnt++;
 	}
 	return cnt;
     }
-
     // Cập nhật thông tin đăng ký
     void adjustDK(string masv, DangKy &dk) {
         PTRDK node = findMASV(masv);
@@ -96,36 +93,45 @@ public:
     }
 
     // Xóa đăng ký theo mã sinh viên
-    void xoaDangKy(const std::string &mssv)
+void removeDK( std::string mssv)
+{
+    // Kiểm tra xem danh sách có trống không
+    if (head == nullptr)
     {
-        if (head == nullptr)
-            return;
-
-        if (head->sv.MASV == mssv)
-        {
-            NodeDK *temp = head;
-            head = head->next;
-            delete temp;
-            return;
-        }
-
-        NodeDK *temp = head;
-        while (temp->next != nullptr && temp->next->sv.MASV != mssv)
-        {
-            temp = temp->next;
-        }
-
-        if (temp->next != nullptr)
-        {
-            NodeDK *toDelete = temp->next;
-            temp->next = temp->next->next;
-            delete toDelete;
-        }
+        std::cout << "Danh sách đăng ký trống.\n";
+        return;
     }
 
+    // Nếu phần tử đầu tiên cần xóa
+    if (head->sv.MASV == mssv)
+    {
+        NodeDK *temp = head;
+        head = head->next;  // Đổi head sang phần tử tiếp theo
+        delete temp;        // Giải phóng bộ nhớ
+        std::cout << "Đã xóa đăng ký của sinh viên có MASV = " << mssv << "\n";
+        return;
+    }
 
+    // Duyệt qua danh sách để tìm sinh viên cần xóa
+    NodeDK *temp = head;
+    while (temp->next != nullptr && temp->next->sv.MASV != mssv)
+    {
+        temp = temp->next;
+    }
 
-
+    // Nếu tìm thấy sinh viên cần xóa
+    if (temp->next != nullptr)
+    {
+        NodeDK *toDelete = temp->next;
+        temp->next = temp->next->next;  // Liên kết lại danh sách
+        delete toDelete;  // Giải phóng bộ nhớ
+        std::cout << "Đã xóa đăng ký của sinh viên có MASV = " << mssv << "\n";
+    }
+    else
+    {
+        std::cout << "Không tìm thấy sinh viên với MASV = " << mssv << "\n";
+    }
+}
     // In danh sách đăng ký sinh viên
     void inDanhSach()
     {

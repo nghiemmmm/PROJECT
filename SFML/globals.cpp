@@ -11,3 +11,6 @@ std::vector<Text> TCList2;
 std::vector<Text> TCList3;
 std::vector<Button> buttonTC;
 std::vector<Button> buttonTC1;
+
+std::vector<Text> StudentList ; 
+std::vector<Button> ButtonStudent ;

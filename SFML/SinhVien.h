@@ -38,7 +38,7 @@ typedef NodeSV* PTRSV;
 
 // Lớp quản lý danh sách liên kết sinh viên
 class DanhSachSV {
-public :
+private :
     PTRSV head; // Con trỏ tới node đầu tiên
 public :
     // Constructor
