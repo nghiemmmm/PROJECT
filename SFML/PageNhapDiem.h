@@ -13,11 +13,11 @@ public:
     static int Indiem(sf::RenderWindow& window  , int& vitri );
     static int baseIn(sf::RenderWindow& window);
     static int baseIn1(sf::RenderWindow& window);
-    static int diemMH(sf::RenderWindow& window , int vitri );
-    static int diemTB(sf::RenderWindow& window);
-    static int diemTK(sf::RenderWindow& window);
-    
-    
+    static int baseIn2(sf::RenderWindow& window);
+    static int baseIn3(sf::RenderWindow& window);
+    static int diemMH(sf::RenderWindow& window ,int vitri);
+    static int diemTB(sf::RenderWindow& window,string& malop);
+    static int diemTK(sf::RenderWindow& window,string& malop); 
 };
 
 

@@ -228,7 +228,7 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     Text svmin(876.f, 236.f, 170.f, 59.f, "SO SV MIN ", font, sf::Color::Red, 20);
     Text svmax(1046.f, 236.f, 170.f, 59.f, "SO SV MAX ", font, sf::Color::Red, 20);
     Text huy(1176.f, 236.f, 170.f, 59.f, "HUY LOP", font, sf::Color::Red, 20);
-    
+    Button thoat(1202.f , 149.f ,  84.f , 28.f , "THOAT" , font, sf::Color::Red, 15 ) ; 
     // Tạo đối tượng sf::Text để hiển thị số trang
     sf::Text pageText;
     pageText.setFont(font);
@@ -280,6 +280,9 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                             return 8 ;
                         } 
                         }
+                if(thoat.isClicked(mousePos)){
+                    return 0 ; 
+                }
             }
         }
 
@@ -300,7 +303,6 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                 break;
             TCList[i].draw(window);
             buttonTC[i].draw(window) ; 
-         //window.display();
     }
         //Vẽ các nút và thông tin trang
         nextPageBtn.draw(window);
@@ -314,7 +316,7 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
         nhom.draw(window) ;
         svmin.draw(window) ;
         huy.draw(window) ;
-        //Chỉ gọi window.display() một lần sau khi vẽ xong
+        thoat.draw(window) ; 
         window.display();
     }
     return 0 ; 
@@ -333,7 +335,6 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
         vitri = temp ; 
     }
     string maloptc = std::to_string(tc->MALOPTC) ; 
-    // Interface components
     Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP TC ", font, sf::Color::Red, 15);
     Text hocki(237.f, 358.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
     Text matc(237.f, 445.f, 158.f, 58.f, "MA LOP TC ", font, sf::Color::Red, 20);
@@ -380,7 +381,7 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
                 if (xoa.isClicked(mousePos)) {
                     if(Data::confirm("BAN CO CHAN CHAN HUY LOP TINH CHI NAY KHONG ")){
                         TinhchiList::getInstance().removeTC(TinhchiList::getInstance(),vitri) ;
-                        Data::deletemonhoc(creaditclass , maloptc) ; 
+                        Data::deletefile(creaditclass , maloptc) ; 
                         Data::popup("DA HUY THANH CONG LOP TIN CHI " ) ; 
                         return 8 ; 
                     }
@@ -431,35 +432,35 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
         return -1 ; // Trả về lỗi nếu không tải được font
     }
     // Các thành phần giao diện
-    Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP HOC", font, sf::Color::Red, 15);
-    Text hocki1(259.f, 291.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
-    Text matc1(259.f, 424.f, 158.f, 58.f, "MA LOP TC ", font, sf::Color::Red, 20);
-    Text mamon1(259.f, 560.f, 158.f, 58.f, "MA MON HOC ", font, sf::Color::Red, 20);
-    Text svmax1(259.f, 688.f, 158.f, 58.f, "SO SV MAX ", font, sf::Color::Red, 20);
-    Text nienkhoa1(259.f, 361.f, 158.f, 58.f, "NIEN KHOA ", font, sf::Color::Red, 20);
-    Text nhom1(259.f, 502.f, 158.f, 58.f, "NHOM  ", font, sf::Color::Red, 20);
-    Text svmin1(259.f, 617.f, 158.f, 58.f, "SO SINH VIEN MIN ", font, sf::Color::Red, 20);
-    Text huy1(259.f, 768.f, 158.f, 58.f, "HUY LOP", font, sf::Color::Red, 20);
+    Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP TINH CHI ", font, sf::Color::Red, 15);
+    Text hocki1(237.f, 358.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
+    Text matc1(237.f, 445.f, 158.f, 58.f, "MA LOP TC ", font, sf::Color::Red, 20);
+    Text mamon1(237.f, 567.f, 158.f, 58.f, "MA MON HOC ", font, sf::Color::Red, 20);
+    Text svmax1(237.f, 689.f, 158.f, 58.f, "SO SV MAX ", font, sf::Color::Red, 20);
+    Text nienkhoa1(813.f, 358.f, 158.f, 58.f, "NIEN KHOA ", font, sf::Color::Red, 20);
+    Text nhom1(809.f, 445.f, 158.f, 58.f, "NHOM  ", font, sf::Color::Red, 20);
+    Text svmin1(809.f, 567.f, 158.f, 58.f, "SO SINH VIEN MIN ", font, sf::Color::Red, 20);
+    Text huy1(809.f, 689.f, 158.f, 58.f, "HUY LOP", font, sf::Color::Red, 20);
     // InputFields
     std::vector<InputField> inputFields = {
-        InputField(757.f, 291.f, 271.f, 47.f, font),
+        InputField(428.f, 358.f, 271.f, 47.f, font),
         // InputField(514.f, 370.f, 271.f, 47.f, font),
-        InputField(541.f, 429.f, 271.f, 47.f, font),
-        InputField(514.f, 502.f, 271.f, 47.f, font),
-        InputField(541.f, 567.f, 271.f, 47.f, font),
-        InputField(514.f, 623.f, 271.f, 47.f, font),
-        InputField(541.f, 699.f, 271.f, 47.f, font),
-        InputField(514.f, 772.f, 271.f, 47.f, font)
+        InputField(424.f, 569.f, 271.f, 47.f, font),
+        InputField(424.f, 689.f, 271.f, 47.f, font),
+        InputField(1032.f, 358.f, 271.f, 47.f, font),
+        InputField(1032.f, 445.f, 271.f, 47.f, font),
+        InputField(1032.f, 569.f, 271.f, 47.f, font),
+        InputField(1032.f, 688.f, 271.f, 47.f, font)
     };
     // Các text components của lớp học
-    EditableText hocki2(428.f, 291.f, std::to_string(tc->HocKy), font, &inputFields[0]);
-    Text matc2(428.f, 424.f, 158.f, 58.f, std::to_string(tc->MALOPTC), font, sf::Color::Red, 20);
-    EditableText mamon2(428.f, 560.f,  tc->MAMH, font,&inputFields[1]); // Đã là string
-    EditableText svmax2(428.f, 688.f, std::to_string(tc->soSvMax), font,&inputFields[2]);
-    EditableText nienkhoa2(428.f, 363.f, tc->NienKhoa, font,&inputFields[3]); // Đã là string
-    EditableText nhom2(428.f, 502.f, std::to_string(tc->Nhom), font,&inputFields[4]);
-    EditableText svmin2(428.f, 617.f, std::to_string(tc->soSvMin), font, &inputFields[5]);
-    EditableText huy2(428.f, 768.f, tc->HuyLop ? "YES" : "NO", font, &inputFields[6]); // Convert bool to "YES" or "NO"
+    EditableText hocki2(428.f, 358.f, std::to_string(tc->HocKy), font, &inputFields[0]);
+    Text matc2(424.f, 445.f, 158.f, 58.f, std::to_string(tc->MALOPTC), font, sf::Color::Red, 20);
+    EditableText mamon2(424.f, 569.f, tc->MAMH, font,&inputFields[1]); // Đã là string
+    EditableText svmax2(424.f, 689.f, std::to_string(tc->soSvMax), font,&inputFields[2]);
+    EditableText nienkhoa2(1032.f, 358.f, tc->NienKhoa, font,&inputFields[3]); // Đã là string
+    EditableText nhom2(1032.f, 445.f, std::to_string(tc->Nhom), font,&inputFields[4]);
+    EditableText svmin2(1032.f, 569.f, std::to_string(tc->soSvMin), font, &inputFields[5]);
+    EditableText huy2(1032.f, 688.f, tc->HuyLop ? "YES" : "NO", font, &inputFields[6]); // Convert bool to "YES" or "NO"
     string maloptc = std::to_string(tc->MALOPTC) ; 
     // Các nút chức năng
     Button them(264.f, 149.f, 151.f, 28.f, "THEM", font, sf::Color::Red, 15);

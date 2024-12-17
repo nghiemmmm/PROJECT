@@ -14,3 +14,4 @@ std::vector<Button> buttonTC1;
 
 std::vector<Text> StudentList ; 
 std::vector<Button> ButtonStudent ;
+std::vector<Text> baocao ; 

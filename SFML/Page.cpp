@@ -14,10 +14,11 @@ fsys::path dk2 = "D:\\du an\\SFML\\SFML\\data\\Courses\\dangky.csv" ;
 // TinhchiList& list = TinhchiList::getInstance();
 // DS_LOPSV& listclass =  DS_LOPSV::getInstance(); 
 int BaseScreen::startWindow(sf::RenderWindow& window) {
+    DS_LOPSV& listclass =  DS_LOPSV::getInstance(); 
       // do lu lieu vao lop san 
-    if (DS_LOPSV::getInstance().isEmpty(DS_LOPSV::getInstance())) {
+    if (listclass.isEmpty(listclass)) {
         cout << "lop  đang rỗng!" << endl;
-        Data::getlop(classPath1 ,DS_LOPSV::getInstance()) ;
+        Data::getlop(classPath1 ,listclass) ;
     } else {
         cout << "Cây không rỗng!" << endl;
     }
@@ -35,11 +36,17 @@ int BaseScreen::startWindow(sf::RenderWindow& window) {
     } else {
         cout << "list  không rỗng!" << endl;
     }
-//    // do sinh vien vao 2 lop dau 
-    Data::getstudent(student2 ,DS_LOPSV::getInstance()) ;
+ // do sinh vien vao 2 lop dau 
+    // loi lop khong vao dc 2 làn 
+    // if(listclass.nodes[0].FIRST.getHead() == NULL){
+    // Data::getstudent(student2 ,listclass) ;
+    // cout << "da them " ; 
+    //  }
 //     Data::getstudent1(student3) ;
 //     // do du lieu sinh vien dang ki vao 2 lop dau 
-    Data::getdk(dk2 ,TinhchiList::getInstance() ) ; 
+     if(TinhchiList::getInstance().Nodes[0]->Dssvdk.getHead() == NULL){
+        Data::getdk(dk2 ,TinhchiList::getInstance() ) ; 
+    }
 //     Data::getdk1(dk2) ;
 // test lop voi sinh vien 
     // cout << endl ;
@@ -65,16 +72,16 @@ int BaseScreen::startWindow(sf::RenderWindow& window) {
     //  DS_LOPSV::getInstance().SuaSinhVien(DS_LOPSV::getInstance(), DS_LOPSV::getInstance().nodes[0].MALOP , a , sv1 ) ; 
     //  cout << endl ;
     //   DS_LOPSV::getInstance().In34(DS_LOPSV::getInstance() , DS_LOPSV::getInstance().nodes[0].MALOP) ; 
-    // DS_LOPSV::getInstance().HienThiDanhSachLop() ; 
+    DS_LOPSV::getInstance().HienThiDanhSachLop() ; 
 // test lop tinh chi 
     // LopTinChi lopTinChi1(1, "MATH102", "2024", 1, 1, 10, 40, false);
     // TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance()) ; 
     // TinhchiList::getInstance().updateTC(TinhchiList::getInstance(),lopTinChi1) ;
     // TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance()) ;
-    DangKy dangKy2("23CTT2001", 8.5f, true);
-    TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ;
-    TinhchiList::getInstance().removedk(TinhchiList::getInstance() , TinhchiList::getInstance().Nodes[0]->MALOPTC ,dangKy2.MASV) ;
-    TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ; 
+    // DangKy dangKy2("23CTT2001", 8.5f, true);
+    // TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ;
+    // TinhchiList::getInstance().removedk(TinhchiList::getInstance() , TinhchiList::getInstance().Nodes[0]->MALOPTC ,dangKy2.MASV) ;
+    // TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ; 
 
     cout << "den day " ; 
      // Khởi tạo font

@@ -45,6 +45,7 @@ public:
                 // page = ScreenLopHoc::addStudent(window ) ; 
                 break ; 
             case 7: 
+                // page = ScreenLopHoc::addClass(window) ; 
                 // page = ScreenLopHoc::showClass(sf::RenderWindow& window)
                 break  ; 
             case 8 :
@@ -67,6 +68,7 @@ public:
                 break ; 
             default:
                 isRunning = false; // Nếu không có trang nào phù hợp, thoát ứng dụng
+                cout << "Exit! \n";
                 break;
             }
         }

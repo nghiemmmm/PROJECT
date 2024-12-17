@@ -102,7 +102,7 @@ public:
     return mamh.length() == 11;
 }
     // ham tim mon hoc 
-    PTRMH findMonHoc(PTRMH root, const string& mamh) {
+PTRMH findMonHoc(PTRMH root, const string& mamh) {
     if (root != nullptr) {
         if (root->mh.MAMH == mamh) {
             return root; // Tìm thấy node chứa môn học
@@ -123,9 +123,16 @@ void adjustMonHoc(MonHoc& newMH, PTRMH& node) {
     }
 }
 
+// Hàm đếm số lượng node trong cây
+    int countNodes(PTRMH node) {
+        if (node == nullptr) {
+            return 0; // Nếu node là null, không có node nào
+        }
+        // Đếm node hiện tại và đệ quy đếm các node trong cây con trái và cây con phải
+        return 1 + countNodes(node->pLeft) + countNodes(node->pRight);
+    }
 
 
-    
     // Xóa hàm copy và move constructor và assignment operator để ngăn chặn sao chép
     AVLTreeMH(const AVLTreeMH&) = delete;
     AVLTreeMH& operator=(const AVLTreeMH&) = delete;

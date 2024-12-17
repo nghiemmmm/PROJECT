@@ -87,6 +87,16 @@ public :
     }
     cout << endl;
 }
+int size(DanhSachSV& list) {
+	int cnt = 0;
+	if (list.getHead() == NULL)
+		return cnt;
+
+	for (PTRSV k = list.getHead() ; k != NULL; k = k->next) {
+		cnt++;
+	}
+	return cnt;
+    }
  // in danh sach sinh vien 
     void In2(string ma) {
     PTRSV p =  head ;

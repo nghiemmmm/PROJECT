@@ -15,79 +15,59 @@ namespace fsys = std::filesystem;
 using namespace std;
 
 class Data{
-// private :      
-//      //LinkedListSV sinhvienList ; 
-//      DS_LOPSV lopList ; 
-//      //LopTinChiManager tinchiList ;
-//      // DSDangKy dangkyList ; 
-//      // AVLTreeMH monhocList ;
-//      friend class ScreenLopHoc ; 
-//      friend class ScreenMonHoc ;
-//      friend class ScreenLopTinChi ; 
-//      friend class ScreenLopHoc ; 
-
-
 public:
-
-
-
-// hiển thị thông báo 
-static bool confirm(std::string content) ; 
-static void popup(std::string content) ; 
-static bool isNumber( std::string& str) ; 
-
-
-
-// 
-// xu ly lop 
+// ham thao tac 
+     template <typename T>
+    static T min(T a, T b) {
+        return (a < b) ? a : b;
+    }
+    template <typename T>
+    static T max(T a, T b) {
+        return (a > b) ? a : b;
+    }
+     static void swap(int& A, int& B) {
+	int temp;
+	temp = A;
+	A = B;
+	B = temp;
+     }
+     // hiển thị thông báo 
+     static bool confirm(std::string content) ; 
+     static void popup(std::string content) ; 
+     static bool isNumber( std::string& str) ; 
+     static string formatFloat(float value) ;
+     static void SapXepSV(DanhSachSV& ListSV) ; 
+     // xu ly nhan du lieu  
      static void getlop(fsys::path filepath , DS_LOPSV& listclass);
-     static void displaylop( sf::Font& font ) ; 
      static void getStudentData(sf::Font& font, const std::string& malop);
-     static std::string getClassName(const std::string& malop);
-     static bool addlophoc(fsys::path filepath, sf::Font& font, std::vector<std::string>& newRow);
-     static LopSV displayclassInfo(int j) ;
-     static void deletelophoc(fsys::path filepath, string& malop) ; 
-     static void updatelophoc(fsys::path filepath, const std::string& malopUpdate, const std::vector<std::string>& newRow) ; 
-
-     //mon hoc 
      static void  getmonhoc(fsys::path filepath) ;
-     static void displaymonhoc(fsys::path filepath ,  sf::Font& font) ; 
-     static bool addmonhoc(fsys::path filepath ,  sf::Font& font ,std::vector<std::string>& newRow ) ; 
-     static void deletemonhoc(fsys::path filepath, string &mamh) ; 
-     static void updateMonHoc(fsys::path filepath, const std::string& mamhToUpdate, const std::vector<std::string>& newRow) ; 
-     static MonHoc displaySubjectInfo(int j) ;
-     // studennt 
      static void getstudent(fsys::path filepath , DS_LOPSV& listclass ) ; 
-     static void getstudent1(fsys::path filepath) ; 
-     static bool addstudent(fsys::path filepath, sf::Font& font, std::vector<std::string>& newRow) ; 
-     static void deletstudent(fsys::path filepath, string& masv);
-     static SinhVien displayStudentInfo(int j ,  vector<Text> StudentList) ;
-     static void displaystudent(int vitri, sf::Font& font);
-     static void updatestudent(fsys::path filepath, const std::string& masvToUpdate, const std::vector<std::string>& newRow) ; 
-
-
-     // lop tinh chi 
+     static void getstudent1(fsys::path filepath) ;
      static void  gettc(fsys::path filepath) ;
-     static void displaytc(fsys::path filepath ,  sf::Font& font) ; 
-     static void displaytc1(TinhchiList& list ,  sf::Font& font) ; 
-     static bool add(fsys::path filepath ,  sf::Font& font ,std::vector<std::string>& newRow ) ; 
-     static void deleteall(fsys::path filepath, string &key) ; 
-     static void update(fsys::path filepath, const std::string& keyToUpdate, const std::vector<std::string>& newRow) ; 
-     static LopTinChi displayTCInfo(int j) ;
-     //void static fixTC(sf::RenderWindow& window, LopTinChi selectedtc) ;
-
-     static void displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ; 
-     static void displaytchuy(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ;
-     // dang ky 
      static void getdk(fsys::path filepath ,TinhchiList& dsTC ) ; 
      static void getdk1(fsys::path filepath) ;
-     // nhap diem 
-     static void displaydiem(listDK& list) ; 
-     static string formatFloat(float value) ;
-
-
-
-     
+     // ham hien thi man hinh chinh 
+     static void displaylop( sf::Font& font , DS_LOPSV& listlop) ; 
+     static void displaymonhoc(fsys::path filepath , sf::Font& font) ;
+     static void displaystudent(int vitri, sf::Font& font);
+     static void displaydiem(listDK& list) ;
+     static void displaytc(fsys::path filepath ,  sf::Font& font) ;
+     // hien thi cac ham goi 
+     static void displaytc1(TinhchiList& list ,  sf::Font& font) ; 
+     static void displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ; 
+     static void displaytchuy(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ;
+     // ham them 
+     static bool add(fsys::path filepath ,  sf::Font& font ,std::vector<std::string>& newRow ) ;
+     // ham xoa  
+     static void deletefile(fsys::path filepath, string &key) ;  
+     // ham chinh sua 
+     static void update(fsys::path filepath, const std::string& keyToUpdate, const std::vector<std::string>& newRow) ; 
+     //void static fixTC(sf::RenderWindow& window, LopTinChi selectedtc) ;
+     // bao cao 
+     static void diemmhtc(fsys::path filepath ,  sf::Font& font , int vitri) ;
+     static void diemtb(fsys::path filepath, sf::Font& font, int vitri) ; 
+     static void diemtk(fsys::path filepath, sf::Font& font, int vitri) ;
+    static float TinhDiemTrungBinh(const std::vector<int>& dssv, const std::string& masv) ; 
+    static void tinhdiemtk(std::vector<std::vector<float>>& MaxDiem, const std::vector<int>& dssvLTC, const std::string& masv, const std::vector<std::string>& dsTenMH, int soluongsv,int soluongmh , int i) ;
 };
-
 #endif 

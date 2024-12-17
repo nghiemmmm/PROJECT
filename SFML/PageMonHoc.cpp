@@ -382,7 +382,7 @@ int ScreenMonHoc::addSubject(sf::RenderWindow& window){
                         // Tạo một vector chứa các giá trị cần thêm vào CSV
                         std::vector<std::string> newRow = {mamh, tenmh, solt, soth}; 
                 // Gọi hàm addmonhoc để thêm dòng dữ liệu mới vào CSV
-                if (Data::addmonhoc(subjectPath, font, newRow)) {
+                if (Data::add(subjectPath, font, newRow)) {
                     std::cout << "thanh cong " << std::endl;
                 } else {
                     std::cerr << "not load" << std::endl;
@@ -491,7 +491,7 @@ int ScreenMonHoc::InSubject(sf::RenderWindow& window, MonHoc& selectedMH ) {
                         if(Data::confirm("BAN CO CHAC XOA MON HOC NAY KHONG ")){
                         AVLTreeMH::getInstance().Remove(AVLTreeMH::getInstance().root,selectedMH) ; 
                         // xoa trong trong file 
-                        Data::deletemonhoc(subjectPath ,selectedMH.MAMH ) ; 
+                        Data::deletefile(subjectPath ,selectedMH.MAMH ) ; 
                         Data::popup("DA XOA MON HOC THANH CONG ") ; 
                     return 3 ;  // Đóng cửa sổ khi nhấn nút "THOAT"
                  }
@@ -626,7 +626,7 @@ int   ScreenMonHoc::fixSubject(sf::RenderWindow& window , MonHoc& selectedMH) {
                         cout << solt << endl ; 
                         cout << soth << endl ; 
                         std::vector<std::string> newRow = {a.MAMH, tenmh, solt, soth};
-                        Data::updateMonHoc(subjectPath, a.MAMH, newRow);
+                        Data::update(subjectPath, a.MAMH, newRow);
                         selectedMH = {a.MAMH, tenmh, std::stoi(solt), std::stoi(soth)};
                         AVLTreeMH::getInstance().Search(AVLTreeMH::getInstance().root, selectedMH);
                         AVLTreeMH::getInstance().InOrder(AVLTreeMH::getInstance().root); 
@@ -677,11 +677,5 @@ int   ScreenMonHoc::fixSubject(sf::RenderWindow& window , MonHoc& selectedMH) {
 
         window.display();
     }
-
     return 0  ;
 }
-
-
-
-
-

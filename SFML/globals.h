@@ -30,6 +30,8 @@ using namespace std;
 
     extern std::vector<Text> StudentList ; 
     extern std::vector<Button> ButtonStudent ;
+
+    extern std::vector<Text> baocao ;
 //khai báo mang kiem tra các file các lớp  kiểu filefath có so luong bang so lop 
  #endif // GLOBALS_H
 

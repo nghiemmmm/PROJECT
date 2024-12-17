@@ -16,18 +16,13 @@ public:
 };
 
 class ScreenLopHoc : public BaseScreenLopHoc {
-// private : 
-//     Data* d = NULL ; 
-public:
-    // ScreenLopHoc(Data* d) {
-	// 	this->d = d;
-	// }
 
+public:
 
 
     static int showClass(sf::RenderWindow& window);
     static int addClass(sf::RenderWindow& window); 
-    static int InClass(sf::RenderWindow& window , LopSV& selectedlop) ;
+    static int InClass(sf::RenderWindow& window , LopSV& selectedlop ,DS_LOPSV& listclass ) ;
     static int fixClass(sf :: RenderWindow& window, LopSV& selectedlop) ; 
 
 

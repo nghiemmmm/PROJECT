@@ -83,7 +83,7 @@ public:
         }
     }
     // Tìm sinh viên theo MASV
-    PTRDK findMASV(const std::string &masv) const {
+    PTRDK findMASV( std::string masv)  {
         for (PTRDK temp = head; temp != nullptr; temp = temp->next) {
             if (temp->sv.MASV == masv) {
                 return temp;
@@ -239,7 +239,15 @@ void removeDK( std::string mssv)
 
 //     return ketqua / tongtinchi;
 // }
-
+PTRDK findStudentByMASV(std::string& masv){
+    // Duyệt qua danh sách để tìm sinh viên có mã số MASV
+    for (PTRDK temp = head; temp != nullptr; temp = temp->next) {
+        if (temp->sv.MASV == masv) {
+            return temp;  // Trả về con trỏ đến node chứa sinh viên tìm được
+        }
+    }
+    return nullptr;  // Nếu không tìm thấy sinh viên với MASV đó
+}
 
     // Destructor để giải phóng bộ nhớ
     ~listDK()
