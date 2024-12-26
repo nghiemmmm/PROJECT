@@ -5,12 +5,10 @@
 #include "SinhVien.h" // Bao gồm SinhVien.h nếu cần sử dụng con trỏ tới sinh viên trong các hàm liên quan
 using namespace std;
 
-
 // Hàm khởi tạo cây
 void Initialize(PTRMH& root) {
     root = nullptr;
 }
-
 // Hàm tìm phần tử nhỏ nhất trong cây con phải
 PTRMH AVLTreeMH:: findMin(PTRMH root) {
     while (root->pLeft != nullptr) {
@@ -283,9 +281,6 @@ void AVLTreeMH::Remove(PTRMH& root, MonHoc x) {
     }
 }
 
-
-
-
 PTRMH AVLTreeMH::Search(PTRMH root, MonHoc x) {
     PTRMH p = root; // Khởi tạo con trỏ p trỏ đến root
     // Duyệt qua các node trong cây cho đến khi tìm thấy MAMH hoặc hết cây
@@ -322,4 +317,78 @@ PTRMH AVLTreeMH::Search1(PTRMH root, string mamh) {
     // Nếu tìm thấy môn học trong cây, thực hiện cập nhật thông tin
 
     return p; // Trả về con trỏ đến node môn học tìm thấy, hoặc nullptr nếu không tìm thấy
+}
+int AVLTreeMH::KTMonHoc(PTRMH root, string mamh) // Trả về 1 nếu trùng, 0 nếu không trùng
+    {
+        if (root == nullptr) {
+            return 0; // Cây rỗng hoặc không tìm thấy
+        }
+
+        if (root->mh.MAMH == mamh) {
+            return 1; // Tìm thấy mã môn học trùng
+        } 
+        else if (mamh < root->mh.MAMH) {
+            return KTMonHoc(root->pLeft, mamh); // Tìm bên cây con trái
+        } 
+        else {
+            return KTMonHoc(root->pRight, mamh); // Tìm bên cây con phải
+        }
+    }
+  
+bool AVLTreeMH::checkMAMH(const string& mamh) {
+    return mamh.length() == 11;
+}
+
+bool AVLTreeMH::isEmpty(PTRMH root){
+        return root == NULL ; 
+}
+PTRMH AVLTreeMH::findMonHoc(PTRMH root, const string& mamh) {
+    if (root != nullptr) {
+        if (root->mh.MAMH == mamh) {
+            return root; // Tìm thấy node chứa môn học
+        } 
+        else if (mamh > root->mh.MAMH) {
+            return findMonHoc(root->pRight, mamh); // Tìm bên cây con phải
+        } 
+        else {
+            return findMonHoc(root->pLeft, mamh); // Tìm bên cây con trái
+        }
+    }
+    return nullptr; // Không tìm thấy
+}
+void AVLTreeMH::adjustMonHoc(MonHoc& newMH, PTRMH& node) {
+    if (node != nullptr) {
+        node->mh = newMH; // Thay thế dữ liệu môn học tại node hiện tại
+    }
+}
+int AVLTreeMH::countMH(PTRMH node) {
+        if (node == nullptr) {
+            return 0; // Nếu node là null, không có node nào
+        }
+        // Đếm node hiện tại và đệ quy đếm các node trong cây con trái và cây con phải
+        return 1 + countMH(node->pLeft) + countMH(node->pRight);
+}
+void AVLTreeMH::MangTam_MonHoc(PTRMH root, MonHoc mh[], int &dem) {
+    if (root != nullptr) {
+        // Duyệt cây con trái
+        MangTam_MonHoc(root->pLeft, mh, dem);
+
+        // Lưu node vào mảng
+        mh[dem++] = root->mh;
+
+        // Duyệt cây con phải
+        MangTam_MonHoc(root->pRight, mh, dem);
+    }
+}
+void AVLTreeMH::bubbleSortTENMH(MonHoc mh[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = i + 1; j < size; j++) {
+            if (mh[i].TENMH > mh[j].TENMH) {  // So sánh tên môn học
+                // Hoán đổi hai phần tử nếu tên môn học của phần tử i lớn hơn phần tử j
+                MonHoc temp = mh[i];
+                mh[i] = mh[j];
+                mh[j] = temp;
+            }
+        }
+    }
 }

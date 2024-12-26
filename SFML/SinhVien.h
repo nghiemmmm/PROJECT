@@ -44,15 +44,16 @@ public :
     // Constructor
     DanhSachSV() : head(nullptr) {}
 
-    // Destructor để giải phóng bộ nhớ
     ~DanhSachSV() {
-        PTRSV curr = head;
-        while (curr != nullptr) {
-            PTRSV temp = curr;
-            curr = curr->next;
-            delete temp;
-        }
+    PTRSV curr = head;
+    while (curr != nullptr) {
+        PTRSV temp = curr;
+        curr = curr->next;
+        temp->next = nullptr;  // Đảm bảo không còn liên kết đến đối tượng sau khi xóa
+        delete temp;
     }
+    head = nullptr;  // Đảm bảo head không còn trỏ đến vùng nhớ đã giải phóng
+}
     PTRSV getHead() {return head;}
     void setHead(PTRSV newhead) {head = newhead;}
 
@@ -78,112 +79,20 @@ public :
 
         tail->next = newnode;
     }
-    // in danh sach sinh vien 
-    void In() {
-    PTRSV p =  head ;
-    while (p != NULL) {
-        cout << p->sv.MASV << " " ;
-        p = p->next;
-    }
-    cout << endl;
-}
-int size(DanhSachSV& list) {
-	int cnt = 0;
-	if (list.getHead() == NULL)
-		return cnt;
-
-	for (PTRSV k = list.getHead() ; k != NULL; k = k->next) {
-		cnt++;
-	}
-	return cnt;
-    }
- // in danh sach sinh vien 
-    void In2(string ma) {
-    PTRSV p =  head ;
-    while (p != NULL && p->sv.MASV == ma ) {
-             cout << p->sv.MASV << " " ;
-             cout << "da thay " ; 
-        p = p->next;
-    }
-    cout << endl;
-}
-
-void SuaSinhVien( SinhVien& thongTinMoi) {
-    PTRSV p = head;
-    // Duyệt danh sách để tìm sinh viên có MASV tương ứng
-    while (p != nullptr) {
-        if (p->sv.MASV == thongTinMoi.MASV) {
-            // Cập nhật thông tin sinh viên
-            p->sv = thongTinMoi;
-            std::cout << "Sinh vien " << thongTinMoi.MASV << " da duoc cap nhat!" << std::endl;
-            return;
-        }
-        p = p->next;
-    }
-
-    // Nếu không tìm thấy sinh viên
-    std::cout << "Khong tim thay sinh vien co ma " << thongTinMoi.MASV << "!" << std::endl;
-}
-
-    // Method to delete a node by value
-    // xoa sinh vien trong danh sach 
-    void deleteSV(SinhVien& sv ) {
-        PTRSV curr = head;
-        PTRSV prev = nullptr;
-
-        // If head needs to be removed
-        if (head && head->sv.MASV == sv.MASV) {
-            PTRSV temp = head;
-            head = head->next;
-            delete temp;
-            return;
-        }
-
-        // Search for the node to delete
-        while (curr && curr->sv.MASV != sv.MASV) {
-            prev = curr;
-            curr = curr->next;
-        }
-
-        // If node is found
-        if (curr) {
-            prev->next = curr->next;
-            delete curr;
-        }
-    }
-    SinhVien findStudentByMASV(string masv) {
-        PTRSV p = head;
-        while (p != nullptr) {
-            if (p->sv.MASV == masv) {
-                return p->sv;  // Trả về sinh viên tìm thấy
-            }
-            p = p->next;
-        }
-        return SinhVien();  // Trả về đối tượng SinhVien mặc định nếu không tìm thấy
-    }
-    PTRSV findStudentByMASV1( string masv) {
-    PTRSV p = head;
-    while (p != nullptr) {
-        if (p->sv.MASV == masv) {
-            return p;  // Trả về con trỏ đến sinh viên tìm thấy
-        }
-        p = p->next;
-    }
-    return nullptr;  // Trả về nullptr nếu không tìm thấy
-}
- PTRSV In3() {
-    PTRSV p =  head ;
-    while (p != NULL) {
-       cout << p ->sv.HO ; 
-        p = p->next;
-    }
-    cout << endl;
-}
-
+    // ham lien qan sinh vien 
+    void In();
+    int size(DanhSachSV& list) ;
+    void In2(string ma);
+    SinhVien findStudentByMASV(string masv) ;
+    PTRSV findStudentByMASV1( string masv);
+    PTRSV In3();
+    bool KTSV(DanhSachSV& list, std::string& maSV); 
+    // kiem tra ma sinnh vien them vao co trung hay khong
+    bool KTTrung(DanhSachSV& list, std::string& maSV);  
 // Hàm kiểm tra danh sách có rỗng hay không
-bool isEmpty(){
-    return head == nullptr;
-}
+    bool isEmpty();
+    void selectionSortSV(SinhVien* dsSinhVien, int soluongsv) ; 
+
 DanhSachSV& operator=(const DanhSachSV& other) {
     if (this != &other) { // Kiểm tra tránh tự gán
         // Xóa danh sách hiện tại
@@ -203,33 +112,7 @@ DanhSachSV& operator=(const DanhSachSV& other) {
         }
     }
     return *this;
-}
-    // // Method to convert the linked list to string for easy display
-    // string toString() {
-    //     string s = "";
-    //     for (Node *iter = head; iter; iter = iter->next) {
-    //         s += to_string(iter->data) + " --> ";
-    //     }
-    //     return s;
-    // }
-
-    // // Overload the << operator to print the list easily
-    // friend ostream &operator<<(ostream &output, Linklist &list) {
-    //     output << list.toString();
-    //     return output;
-    // }
-    PTRSV TimSinhVien(const std::string& masv) ; 
-
-    // Thêm sinh viên vào danh sách
-   void ThemSinhVien( const SinhVien &sv) ;
-
-    // chen cuoi sinh vien void InsertTail_SV(ListSV *&Head, SinhVien sv)
-
-    // tim sinh vien ListSV* FindSV(ListLop &dsLOP, char c[]) 
-
-    // Xóa sinh viên khỏi danh sách theo mã sinh viên 
-    void xoaSinhVien(const std::string& masv) ;
-       
+}      
 };
 
 // // Sorted class to insert nodes in sorted order

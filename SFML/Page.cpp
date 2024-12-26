@@ -6,7 +6,7 @@
 namespace fsys = std::filesystem;
 
 fsys::path classPath1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\course.csv";
-fsys::path subjectPath1 = "D:\\du an\\SFML\\SFML\\subjects.csv";
+fsys::path subjectPath1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\subjects.csv";
 fsys::path creaditclass1 = "D:\\du an\\SFML\\SFML\\data\\Courses\\creaditclass.csv" ; 
 fsys::path student2 = "D:\\du an\\SFML\\SFML\\data\\Classes\\23CTT1.csv";
 fsys::path student3 = "D:\\du an\\SFML\\SFML\\data\\Classes\23CTT2.csv" ; 
@@ -36,18 +36,14 @@ int BaseScreen::startWindow(sf::RenderWindow& window) {
     } else {
         cout << "list  không rỗng!" << endl;
     }
- // do sinh vien vao 2 lop dau 
-    // loi lop khong vao dc 2 làn 
-    // if(listclass.nodes[0].FIRST.getHead() == NULL){
-    // Data::getstudent(student2 ,listclass) ;
-    // cout << "da them " ; 
-    //  }
-//     Data::getstudent1(student3) ;
-//     // do du lieu sinh vien dang ki vao 2 lop dau 
+    // do sinh vien vao lop dau 
+    if(listclass.nodes[0].FIRST.getHead() == NULL){
+    Data::getstudent(student2 ,listclass) ;
+     }
+    // do du lieu sinh vien dang ki vao lop tinh chi dau 
      if(TinhchiList::getInstance().Nodes[0]->Dssvdk.getHead() == NULL){
         Data::getdk(dk2 ,TinhchiList::getInstance() ) ; 
     }
-//     Data::getdk1(dk2) ;
 // test lop voi sinh vien 
     // cout << endl ;
     // if( DS_LOPSV::getInstance().nodes[0].FIRST.getHead() == NULL){
@@ -83,8 +79,6 @@ int BaseScreen::startWindow(sf::RenderWindow& window) {
     // TinhchiList::getInstance().removedk(TinhchiList::getInstance() , TinhchiList::getInstance().Nodes[0]->MALOPTC ,dangKy2.MASV) ;
     // TinhchiList::getInstance().Nodes[0]->Dssvdk.inDanhSach() ; 
 
-    cout << "den day " ; 
-     // Khởi tạo font
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Handle error if font cannot be loaded

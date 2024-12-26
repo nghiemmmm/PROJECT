@@ -1,17 +1,17 @@
 // Trong Globals.cpp
 #include "GLOBALS.h"
 
-std::vector<Text> classList;
-std::vector<Button>  Buttonclass;
-std::vector<Text> subjectList;      // Định nghĩa biến toàn cục
-std::vector<Button> buttonsubject;  // Định nghĩa biến toàn cục
-std::vector<Text> TCList;
-std::vector<Text> TCList1;
-std::vector<Text> TCList2;
-std::vector<Text> TCList3;
-std::vector<Button> buttonTC;
-std::vector<Button> buttonTC1;
+custom::vector<Text> classList;
+custom::vector<Button>  Buttonclass;
+custom::vector<Text> subjectList;      // Định nghĩa biến toàn cục
+custom::vector<Button> buttonsubject;  // Định nghĩa biến toàn cục
+custom::vector<Text> TCList;
+custom::vector<Text> TCList1;
+custom::vector<Text> TCList2;
+custom::vector<Text> TCList3;
+custom::vector<Button> buttonTC;
+custom::vector<Button> buttonTC1;
 
-std::vector<Text> StudentList ; 
-std::vector<Button> ButtonStudent ;
-std::vector<Text> baocao ; 
+custom::vector<Text> StudentList ; 
+custom::vector<Button> ButtonStudent ;
+custom::vector<Text> baocao ; 

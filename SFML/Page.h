@@ -6,11 +6,11 @@
 #include <iostream>
 #include "globals.h"
 #include <fstream> 
-#include <vector> 
+// #include <vector> 
+#include"vector.h" 
 #include<algorithm>
 #include"BuiltClasses.h"
 using namespace std;
-
 class BaseScreen {
 public:
     int type = 0;

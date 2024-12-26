@@ -4,7 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
+// #include <string>
+#include"vector.h"
 #include <vector>
 #include <filesystem>
 #include <SFML/Graphics.hpp> // Bao gồm tiêu đề SFML cho Text
@@ -17,7 +18,8 @@ public :
     fsys::path filePath;
 
 public:
-    std::vector<std::vector<std::string>> cnt; // Thêm std:: để rõ ràng hơn
+    // std::vector<std::vector<std::string>> cnt; // Thêm std:: để rõ ràng hơn
+     custom::vector<custom::vector<std::string>> cnt; // Thêm std:: để rõ ràng hơn
 
     csvFile() {}
 

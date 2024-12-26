@@ -5,7 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <vector>
+// #include <vector>
+#include"vector.h" 
 #include <SFML/Graphics.hpp> // Include SFML header for Text
 #include"BuiltClasses.h"
 #include"Components.h"
@@ -35,8 +36,7 @@ public:
      static bool confirm(std::string content) ; 
      static void popup(std::string content) ; 
      static bool isNumber( std::string& str) ; 
-     static string formatFloat(float value) ;
-     static void SapXepSV(DanhSachSV& ListSV) ; 
+     static string formatFloat(float value) ; 
      // xu ly nhan du lieu  
      static void getlop(fsys::path filepath , DS_LOPSV& listclass);
      static void getStudentData(sf::Font& font, const std::string& malop);
@@ -48,7 +48,8 @@ public:
      static void getdk1(fsys::path filepath) ;
      // ham hien thi man hinh chinh 
      static void displaylop( sf::Font& font , DS_LOPSV& listlop) ; 
-     static void displaymonhoc(fsys::path filepath , sf::Font& font) ;
+    //  static void displaymonhoc(fsys::path filepath , sf::Font& font) ;
+     static void displaymonhoc(AVLTreeMH& listmh, sf::Font& font) ;
      static void displaystudent(int vitri, sf::Font& font);
      static void displaydiem(listDK& list) ;
      static void displaytc(fsys::path filepath ,  sf::Font& font) ;
@@ -57,17 +58,18 @@ public:
      static void displaytc2(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ; 
      static void displaytchuy(TinhchiList& list, sf::Font& font, string nienKhoa, int hocKy) ;
      // ham them 
-     static bool add(fsys::path filepath ,  sf::Font& font ,std::vector<std::string>& newRow ) ;
+     static bool add(fsys::path filepath ,  sf::Font& font ,custom::vector<std::string>& newRow ) ;
      // ham xoa  
      static void deletefile(fsys::path filepath, string &key) ;  
      // ham chinh sua 
-     static void update(fsys::path filepath, const std::string& keyToUpdate, const std::vector<std::string>& newRow) ; 
+     static void update(fsys::path filepath, const std::string& keyToUpdate, const custom::vector<std::string>& newRow) ; 
      //void static fixTC(sf::RenderWindow& window, LopTinChi selectedtc) ;
      // bao cao 
      static void diemmhtc(fsys::path filepath ,  sf::Font& font , int vitri) ;
      static void diemtb(fsys::path filepath, sf::Font& font, int vitri) ; 
      static void diemtk(fsys::path filepath, sf::Font& font, int vitri) ;
-    static float TinhDiemTrungBinh(const std::vector<int>& dssv, const std::string& masv) ; 
-    static void tinhdiemtk(std::vector<std::vector<float>>& MaxDiem, const std::vector<int>& dssvLTC, const std::string& masv, const std::vector<std::string>& dsTenMH, int soluongsv,int soluongmh , int i) ;
+    static float TinhDiemTrungBinh(const custom::vector<int>& dssv, const std::string& masv) ; 
+    // static void tinhdiemtk(std::vector<std::vector<float>>& MaxDiem, const std::vector<int>& dssvLTC, const std::string& masv, const std::vector<std::string>& dsTenMH, int soluongsv,int soluongmh , int i) ;
+    static void tinhdiemtk(custom::vector<custom::vector<float>>& MaxDiem, const custom::vector<int>& dssvLTC, const std::string& masv, const custom::vector<std::string>& dsTenMH, int soluongsv , int soluongmh , int i) ;
 };
 #endif 

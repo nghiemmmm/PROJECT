@@ -22,9 +22,6 @@ int BaseScreenLopTinChi::BaseLTC(sf::RenderWindow& window) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             } else if (event.type == sf::Event::MouseButtonPressed) {
-                // Kiểm tra người dùng có dùng chuột hay không
-                // sf::Vector2i mousePos = sf::Mouse::getPosition(window);  // Lấy vị trí con trỏ chuột trong cửa sổ
-
             }
             }
         }
@@ -54,28 +51,34 @@ void BaseScreenLopTinChi::drawMainMenu3(sf::RenderWindow& window) {
 }
 
 int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
+    cout << "DA VAO HAM ADD CLASS " ;
+    cout << "DANH SACH LOP TRUOC KHI THEM\n "<< endl ;
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Return error if font can't be loaded
     }
+     int MATC = TinhchiList::getInstance().Nodes[TinhchiList::getInstance().n -1 ]->MALOPTC + 1 ;
     // Create Text and InputField objects
     Text hocki(237.f, 358.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
-    Text monhoc(237.f, 445.f, 158.f, 58.f, "MON HOC", font, sf::Color::Red, 20);
-    Text matc(237.f, 567.f, 158.f, 58.f, "MA LOP TC  ", font, sf::Color::Red, 20);
+    Text monhoc(237.f, 445.f, 158.f, 58.f, " MA MON HOC", font, sf::Color::Red, 20);
+    Text matc1(237.f, 567.f, 158.f, 58.f, "MA LOP TC  ", font, sf::Color::Red, 20);
     Text svmax(237.f, 689.f, 158.f, 58.f, "SO SV MAX ", font, sf::Color::Red, 20);
     Text nienkhoa(813.f, 358.f, 158.f, 58.f, "NIEN KHOA ", font, sf::Color::Red, 20);
     Text nhom(809.f, 445.f, 158.f, 58.f, "NHOM  ", font, sf::Color::Red, 20);
     Text svmin(809.f, 567.f, 158.f, 58.f, "SO SINH VIEN MIN ", font, sf::Color::Red, 20);
     Text huy(809.f, 689.f, 158.f, 58.f, "HUY LOP", font, sf::Color::Red, 20);
+    Text canhbao(366.f,772.f ,812.f , 69.f , " CHI CO HAI HOC KI 1 VA 2  || KY TU IN HOA TU A -> Z " , font , sf::Color(255, 182, 193), 15) ;
+
     // Input fields for each entry
     InputField HocKi(428.f, 358.f, 271.f, 47.f, font);
     InputField MonHoc(424.f, 445.f, 271.f, 47.f, font);
-    InputField Matc(424.f, 569.f, 325.f, 58.f, font);
+    // InputField Matc(424.f, 569.f, 325.f, 58.f, font);
+    Text Matc(424.f, 569.f, 325.f, 58.f, std::to_string(MATC), font, sf::Color::Red, 20);
     InputField SVmax(424.f, 689.f, 271.f, 47.f, font);
     InputField NienKhoa(1032.f, 358.f,271.f, 47.f, font);
     InputField Nhom(1032.f, 445.f,271.f, 47.f, font);
     InputField SVmin(1032.f, 569.f,271.f, 47.f, font);
-    InputField Huy(1032.f, 688.f, 271.f, 47.f, font);
+    // InputField Huy(1032.f, 688.f, 271.f, 47.f, font);
     // Save button
     // Button saveBtn(1094.f, 763.f, 134.f, 78.f, "SAVE", font, sf::Color::Red, 15);
     Button them(264.f , 149.f ,  151.f , 28.f , "THEM" , font, sf::Color::Red, 15 ) ; 
@@ -83,28 +86,30 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     Button ghi(944.f , 149.f ,  151.f , 28.f , "GHI" , font, sf::Color::Red, 15 ) ; 
     Button thoat(1202.f , 149.f ,  84.f , 28.f , "THOAT" , font, sf::Color::Red, 15 ) ; 
     Button sua(722.f , 149.f ,  151.f , 28.f , "SUA" , font, sf::Color::Red, 15 ) ; 
-    std::vector<std::string> items = {"Item 1", "Item 2", "Item 3"};
-    Dropdown dropdown(389.f, 500.f, 200.f, 40.f, font, items, &Matc);
+    std::vector<std::string> items = {"CTDL", "TTR", "KTDH", "AV"};
+    Dropdown dropdown(22.f, 256.f, 200.f, 47.f, font, items);
+    Text dsmh(22.f, 256.f, 158.f, 58.f, "DS MA MON HOC", font, sf::Color(218, 110, 50), 20);
+
     // Initial selection state
     HocKi.setSelected(true);
     MonHoc.setSelected(true);
-    Matc.setSelected(true);
+    // Matc.setSelected(true);
     SVmax.setSelected(true);
     NienKhoa.setSelected(true);
     Nhom.setSelected(true);
     SVmin.setSelected(true);
-    Huy.setSelected(true);
+    // Huy.setSelected(true);
     // Main loop for handling window events and rendering
     while (window.isOpen()) {
         sf::Event event;
         if (HocKi.isSelected()) HocKi.textCursor(HocKi.getInput());
         if (MonHoc.isSelected()) MonHoc.textCursor(MonHoc.getInput());
-        if (Matc.isSelected()) Matc.textCursor(Matc.getInput());
+        // if (Matc.isSelected()) Matc.textCursor(Matc.getInput());
         if (SVmax.isSelected()) SVmax.textCursor(SVmax.getInput());
         if (NienKhoa.isSelected()) NienKhoa.textCursor(NienKhoa.getInput());
         if (Nhom.isSelected()) Nhom.textCursor(Nhom.getInput());
         if (SVmin.isSelected()) SVmin.textCursor(SVmin.getInput());
-        if (Huy.isSelected()) Huy.textCursor(Huy.getInput());
+        // if (Huy.isSelected()) Huy.textCursor(Huy.getInput());
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
@@ -116,12 +121,13 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
 
                 HocKi.handleMouseClick(mousePos);
                 MonHoc.handleMouseClick(mousePos);
-                Matc.handleMouseClick(mousePos);
+                // Matc.handleMouseClick(mousePos);
                 SVmax.handleMouseClick(mousePos);
                 NienKhoa.handleMouseClick(mousePos);
                 Nhom.handleMouseClick(mousePos);
                 SVmin.handleMouseClick(mousePos);
-                Huy.handleMouseClick(mousePos);
+                // Huy.handleMouseClick(mousePos);
+                 dropdown.handleClick(mousePos); // Xử lý nhấp chuột
 
                  if(thoat.isClicked(mousePos)){
                     return 8 ; 
@@ -130,31 +136,33 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                 if (ghi.isClicked(mousePos)) {
                     std::string hocKi = HocKi.getInput();
                     std::string monHoc = MonHoc.getInput();
-                    std::string matc = Matc.getInput();
+                    // std::string matc = Matc.getInput();
                     std::string svMax = SVmax.getInput();
                     std::string nienKhoa = NienKhoa.getInput();
                     std::string nhom = Nhom.getInput();
                     std::string svMin = SVmin.getInput();
-                    std::string huy1 = Huy.getInput();
+                    // std::string huy1 = Huy.getInput();
 
                     // Check if all fields are filled before saving
-                    if (!hocKi.empty() && !monHoc.empty() && !matc.empty() && !svMax.empty() &&
-                        !nienKhoa.empty() && !nhom.empty() && !svMin.empty() && !huy1.empty()) {
-                        int matcInt = std::stoi(matc);        // Chuyển `std::string` thành `int`
+                    if (!hocKi.empty() && !monHoc.empty() && !svMax.empty() &&
+                        !nienKhoa.empty() && !nhom.empty() && !svMin.empty() ) {
+                        int matcInt = MATC ;      // Chuyển `std::string` thành `int`
                         int hocKiInt = std::stoi(hocKi);
                         int nhomInt = std::stoi(nhom);
                         int svMinInt = std::stoi(svMin);
                         int svMaxInt = std::stoi(svMax);
-                        bool huy = false;
+                        bool huy = false ;
                         LopTinChi tc( matcInt,monHoc,nienKhoa,hocKiInt,nhomInt,svMinInt,svMaxInt,huy) ; 
                         TinhchiList::getInstance().addTC(TinhchiList::getInstance(),tc) ; 
-                         std::vector<std::string> newRow = {hocKi, monHoc, matc , svMax , nienKhoa , nhom , svMin , huy1}; 
+                         custom::vector<std::string> newRow = { "1",monHoc,nienKhoa ,hocKi,nhom ,svMax, svMin ,"false","StudentID4"}; 
                           if (Data::add(creaditclass, font, newRow)) {
-                    std::cout << "thanh cong " << std::endl;
-                } else {
-                    std::cerr << "not load" << std::endl;
-                    }
-                    Data::popup("THEM THANH CONG TINH CHI  ") ;
+                        std::cout << "thanh cong " << std::endl;
+                        } else {
+                        std::cerr << "not load" << std::endl;
+                        }
+                        cout << "DANH SACH LOP TIN CHI SAU KHI THEM\n "<< endl ;
+                        TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
+                        Data::popup("THEM THANH CONG TINH CHI  ") ;
                     }
                 }
             }
@@ -162,12 +170,12 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
             // Process input for each field
             HocKi.processInput(event);
             MonHoc.processInput(event);
-            Matc.processInput(event);
+            // Matc.processInput(event);
             SVmax.processInput(event);
             NienKhoa.processInput(event);
             Nhom.processInput(event);
             SVmin.processInput(event);
-            Huy.processInput(event);
+            // Huy.processInput(event);
 
             //   sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             // // Chuyển đổi trạng thái chọn cho các trường nhập liệu
@@ -186,13 +194,14 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
        // title.draw(window);
         hocki.draw(window);
         monhoc.draw(window);
-        matc.draw(window);
+        // matc.draw(window);
         svmax.draw(window);
         nienkhoa.draw(window);
         nhom.draw(window);
         svmin.draw(window);
         huy.draw(window);
-
+        
+        matc1.draw(window);
         HocKi.draw(window);
         MonHoc.draw(window);
         Matc.draw(window);
@@ -200,14 +209,17 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
         NienKhoa.draw(window);
         Nhom.draw(window);
         SVmin.draw(window);
-        Huy.draw(window);
+        dropdown.draw(window); // Vẽ danh sách thả xuống
+        dsmh.draw(window);
+        // Huy.draw(window);
         // saveBtn.draw(window);
+        canhbao.draw(window) ;
         window.display();
     }
-    
     return 0; // Return to previous screen or main menu
 }
  int ScreenLopTinChi::showTC(sf::RenderWindow& window){
+    cout << "DA VAO HAM SHOW TC\n " ;
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về -1 nếu không tải được font
@@ -215,8 +227,8 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     TCList.clear() ; 
     buttonTC.clear() ; 
     // Khởi tạo các nút điều hướng
-    Button nextPageBtn(901.f, 833.f, 92.f, 62.f, "Next", font, sf::Color::Red, 15);
-    Button prevPageBtn(606.f, 833.f, 92.f, 62.f, "Prev", font, sf::Color::Red, 15);
+    Button nextPageBtn(901.f, 850.f, 92.f, 50.f, "Next", font, sf::Color::Red, 15);
+    Button prevPageBtn(606.f, 850.f, 92.f, 50.f, "Prev", font, sf::Color::Red, 15);
     Button them(264.f, 149.f, 151.f, 28.f, "THEM", font, sf::Color::Red, 15);
 
     // Khởi tạo các nhãn
@@ -234,19 +246,18 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
     pageText.setFont(font);
     pageText.setCharacterSize(20);
     pageText.setFillColor(sf::Color::Black);
-    pageText.setPosition(750.f, 833.f);
-   
-    TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
+    pageText.setPosition(750.f, 850.f);
     Data::displaytc1(TinhchiList::getInstance(), font ) ;
-    cout << TCList.size() ;
-    
+    cout <<"DANH SACH LOP TIN CHI HIEN TAI " ;
+    TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
+    cout << "SO LUONG BUTTON VA TEXT HIEN TAI " << TCList.size() << " " << buttonTC.size() << endl ;
     int displayFrom = 0;
-    int itemsPerPage = 40;
+    int itemsPerPage = 48;
 
     while (window.isOpen()) {
         sf::Event event;
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(TCList.size()));
-        
+        // size_t displayLimit = std::min(displayFrom + itemsPerPage,TCList.size());
+        long long displayLimit = (displayFrom + itemsPerPage) > static_cast<int>(TCList.size()) ? static_cast<int>(TCList.size()) : (displayFrom + itemsPerPage);
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
@@ -270,13 +281,14 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
                     return 8 ; 
                 }
                 // Kiểm tra nếu một trong các nút môn học trong buttonsubject được nhấn
-                for (int i = displayFrom; i < displayLimit && i < buttonTC.size(); i++) {
+                for (int i = displayFrom; i < displayLimit && i < static_cast<int>(TCList.size()); i++) {
                         if (buttonTC[i].isClicked(mousePos)) {
-                            cout << 12 ; 
                             int  matc = std::stoi(buttonTC[i].getText());
                             int vitri = TinhchiList::getInstance().findTC(TinhchiList::getInstance(),matc) ; 
+                            cout << " DA NHAN DUOC VITRI LOP TINH CHI  " << vitri << endl ;
                             LopTinChi* tc  = TinhchiList::getInstance().Nodes[vitri] ; 
                             InTC(window,tc);  // Hiển thị thông tin môn học tương ứng
+                            cout << "DA RA KHOI HAM IN TINH CHI " ;
                             return 8 ;
                         } 
                         }
@@ -293,13 +305,10 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
         // Cập nhật nội dung văn bản hiển thị số trang
         pageText.setString("Page " + std::to_string(currentPage) + " / " + std::to_string(totalPages));
         window.clear(sf::Color::White);
-
         // Vẽ menu chính  
         BaseScreenLopTinChi::drawMainMenu3(window);
-
-        
          for (int i = displayFrom; i < displayLimit; i++){
-            if (classList.size() <= i && buttonTC.size() <= i)
+            if (static_cast<int>(TCList.size()) <= i && static_cast<int>(buttonTC.size()) <= i)
                 break;
             TCList[i].draw(window);
             buttonTC[i].draw(window) ; 
@@ -323,12 +332,13 @@ int ScreenLopTinChi::addTC(sf::RenderWindow& window) {
  }
 
 int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
-    cout << 1;
+    cout << "DA VAO HAM IN TINH CHI " ;
+    cout <<"CAC LOP TINH CHI HIEN TAI\n " ; 
+    TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Return -1 if the font can't be loaded
     }
-    cout << tc->MALOPTC ; 
     int vitri ; 
     int temp = TinhchiList::getInstance().findTC(TinhchiList::getInstance(),tc->MALOPTC) ;
     if(temp != -1){
@@ -359,7 +369,7 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
     Text NienKhoa(1032.f, 358.f, 271.f, 47.f, tc->NienKhoa, font, sf::Color::Red, 15);
     Text Nhom(1032.f, 445.f, 271.f, 47.f, std::to_string(tc->Nhom), font, sf::Color::Red, 15);
     Text SVmin(1032.f, 569.f, 271.f, 47.f, std::to_string(tc->soSvMin), font, sf::Color::Red, 15);
-    Text Huy(1032.f, 688.f, 271.f, 47.f, tc->HuyLop ? "YES" : "NO", font, sf::Color::Red, 15);
+    Text Huy(1032.f, 688.f, 271.f, 47.f, tc->HuyLop ? "" : "HUY", font, sf::Color::Red, 15);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -370,18 +380,26 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 // Check if any buttons are clicked
                 if (sua.isClicked(mousePos)) {
-                    // Handle "SUA" button click
-                   fixTC(window , tc) ; 
-                   return 8 ; 
+                    if(tc->Dssvdk.size(tc->Dssvdk) > 0){
+                        Data::popup("LOP TINH CHI NAY DA CO SINH VIEN DANG KY KHONG DUOC SUA ") ;
+                    }else{
+                        fixTC(window,tc) ; 
+                        return 8 ;
+                    } 
                 }
                 if (thoat.isClicked(mousePos)) {
-                    window.close();  // Close the window when "THOAT" is clicked
+                    return 8;
                 }
 
                 if (xoa.isClicked(mousePos)) {
-                    if(Data::confirm("BAN CO CHAN CHAN HUY LOP TINH CHI NAY KHONG ")){
+                    if(tc->Dssvdk.size(tc->Dssvdk) > 0){
+                        Data::popup("LOP TINH CHI NAY DA CO SINH VIEN DANG KY KHONG DUOC XOA ") ;
+                    }else if(Data::confirm("BAN CO CHAN CHAN HUY LOP TINH CHI NAY KHONG "))
+                    {
                         TinhchiList::getInstance().removeTC(TinhchiList::getInstance(),vitri) ;
                         Data::deletefile(creaditclass , maloptc) ; 
+                        cout << "LOP TINH CHI SAU KHI XAO " ; 
+                        TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
                         Data::popup("DA HUY THANH CONG LOP TIN CHI " ) ; 
                         return 8 ; 
                     }
@@ -427,6 +445,9 @@ int ScreenLopTinChi::InTC(sf::RenderWindow& window, LopTinChi* tc) {
 }
 
 int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
+    cout << "DA VAO HAM FIX TINH CHI " ;
+    cout << "CAC LOP TINH CHI HIEN TAI\n " ;
+    TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1 ; // Trả về lỗi nếu không tải được font
@@ -521,12 +542,14 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
                         int svMaxInt = std::stoi(svmax);
                         bool huy1 = false ;
                         // // Cập nhật dữ liệu vào CSV
-                        std::vector<std::string> newRow = {maloptc,hocki, mamon, nhom,svmax, svmin, nienkhoa, huy };
+                        custom::vector<std::string> newRow = {maloptc,hocki, mamon, nhom,svmax, svmin, nienkhoa, huy };
                         Data::update(creaditclass,maloptc, newRow);
                         int matcInt = tc->MALOPTC ;
                         LopTinChi tc( matcInt,mamon,nienkhoa,hocKiInt,nhomInt,svMinInt,svMaxInt,huy1) ; 
                         // xu li logic trong ham 
                         TinhchiList::getInstance().updateTC(TinhchiList::getInstance(),tc) ;
+                        cout << "LOP TINH CHI SAU KHI DA HIEU CHINH :\n " ; 
+                        TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
                         Data::popup("HIEU CHINH THANH CONG ") ; 
                     }
                 }
@@ -570,319 +593,3 @@ int  ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc) {
 }
     return 0 ; 
 }
-
-// int ScreenLopTinChi::fixTC(sf::RenderWindow& window, LopTinChi* tc ) {
-//     sf::Font font;
-//     if (!font.loadFromFile("Font/arial.ttf")) {
-//         return; // Trả về lỗi nếu không tải được font
-//     }
-
-//     // Tạo các thành phần giao diện với các thuộc tính đã cập nhật
-//     //Các thành phần giao diện
-//         Text title(259.f, 291.f, 618.f, 39.f, "THONG TIN LOP HOC", font, sf::Color::Red, 15);
-//         Text hocki1(259.f, 291.f, 158.f, 58.f, "HOC KI ", font, sf::Color::Red, 20);
-//         Text matc1(259.f, 424.f, 158.f, 58.f, "MA LOP TC ", font, sf::Color::Red, 20);
-//         Text mamon1(259.f, 560.f, 158.f, 58.f, "MA MON HOC ", font, sf::Color::Red, 20);
-//         Text svmax1(259.f, 688.f, 158.f, 58.f, "SO SV MAX ", font, sf::Color::Red, 20);
-//         Text nienkhoa1(259.f, 361.f, 158.f, 58.f, "NIEN KHOA ", font, sf::Color::Red, 20);
-//         Text nhom1(259.f, 502.f, 158.f, 58.f, "NHOM  ", font, sf::Color::Red, 20);
-//         Text svmin1(259.f, 617.f, 158.f, 58.f, "SO SINH VIEN MIN ", font, sf::Color::Red, 20);
-//         Text huy1(259.f, 768.f, 158.f, 58.f, "HUY LOP", font, sf::Color::Red, 20);
-
-//                     // InputFields for các thuộc tính
-//         InputField hockiField(757.f, 291.f, 271.f, 47.f, font);
-//         InputField nienKhoaField(514.f, 370.f, 271.f, 47.f, font);
-//         InputField matcField(541.f, 429.f, 271.f, 47.f, font);
-//         InputField nhomField(514.f, 502.f, 271.f, 47.f, font);
-//         InputField mamonField(541.f, 567.f, 271.f, 47.f, font);
-//         InputField svminField(514.f, 623.f, 271.f, 47.f, font);
-//         InputField svmaxField(541.f, 699.f, 271.f, 47.f, font);
-//         InputField huyField(514.f, 772.f, 271.f, 47.f, font);
-
-
-//         // New text components for the second part of the interface
-//        // New text components for the second part of the interface
-//         EditableText hocki2(428.f, 291.f,  std::to_string(tc->HocKy), font, &hockiField);
-//         Text matc2(428.f, 424.f, 158.f, 58.f, std::to_string(tc->MALOPTC), font, sf::Color::Red, 20);
-//         EditableText mamon2(428.f, 560.f, tc->MAMH, font,&mamonField); // Already a string
-//         EditableText svmax2(428.f, 688.f, std::to_string(tc->soSvMax), font,&svmaxField);
-//         EditableText nienkhoa2(428.f, 363.f, tc->NienKhoa, font,&nienKhoaField ); // Already a string
-//         EditableText nhom2(428.f, 486.f, std::to_string(tc->Nhom), font,&nhomField);
-//         EditableText svmin2(428.f, 617.f, std::to_string(tc->soSvMin), font, &svminField);
-//         EditableText huy2(428.f, 762.f, tc->HuyLop ? "YES" : "NO", font,&huyField); // Convert bool to "YES" or "NO"
-
-
-//     // Các nút chức năng
-//     Button them(264.f, 149.f, 151.f, 28.f, "THEM", font, sf::Color::Red, 15);
-//     Button xoa(477.f, 149.f, 151.f, 28.f, "XOA", font, sf::Color::Red, 15);
-//     Button ghi(944.f, 149.f, 151.f, 28.f, "GHI", font, sf::Color::Red, 15);
-//     Button thoat(1202.f, 149.f, 84.f, 28.f, "THOAT", font, sf::Color::Red, 15);
-//     Button sua(722.f, 149.f, 151.f, 28.f, "SUA", font, sf::Color::Red, 15);
-
-//     // // Set các trường đã chọn
-//     // hockiField.setSelected(true);
-//     // nienKhoaField.setSelected(true);
-//     // matcField.setSelected(true);
-//     // nhomField.setSelected(true);
-//     // mamonField.setSelected(true);
-//     // svminField.setSelected(true);
-//     // svmaxField.setSelected(true);
-//     // huyField.setSelected(true);
-
-//     while (window.isOpen()) {
-//         sf::Event event;
-//         if (hockiField.isSelected()) hockiField.textCursor(hockiField.getInput());
-//         if (nienKhoaField.isSelected()) nienKhoaField.textCursor(nienKhoaField.getInput());
-//         if (nhomField.isSelected()) nhomField.textCursor(nhomField.getInput());
-//         if (mamonField.isSelected()) mamonField.textCursor(mamonField.getInput());
-//         if (svminField.isSelected()) svminField.textCursor(svminField.getInput());
-//         if (svmaxField.isSelected()) svmaxField.textCursor(svmaxField.getInput());
-//          if (huyField.isSelected()) huyField.textCursor(huyField.getInput());
-//         while (window.pollEvent(event)) {
-//             if (event.type == sf::Event::Closed) {
-//                 window.close();
-//             }
-//             // Cập nhật sự kiện cho EditableText
-//                 hocki2.update(event);
-//                 mamon2.update(event);
-//                 svmax2.update(event);
-//                  nienkhoa2.update(event);
-//                 nhom2.update(event);
-//                 svmin2.update(event);
-//                 huy2.update(event); 
-//             if (event.type == sf::Event::MouseButtonPressed) {
-//                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-//                  hocki2.handleMouseClick(sf::Mouse::getPosition(window));
-//                 mamon2.handleMouseClick(sf::Mouse::getPosition(window));
-//                 svmax2.handleMouseClick(sf::Mouse::getPosition(window));
-//                  nienkhoa2.handleMouseClick(sf::Mouse::getPosition(window));
-//                 nhom2.handleMouseClick(sf::Mouse::getPosition(window));
-//                 svmin2.handleMouseClick(sf::Mouse::getPosition(window));
-//                  huy2.handleMouseClick(sf::Mouse::getPosition(window));
-//                 if (ghi.isClicked(mousePos)) {
-//                     // Lấy dữ liệu từ input fields
-//                     std::string hockiInput = hocki2.getText();
-//                     std::string nienKhoaInput = nienkhoa2.getText();
-//                     // std::string matcInput = matcField.getInput();
-//                     std::string nhomInput = nhom2.getText();
-//                     std::string mamonInput = mamon2.getText();
-//                     std::string svminInput = svmin2.getText();
-//                     std::string svmaxInput = svmax2.getText();
-//                     std::string huyInput = huy2.getText();
-//                     // Kiểm tra thay đổi ở các trường
-
-//                         // Kiểm tra thay đổi ở các trường
-//                     if (hockiInput != std::to_string(tc->HocKy) || 
-//                         nienKhoaInput != tc->NienKhoa || 
-//                         nhomInput != std::to_string(tc->Nhom) || 
-//                         mamonInput != tc->MAMH || 
-//                         svminInput != std::to_string(tc->soSvMin) || 
-//                         svmaxInput != std::to_string(tc->soSvMax) || 
-//                         huyInput != std::to_string(tc->HuyLop)) {
-
-//                         // Tạo một vector chứa các giá trị cần thêm vào CSV
-//                         std::vector<std::string> newRow = {
-//                             std::to_string(tc->MALOPTC), mamonInput, hockiInput, nhomInput, 
-//                             svminInput, svmaxInput, huyInput, nienKhoaInput
-//                         };
-//                          // Cập nhật dữ liệu vào CSV
-//                             Data::update(creaditclass,std::to_string(tc->MALOPTC) , newRow);
-//                             int temp = tc->MALOPTC;          // Chuyển `std::string` thành `int`
-//                             int hocKiInt = std::stoi(hockiInput);
-//                             int nhomInt = std::stoi(nhomInput);
-//                             int svMinInt = std::stoi(svminInput);
-//                             int svMaxInt = std::stoi(svmaxInput);
-//                             bool huy = false;
-//                         LopTinChi tc(temp ,mamonInput,nienKhoaInput,hocKiInt,nhomInt,svMinInt,svMaxInt,huy) ; 
-//                         TinhchiList::getInstance().updateTC(tc) ; 
-//                 }
-//             }
-
-//             // Xử lý nhập liệu cho các input field
-//             hockiField.processInput(event);
-//             nienKhoaField.processInput(event);
-//             matcField.processInput(event);
-//             nhomField.processInput(event);
-//             mamonField.processInput(event);
-//             svminField.processInput(event);
-//             svmaxField.processInput(event);
-//             huyField.processInput(event);
-//         }
-
-//         window.clear(sf::Color::White);
-
-//         // Vẽ các yếu tố lớp học
-//         title.draw(window);
-//         hocki2.draw(window);
-//         matc2.draw(window);
-//         mamon2.draw(window);
-//         svmax2.draw(window);
-//         nienkhoa2.draw(window);
-//         nhom2.draw(window);
-//         svmin2.draw(window);
-//         huy2.draw(window);
-
-//         // Vẽ các input fields
-//         hockiField.draw(window);
-//         nienKhoaField.draw(window);
-//         matcField.draw(window);
-//         nhomField.draw(window);
-//         mamonField.draw(window);
-//         svminField.draw(window);
-//         svmaxField.draw(window);
-//         huyField.draw(window);
-
-//         // Vẽ các nút
-//         them.draw(window);
-//         xoa.draw(window);
-//         ghi.draw(window);
-//         thoat.draw(window);
-//         sua.draw(window);
-
-//         window.display();
-//     }
-// }
-
-
-//Định nghĩa hàm showPage10 cho ScreenLopHoc_NhapSV
-// int ScreenLopTinChi::nhapdiem(sf::RenderWindow& window) {
-//     sf::Font font;
-//     if (!font.loadFromFile("Font/arial.ttf")) {
-//         return -1; // Return error if font can't be loaded
-//     }
-
-//     // Tạo các đối tượng Text
-//     Text info(602.f, 223.f, 342.f, 45.f, "THONG TIN SINH VIEN ", font, sf::Color::Red, 20);
-//     Text nienkhoa(705.f, 451.f, 149.f, 31.f, "NIEN KHOA  ", font, sf::Color::Red, 20);
-//     Text hocki(705.f, 511.f, 149.f, 31.f, "HOC KI ", font, sf::Color::Red, 20);
-
-//     // Tạo các InputField
-//     InputField HocKi(871.f, 513.f, 225.f, 34.f, font);
-//     InputField masv(569.f, 304.f, 243.f, 40.f, font);
-//     InputField NienKhoa(871.f, 446.f, 225.f, 34.f, font);
-
-//     // Tạo các nút Button
-//     Button tim(1170.f, 468.f, 111.f, 76.f, "TIM", font, sf::Color::Red, 15);
-//     Button tracuu(940.f, 310.f, 148.f, 40.f, "TRA CUU ", font, sf::Color::Red, 15);
-//     Button them(940.f, 360.f, 148.f, 40.f, "THEM", font, sf::Color::Red, 15);  // Assuming you want a "THEM" button
-//     Button xoa(940.f, 410.f, 148.f, 40.f, "XOA", font, sf::Color::Red, 15);   // Assuming you want a "XOA" button
-
-//     while (window.isOpen()) {
-//         sf::Event event;
-//         while (window.pollEvent(event)) {
-//             if (event.type == sf::Event::Closed) {
-//                 window.close();
-//             } else if (event.type == sf::Event::MouseButtonPressed) {
-//                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-//                 // Kiểm tra các nút được nhấn
-//                 if (tim.isClicked(mousePos)) {
-//                     // Thực hiện hành động khi nút "TIM" được nhấn
-//                     std::string studentId = masv.getInput();
-//                     std::string semester = HocKi.getInput();
-//                     std::string year = NienKhoa.getInput();
-//                     // Process the search action based on inputs
-//                     std::cout << "Searching for student ID: " << studentId << " in semester: " << semester << " and year: " << year << std::endl;
-//                 }
-//                 if (tracuu.isClicked(mousePos)) {
-//                     window.close();  // Đóng cửa sổ khi nhấn nút "TRA CUU"
-//                 }
-//                 if (them.isClicked(mousePos)) {
-//                     // Handle add action
-//                     std::cout << "Add new student" << std::endl;
-//                     // Add logic here
-//                 }
-//                 if (xoa.isClicked(mousePos)) {
-//                     // Handle delete action
-//                     std::cout << "Delete student" << std::endl;
-//                     // Delete logic here
-//                 }
-//             }
-//         }
-
-//         // Vẽ các thành phần lên màn hình
-//         window.clear(sf::Color::White);
-//         info.draw(window);
-//         nienkhoa.draw(window);
-//         hocki.draw(window);
-
-//         masv.draw(window);
-//         HocKi.draw(window);
-//         NienKhoa.draw(window);
-
-//         tim.draw(window);
-//         tracuu.draw(window);
-//         them.draw(window);
-//         xoa.draw(window);
-
-//         window.display();
-//     }
-
-//     return 0; // Trả về số của màn hình chính hoặc màn hình trước
-// }
-
-
-// // Định nghĩa hàm showPage11 cho ScreenLopHoc_NhapSV_Edit
-// int ScreenLopTinChi::showPage11(sf::RenderWindow& window) {
-//     sf::Font font;
-//     if (!font.loadFromFile("Font/arial.ttf")) {
-//         return -1; // Return error if font can't be loaded
-//     }
-
-//     // Tạo các đối tượng Text
-//     Text ma(533.f, 270.f, 342.f, 45.f, "MA LOP TIN CHI  ", font, sf::Color::Red, 20);
-//     Text mh(541.f, 318.f, 342.f, 45.f, "MON HOC ", font, sf::Color::Red, 20);
-
-//     // Tạo các ô văn bản hiển thị thông tin
-//     // Text Ma(711.f, 270.f, 369.f, 40.f, font);  // Text hiển thị mã lớp
-//     // Text HocKi(715.f, 318.f, 369.f, 40.f, font);  // Text hiển thị môn học
-
-//     // Tạo các nút Button
-//     Button huy(593.f, 396.f, 129.f, 40.f, "HUY DANG KY", font, sf::Color::Red, 15);
-//     Button dang(831.f, 396.f, 129.f, 40.f, "DANG KY", font, sf::Color::Red, 15);
-
-//     while (window.isOpen()) {
-//         sf::Event event;
-//         while (window.pollEvent(event)) {
-//             if (event.type == sf::Event::Closed) {
-//                 window.close();
-//             } else if (event.type == sf::Event::MouseButtonPressed) {
-//                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-//                 // Kiểm tra các nút được nhấn
-//                 if (huy.isClicked(mousePos)) {
-//                     std::cout << "Huỷ đăng ký" << std::endl;
-//                     // Thêm logic huỷ đăng ký tại đây
-//                 }
-//                 if (dang.isClicked(mousePos)) {
-//                     std::cout << "Đăng ký mới" << std::endl;
-//                     // Thêm logic đăng ký mới tại đây
-//                 }
-//             }
-//         }
-
-//         // Vẽ các thành phần lên màn hình
-//         window.clear(sf::Color::White);
-//         ma.draw(window);
-//         mh.draw(window);
-//         // Ma.draw(window);
-//         // HocKi.draw(window);
-
-//         huy.draw(window);
-//         dang.draw(window);
-
-//         window.display();
-//     }
-
-//     return 0; // Trả về số của màn hình chính hoặc màn hình trước
-// }
-
-
-// // Định nghĩa hàm showPage12 cho ScreenLopHoc_InSV
-// int ScreenLopTinChi::showPage12(sf::RenderWindow& window) {
-//     // Logic cho màn hình in danh sách sinh viên
-//     // Vẽ các thành phần cần thiết và xử lý sự kiện
-//     // Có thể thêm điều kiện vào màn hình con
-//     // return 13; 
-//     return 0; // Trả về số của màn hình chính hoặc màn hình trước
-// }

@@ -1,5 +1,5 @@
 #include "FileNFoder.h"
-#include <vector>
+// #include <vector>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -27,7 +27,7 @@ void csvFile::readFile() {
     std::string cell;
 
     while (std::getline(fin, rowS)) {
-        std::vector<std::string> rowContent; // Đảm bảo sử dụng std::vector
+        custom::vector<std::string> rowContent; // Đảm bảo sử dụng std::vector
         std::stringstream rowSS(rowS);
         while (std::getline(rowSS, cell, ',')) {
             rowContent.push_back(cell);
@@ -48,9 +48,9 @@ bool csvFile::writeFile() {
     }
 
     for (const auto& row : cnt) {
-        for (size_t j = 0; j < row.size(); ++j) {
+        for (size_t j = 0; j < static_cast<size_t>(row.size()); ++j) {
             fout << row[j];
-            if (j < row.size() - 1) fout << ",";
+            if (j < static_cast<size_t>(row.size()) - 1) fout << ",";
         }
         fout << std::endl;
     }
@@ -60,7 +60,7 @@ bool csvFile::writeFile() {
 
 bool csvFile::addCellOnFirstRow() {
     if (this->cnt.empty()) { // Nếu cnt trống, thêm hàng mới
-        std::vector<std::string> row(1, " ");
+        custom::vector<std::string> row(1, " ");
         this->cnt.push_back(row);
     } else {
         this->cnt[0].push_back(" ");
@@ -71,7 +71,7 @@ bool csvFile::addCellOnFirstRow() {
 bool csvFile::addRow() {
     if (this->cnt.empty())
         addCellOnFirstRow();
-    std::vector<std::string> row(this->cnt[0].size(), " ");
+    custom::vector<std::string> row(this->cnt[0].size(), " ");
     this->cnt.push_back(row);
     return true;
 }
@@ -88,15 +88,30 @@ bool csvFile::addCol() {
 }
 
 bool csvFile::deleteRow(ll index) {
-    if (static_cast<std::vector<std::vector<std::string>>::size_type>(index) >= this->cnt.size()) return false; // Kiểm tra chỉ số
-    cnt.erase(cnt.begin() + index); // Xóa hàng theo chỉ số
+    // if (static_cast<custom::vector<custom::vector<std::string>>::size_type>(index) >= this->cnt.size()) return false; // Kiểm tra chỉ số
+    // cnt.erase(cnt.begin() + index); // Xóa hàng theo chỉ số
+    // return true;
+    ll contentSize = this->cnt.size();
+    if (index >= contentSize) return false;
+    if (cnt[index].size() > 0) cnt[index].clear();
+    for (ll i = index; i < contentSize - 1; i++)
+        cnt[index] = cnt[index + 1];
+    cnt.pop_back();
     return true;
 }
 
 bool csvFile::deleteCol(ll index) {
-    for (auto& row : cnt) {
-       if (static_cast<std::vector<std::string>::size_type>(index) >= row.size()) return false; // Kiểm tra chỉ số
-        row.erase(row.begin() + index); // Xóa ô theo chỉ số
+    // for (auto& row : cnt) {
+    //    if (static_cast<std::vector<std::string>::size_type>(index) >= row.size()) return false; // Kiểm tra chỉ số
+    //     row.erase(row.begin() + index); // Xóa ô theo chỉ số
+    // }
+    // return true;
+     ll contentSize = this->cnt.size();
+    for (ll i = 0; i < contentSize; i++) {
+        if (index >= cnt[i].size()) return false;
+        for (ll j = index; j < cnt[i].size() - 1; j++)
+            cnt[i][j] = cnt[i][j + 1];
+        cnt[i].pop_back();
     }
     return true;
 }

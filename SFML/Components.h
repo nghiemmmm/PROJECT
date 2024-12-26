@@ -379,15 +379,16 @@ private:
     std::vector<sf::Text> optionTexts;
     bool isExpanded = false;
     sf::Font font;
-    InputField* inputField; // Pointer to InputField
     std::vector<std::string> items;
-    std::string selectedOption;
+    std::string selectedOption; // Lưu trữ lựa chọn đã chọn
 
 public:
-    Dropdown(float x, float y, float width, float height, const sf::Font& font, const std::vector<std::string>& items, InputField* inputField)
-        : inputField(inputField), items(items), selectedOption("") {
+    // Constructor
+    Dropdown(float x, float y, float width, float height, const sf::Font& font, const std::vector<std::string>& items)
+        : items(items), selectedOption("") {
         this->font = font;
 
+        // Khởi tạo hộp chính (dropdown)
         mainBox.setPosition(x, y);
         mainBox.setSize(sf::Vector2f(width, height));
         mainBox.setFillColor(sf::Color(200, 200, 200)); // Màu nền chính
@@ -422,15 +423,14 @@ public:
 
     // Hàm kiểm tra xem có click vào danh sách thả xuống không
     void handleClick(const sf::Vector2i& mousePos) {
-        if (inputField->contains(mousePos)) {
-            toggleDropdown(); // Mở dropdown khi click vào trường nhập liệu
+        if (mainBox.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+            toggleDropdown(); // Mở dropdown khi click vào hộp chính
         }
 
         if (isExpanded) {
             for (size_t i = 0; i < options.size(); ++i) {
                 if (options[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                     selectedOption = items[i]; // Cập nhật lựa chọn
-                    inputField->setText1(selectedOption); // Cập nhật trường nhập liệu với lựa chọn
                     toggleDropdown(); // Đóng dropdown sau khi chọn
                     break;
                 }
@@ -438,18 +438,22 @@ public:
         }
     }
 
-    // Hàm vẽ
+    // Hàm vẽ dropdown và các tùy chọn
     void draw(sf::RenderWindow& window) {
-        window.draw(mainBox);
-        if (isExpanded) {
+        window.draw(mainBox); // Vẽ hộp chính
+        if (isExpanded) { // Nếu dropdown đang mở
             for (auto& option : options) {
-                window.draw(option);
+                window.draw(option); // Vẽ các tùy chọn
             }
             for (auto& optionText : optionTexts) {
-                window.draw(optionText);
+                window.draw(optionText); // Vẽ văn bản của các tùy chọn
             }
         }
     }
-};
 
+    // Hàm lấy lựa chọn đã chọn
+    std::string getSelectedOption() const {
+        return selectedOption;
+    }
+};
 

@@ -5,25 +5,84 @@
 #include"DataUtils.h"
 #include <cmath> // Thư viện hỗ trợ std::round
 
-// TinhchiList& list1 = TinhchiList::getInstance();
-// DS_LOPSV& listclass1 =  DS_LOPSV::getInstance() ;
+
 fsys::path diemPath = "D:\\du an\\SFML\\SFML\\data\\Courses\\Diem.csv";
+
+int ScreenDiem::nhapdk(sf::RenderWindow& window) {
+    cout << "DA DI VAO NHAP DANG KY" ; 
+    sf::Font font;
+    if (!font.loadFromFile("Font/arial.ttf")) {
+        return -1; // Trả về lỗi nếu không tải được font
+    }
+     sf::RectangleShape square(sf::Vector2f(1700, 900)); // Tạo ô vuông kích thước `size x size`
+        square.setFillColor(sf::Color(220, 220, 220)); // RGB: (220, 220, 220)            // Đặt màu nền trắng
+        square.setPosition(0.f, 172.f); 
+    Text title1(541.f, 31.f, 618.f ,118.f ,  "QUAN LY SINH VIEN", font, sf::Color::Red, 40);
+    Text title(667.f, 172.f, 342.f, 45.f, "DANG KI TIN CHI", font, sf::Color::Red, 20);
+    Text masv(22.f, 242.f, 172.f, 40.f, "MA SINH VIEN", font, sf::Color::Red, 15);
+    InputField ma(221.f, 247.f , 243.f , 40.f , font  ) ; 
+    Button tracuu(501.f, 244.f, 148.f, 40.f, "TRA CUU", font, sf::Color(218, 110, 50), 15);
+    Button exit(1600.f, 225.f, 91.f, 71.f, "EXIT", font, sf::Color(218, 110, 50), 15);
+       // Vòng lặp chính để xử lý giao diện
+       ma.setSelected(true);
+    while (window.isOpen()) {
+        sf::Event event;
+        if (ma.isSelected()) ma.textCursor(ma.getInput());
+        while (window.pollEvent(event)) {
+             if (event.type == sf::Event::Closed) {
+            window.close();
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
+                 ma.handleMouseClick(mousePos);
+            if(tracuu.isClicked(mousePos)){
+                string masv = ma.getInput() ; 
+                if(masv.length() > 11 ){
+                    Data::popup("MA SINH VIEN KHONG HOP LE") ;
+                }else{
+                     showDK(window , masv) ;
+                }
+                // showDK(window , masv) ; 
+                break ;
+            }
+            if(exit.isClicked(mousePos)){
+                return 0 ; 
+            }
+    }
+    ma.processInput(event);
+}
+        // Xóa màn hình
+        window.clear(sf::Color::White);
+
+        // Vẽ các đối tượng giao diện
+        window.draw(square) ;
+        title.draw(window);
+        masv.draw(window);
+        ma.draw(window);
+        tracuu.draw(window);
+        exit.draw(window) ; 
+        title1.draw(window);
+       
+        // Hiển thị nội dung lên màn hình
+        window.display();
+    }
+    return 0; // Trả về số của màn hình chính hoặc màn hình trước
+}
 int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
+    TCList1.clear() ; 
+    TCList2.clear() ;
+    cout << "DA VAO HAM SHOW DK" ; 
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
     }
-    cout << 1 ; 
-    cout << "day ne" ; 
     string malop = " " ; 
     vector<Text> sv ;
-    int vitri = 0 ; 
     for(int i =0 ; i < DS_LOPSV::getInstance().n ; i++){
                     if(DS_LOPSV::getInstance().nodes[i].FIRST.getHead() != NULL){
                         // Tìm sinh viên theo MASV
                          SinhVien foundStudent = DS_LOPSV::getInstance().nodes[i].FIRST.findStudentByMASV(masv);
                         if (foundStudent.MASV != "") {
-                            cout << "Sinh viên tìm thấy: " << foundStudent << endl;
+                            cout << "SINH VIEN TIM THAY " << foundStudent << endl;
                             Text masv2(4.f, 423.f, 118.f, 29.f,foundStudent.MASV, font, sf::Color::Red, 15);
                             sv.push_back(masv2) ; 
                             Text masv5(182.f, 636.f , 274.f , 34.f ,foundStudent.MASV, font, sf::Color::Red, 15);
@@ -36,14 +95,11 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
                              sv.push_back(lop2) ; 
                              malop = DS_LOPSV::getInstance().nodes[i].MALOP ;
                         } else {
-                            cout << "Không tìm thấy sinh viên với MASV 23CTT2001 trong lớp " << i << endl;
+                            cout << "KHONG TIM THAY  MASV 23CTT2001 TRONG LOP  " << i << endl;
                         }
 
                     }
             }
-     cout << 1 ; 
-     cout << "o day " ; 
-
         sf::RectangleShape square(sf::Vector2f(1700, 169)); // Tạo ô vuông kích thước `size x size`
         square.setFillColor(sf::Color(220, 220, 220)); // RGB: (220, 220, 220)            // Đặt màu nền trắng
         square.setPosition(0.f, 172.f);    
@@ -60,7 +116,6 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
         square4.setFillColor(sf::Color(255, 182, 193)); // RGB: (255, 182, 193)
         square4.setPosition(532.f, 546.f);    
 
-
         // InputField ma(221.f, 247.f , 243.f , 40.f , font  ) ; 
         InputField nienkhoa1(1058.f, 225.f , 31.f , 40.f , font  ) ; 
         InputField hocki3(1058.f, 277.f , 31.f , 40.f , font  ) ;
@@ -71,7 +126,8 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
     Text lop(881.f, 230.f, 149.f, 34.f, "NIEN KHOA", font, sf::Color::Red, 15);
     Text hocki(880.f, 284.f, 150.f, 34.f, "HOC KI", font, sf::Color::Red, 15);
     Text title1(109.f, 341.f, 222.f, 43.f, "THONG TIN SINH VIEN", font, sf::Color::Red, 15);
-
+    Text title2(541.f, 31.f, 618.f ,118.f ,  "QUAN LY SINH VIEN", font, sf::Color::Red, 40);
+    Button huytc(21.f, 250.f ,438.f , 40, " HUY TC KHONG PHU HOP " , font , sf::Color(218, 110, 50) , 15) ;
 
     Text masv1(4.f, 395.f, 113.f, 29.f, "MA ", font, sf::Color::Red, 15);
     Text ten(194.f, 395.f, 155.f, 29.f, "TEN", font, sf::Color::Red, 15);
@@ -96,17 +152,23 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
     Text nhom_tinchi(1501.f, 585.f, 166.f, 27.f, "NHOM", font, sf::Color::Red, 15);
 
     // Button objects
-    Button tracuu(501.f, 244.f, 148.f, 40.f, "TRA CUU", font, sf::Color::Red, 15);
-    Button tim(1340.f, 237.f, 111.f, 76.f, "TIM", font, sf::Color::Red, 15);
-    Button dk(319.f, 782.f, 155.f, 53.f, "DANG KI", font, sf::Color::Red, 15);
-    Button huydk(49.f, 782.f, 155.f, 53.f, "HUY DANG KI", font, sf::Color::Red, 15);
-    Button exit(1600.f, 225.f, 91.f, 71.f, "EXIT", font, sf::Color::Red, 15);
-
-    if(DS_LOPSV::getInstance().nodes[0].FIRST.getHead() != NULL){
-        cout << 1 ; 
-    }
+    // Button tracuu(501.f, 244.f, 148.f, 40.f, "TRA CUU", font, sf::Color::Red, 15);
+    Button tim(1340.f, 237.f, 111.f, 76.f, "TIM", font, sf::Color(218, 110, 50), 15);
+    Button dk(319.f, 782.f, 155.f, 53.f, "DANG KI", font, sf::Color(218, 110, 50), 15);
+    Button huydk(49.f, 782.f, 155.f, 53.f, "HUY DANG KI", font, sf::Color(218, 110, 50), 15);
+    Button exit(1600.f, 237.f, 91.f, 71.f, "EXIT", font, sf::Color(218, 110, 50), 15);
+    cout << "SO LUONG BUTON VA TEXT HIEN TAI " << sv.size() << endl ;
     int displayFrom = 0;
-    int itemsPerPage = 20;
+    int itemsPerPage = 10;
+    int displayFrom1 = 0;
+    int itemsPerPage1 = 20;
+
+    // Khởi tạo các nút điều hướng
+    Button nextPageBtn(1024.f, 517.f, 91.f, 18.f, "=>", font, sf::Color(218, 110, 50), 10);
+    Button prevPageBtn(890.f, 517.f, 91.f, 18.f, "<=", font, sf::Color(218, 110, 50), 10);
+    // Khởi tạo các nút điều hướng
+    Button nextPageBtn1(1028.f, 855.f, 91.f, 18.f, "=>", font, sf::Color(218, 110, 50), 10);
+    Button prevPageBtn1(895.f, 855.f, 91.f, 18.f, "<=", font, sf::Color(218, 110, 50), 10);
 
     // ma.setSelected(true);
     nienkhoa1.setSelected(true);
@@ -116,8 +178,10 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
    
     while (window.isOpen()) {
         sf::Event event;
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(TCList1.size()));
-        int displayLimit1 = std::min(displayFrom + itemsPerPage, static_cast<int>(TCList2.size()));
+        // displayLimit = std::min(displayFrom + itemsPerPage, TCList1.size());
+        // size_t displayLimit1 = std::min(displayFrom + itemsPerPage, TCList2.size());
+        long long displayLimit = (displayFrom + itemsPerPage) > static_cast<int>(TCList1.size()) ? static_cast<int>(TCList1.size()) : (displayFrom + itemsPerPage);
+        long long displayLimit1 = (displayFrom1 + itemsPerPage1) > static_cast<int>(TCList2.size()) ? static_cast<int>(TCList2.size()) : (displayFrom + itemsPerPage);
         // if (ma.isSelected()) ma.textCursor(ma.getInput());
         if (nienkhoa1.isSelected()) nienkhoa1.textCursor(nienkhoa1.getInput());
         if (hocki3.isSelected()) hocki3.textCursor(hocki3.getInput());
@@ -133,6 +197,37 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
                   hocki3.handleMouseClick(mousePos);
                 // ma3.handleMouseClick(mousePos);
                   matc3.handleMouseClick(mousePos);
+                if (nextPageBtn.isClicked(mousePos)) {
+                    if (displayFrom + itemsPerPage < static_cast<int>(TCList1.size())) {
+                        displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
+                    }
+                }
+
+                if (prevPageBtn.isClicked(mousePos)) {
+                    if (displayFrom - itemsPerPage >= 0) {
+                        displayFrom -= itemsPerPage; // Quay lại trang trước
+                    }
+                }
+                if (nextPageBtn1.isClicked(mousePos)) {
+                    if (displayFrom1 + itemsPerPage1 < static_cast<int>(TCList2.size())) {
+                        displayFrom1 += itemsPerPage1; // Chuyển sang trang tiếp theo
+                    }
+                }
+
+                if (prevPageBtn1.isClicked(mousePos)) {
+                    if (displayFrom1 - itemsPerPage1 >= 0) {
+                        displayFrom1 -= itemsPerPage1; // Quay lại trang trước
+                    }
+                }
+                if(huytc.isClicked(mousePos)){
+                   if(Data::confirm("XAC NHAN HUY")){
+                      for(int i = 0 ; i < static_cast<int>(TCList2.size()) ; i = i + 5 ){
+                        cout << TCList2[i].getContent() << endl ;
+                        // int matc = std::stoi(TCList2[i].getContent()) ;
+                        // TinhchiList::getInstance().Nodes[matc]->HuyLop = true ; 
+                      }
+                   }
+                }
             // if(tracuu.isClicked(mousePos)){
             //     sv.clear() ; 
             //     string masv = ma.getInput() ;
@@ -163,14 +258,20 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
             //     }
                 
             if(tim.isClicked(mousePos)){
-                cout << 1 ; 
                 string nienkhoa = nienkhoa1.getInput() ; 
                 int hocki =  std::stoi(hocki3.getInput()) ;
-                cout << 1 ; 
-                cout << hocki ; 
-                Data::displaytc2(TinhchiList::getInstance(),font ,nienkhoa1.getInput(), hocki ) ; 
-                Data::displaytchuy(TinhchiList::getInstance(),font ,nienkhoa1.getInput(), hocki ) ; 
-                cout << TCList1[3].getContent() ; 
+                cout << "CAC DAU VAO HOP LE KHONG " ; 
+                cout << nienkhoa << hocki ;
+                int temp =TinhchiList::getInstance().KTLOPTC1(TinhchiList::getInstance(),nienkhoa,hocki) ;
+                cout << temp ;
+                if(temp != -1){
+                    cout << "DANH SACH TIN CHI CO THE DANG KI " ; 
+                    Data::displaytc2(TinhchiList::getInstance(),font ,nienkhoa, hocki ) ; 
+                    Data::displaytchuy(TinhchiList::getInstance(),font ,nienkhoa, hocki ) ;
+                }else{
+                    Data::popup("LOP TINH CHI KHONG PHU HOP VUI LONG NHAP LAI") ; 
+                }
+                break ; 
             }
             if(dk.isClicked(mousePos)){
                 if(Data::confirm("XAC NHAN DANG KY")){
@@ -179,7 +280,7 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
                    int matc = std::stoi(matc3.getInput()) ; 
                    DangKy dangKy(masv,0.0f, true);
                    TinhchiList::getInstance().themdk(TinhchiList::getInstance(),matc,dangKy) ;
-                   std::vector<std::string> newRow = {masv, malop,matc3.getInput()};
+                   custom::vector<std::string> newRow = {masv, malop,matc3.getInput()};
                    Data::add(diemPath ,font ,newRow ) ;
                 }
                 Data::popup("DANG KY THANH CONG ") ; 
@@ -249,21 +350,21 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
       window.draw(square3);
        window.draw(square4);
         for (int i = 0; i < displayLimit; i++){
-                        if (TCList1.size() <= i )
+                        if (static_cast<int>(TCList1.size()) <= i )
                             break;
                         TCList1[i].draw(window);
                 }
 
          for (int i = 0; i < displayLimit1; i++){
-                        if (TCList2.size() <= i )
+                        if (static_cast<int>(TCList2.size()) <= i )
                             break;
                         TCList2[i].draw(window);
                 }
-        for(int i = 0 ; i < sv.size() ; i++){
+        for(size_t i = 0 ; i < sv.size() ; i++){
             sv[i].draw(window) ; 
         }
    
-   
+    huytc.draw(window) ;    
     title.draw(window);
     // masv.draw(window);
     lop.draw(window);
@@ -274,6 +375,7 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
     ho.draw(window);
     // lop2.draw(window);
 
+    title2.draw(window);
     title3.draw(window);
     ma1.draw(window);
     matc.draw(window);
@@ -293,85 +395,37 @@ int ScreenDiem::showDK(sf::RenderWindow& window , string& masv) {
     nhom_tinchi.draw(window);
 
     // Vẽ các nút bấm (Buttons)
-    tracuu.draw(window);
+    // tracuu.draw(window);
     tim.draw(window);
     dk.draw(window);
     huydk.draw(window);
     exit.draw(window);
 
-
-    
     // masv2.draw(window) ; 
     // ten1.draw(window) ; 
     // ho1.draw(window) ; 
-    for(int i = 0 ; i < sv.size() ; i++){
-        sv[i].draw(window) ; 
-    }
-
+    // for(size_t i = 0 ; i < sv.size() ; i++){
+    //     sv[i].draw(window) ; 
+    // }
         // ma.draw(window) ; 
         nienkhoa1.draw(window) ; 
         // ma3.draw(window) ; 
         matc3.draw(window) ; 
         hocki3.draw(window) ;
-
+        nextPageBtn.draw(window);
+        prevPageBtn.draw(window);
+        nextPageBtn1.draw(window);
+        prevPageBtn1.draw(window);
     // Hiển thị cửa sổ
     window.display();
     }
  return 0 ;   
 }
 
-int ScreenDiem::nhapdk(sf::RenderWindow& window) {
-    sf::Font font;
-    if (!font.loadFromFile("Font/arial.ttf")) {
-        return -1; // Trả về lỗi nếu không tải được font
-    }
-    Text title(667.f, 172.f, 342.f, 45.f, "DANG KI TIN CHI", font, sf::Color::Red, 20);
-    Text masv(22.f, 242.f, 172.f, 40.f, "MA SINH VIEN", font, sf::Color::Red, 15);
-    InputField ma(221.f, 247.f , 243.f , 40.f , font  ) ; 
-    Button tracuu(501.f, 244.f, 148.f, 40.f, "TRA CUU", font, sf::Color::Red, 15);
-    Button exit(1600.f, 225.f, 91.f, 71.f, "EXIT", font, sf::Color::Red, 15);
-       // Vòng lặp chính để xử lý giao diện
-       ma.setSelected(true);
-    while (window.isOpen()) {
-        sf::Event event;
-        if (ma.isSelected()) ma.textCursor(ma.getInput());
-        while (window.pollEvent(event)) {
-             if (event.type == sf::Event::Closed) {
-            window.close();
-        } else if (event.type == sf::Event::MouseButtonPressed) {
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
-                 ma.handleMouseClick(mousePos);
-
-            if(tracuu.isClicked(mousePos)){
-                string masv = ma.getInput() ; 
-                showDK(window , masv) ; 
-                break ;
-            }
-            if(exit.isClicked(mousePos)){
-                return 0 ; 
-            }
-    }
-    ma.processInput(event);
-}
-
-        // Xóa màn hình
-        window.clear(sf::Color::White);
-
-        // Vẽ các đối tượng giao diện
-        title.draw(window);
-        masv.draw(window);
-        ma.draw(window);
-        tracuu.draw(window);
-        // Hiển thị nội dung lên màn hình
-        window.display();
-
-    }
-    return 0; // Trả về số của màn hình chính hoặc màn hình trước
-}
-// phan dang ky 
-
 // phan nhap diem 
 int ScreenDiem::showDiem(sf::RenderWindow& window) {
+    cout << "DA DI VAO HAM SHOW DIEM" ;
+    cout <<"CAC LOP TINH CHI HIEN TAI\n " ;
     TinhchiList::getInstance().printTinhchiList(TinhchiList::getInstance());
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
@@ -405,14 +459,13 @@ int ScreenDiem::showDiem(sf::RenderWindow& window) {
     InputField HocKi(148.f, 298.f, 205.f, 27.f, font);
     InputField Nhom(575.f, 263.f, 223.f, 27.f, font);
     InputField MonHoc(575.f, 297.f, 223.f, 27.f, font);
-    Text stt(21.f , 372.f , 307.f , 33.f ,"STT " , font , sf :: Color :: Red , 15) ;
-     Text ma(328.f , 372.f , 307.f , 33.f ,"MA SV " , font , sf :: Color :: Red , 15) ;
-     Text ho(635.f , 372.f , 307.f , 33.f ,"HO " , font , sf :: Color :: Red , 15) ;
-     Text ten(942.f , 372.f , 307.f , 33.f ,"TEN " , font , sf :: Color :: Red , 15) ;
-     Text diem(1250.f , 372.f , 307.f , 33.f ,"DIEM" , font , sf :: Color :: Red , 15) ;
+    // Text stt(21.f , 372.f , 307.f , 33.f ,"STT " , font , sf :: Color :: Red , 15) ;
+    //  Text ma(328.f , 372.f , 307.f , 33.f ,"MA SV " , font , sf :: Color :: Red , 15) ;
+    //  Text ho(635.f , 372.f , 307.f , 33.f ,"HO " , font , sf :: Color :: Red , 15) ;
+    //  Text ten(942.f , 372.f , 307.f , 33.f ,"TEN " , font , sf :: Color :: Red , 15) ;
+    //  Text diem(1250.f , 372.f , 307.f , 33.f ,"DIEM" , font , sf :: Color :: Red , 15) ;
 
     vector<Text> DIEM ; 
-
 
     Nienkhoa.setSelected(true);
     HocKi.setSelected(true);
@@ -443,23 +496,18 @@ int ScreenDiem::showDiem(sf::RenderWindow& window) {
                     int hocki = std::stoi(HocKi.getInput()) ; 
                     int nhom = std::stoi(Nhom.getInput()) ; 
                     string monhoc = MonHoc.getInput() ; 
-                    cout << "den day " ; 
-                    // TinhchiList::getInstance().printTinhchiList1(TinhchiList::getInstance() ,nienkhoa , hocki , nhom ,monhoc );
-                    int vitri = 0 ; 
+                    cout<< nienkhoa << " " << hocki << "  "  << nhom << "  " <<  monhoc << endl; 
                     int temp = TinhchiList::getInstance().KTLOPTC(TinhchiList::getInstance(),nienkhoa , hocki , nhom ,monhoc ) ;
-                    if(temp != 0 && temp != -1){
-                        vitri = temp ; 
+                    cout << temp ;
+                    if(temp != -1){
+                          Indiem(window,temp) ;
+
+                    }else{
+                        Data::popup("LOP TINH CHI KHONG PHU HOP VUI LONG NHAP LAI") ; 
                     }
-                    cout << vitri ; 
-                    // cout << list1.Nodes[vitri]->MAMH ;
-                    // list1.Nodes[vitri]->Dssvdk.inDanhSach() ; 
-                    // for(PTRDK p = list1.Nodes[vitri]->Dssvdk.getHead() ; p != NULL ; p = p-> next){
-                    //     cout << p->sv.Diem ;
-                        
-                    // }
-                    Indiem(window,vitri) ;
-                    cout << "den day " ; 
-                    // Data::displaydiem()
+                    break ;
+                    // Indiem(window,vitri) ;
+                    // cout << "den day " ; 
                 }
 
                 if (capnhat.isClicked(mousePos)) {
@@ -517,18 +565,17 @@ int ScreenDiem::showDiem(sf::RenderWindow& window) {
         HocKi.draw(window);
         Nhom.draw(window);
         MonHoc.draw(window);
-        stt.draw(window) ; 
-        ma.draw(window) ;
-        ho.draw(window) ;
-        ten.draw(window) ;
-        diem.draw(window) ;
+        // stt.draw(window) ; 
+        // ma.draw(window) ;
+        // ho.draw(window) ;
+        // ten.draw(window) ;
+        // diem.draw(window) ;
         window.display() ; 
     }
     return 0; // Trả về số của màn hình chính hoặc màn hình trước
 }
-
-
 int ScreenDiem::Indiem(sf::RenderWindow& window, int& vitri) {
+    cout << "DA DI VAO HAM IN DIEM" ;
     sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
@@ -609,9 +656,13 @@ int ScreenDiem::Indiem(sf::RenderWindow& window, int& vitri) {
     cout << DIEM.size() ; 
     cout << nhap.size() ; 
     // Tạo các nút bấm
-    Button batdau(1006.f, 260.f, 115.f, 41.f, "BAT DAU", font, sf::Color::Red, 15);
-    Button capnhat(1186.f, 262.f, 115.f, 39.f, "CAP NHAT", font, sf::Color::Red, 15);
-    Button thoat(1356.f, 258.f, 115.f, 40.f, "EXIT", font, sf::Color::Red, 15);
+    Button batdau(1006.f, 260.f, 115.f, 41.f, "BAT DAU", font, sf::Color(218, 110, 50), 15);
+    Button capnhat(1186.f, 262.f, 115.f, 39.f, "CAP NHAT", font, sf::Color(218, 110, 50), 15);
+    Button thoat(1356.f, 258.f, 115.f, 40.f, "EXIT", font, sf::Color(218, 110, 50), 15);
+    sf::RectangleShape square(sf::Vector2f(1700, 900)); // Tạo ô vuông kích thước `size x size`
+        square.setFillColor(sf::Color(220, 220, 220)); // RGB: (220, 220, 220)            // Đặt màu nền trắng
+        square.setPosition(0.f, 172.f); 
+    Text title1(541.f, 31.f, 618.f ,118.f ,  "QUAN LY SINH VIEN", font, sf::Color::Red, 40);
 
     // Thêm vòng lặp xử lý sự kiện
     while (window.isOpen()) {
@@ -648,6 +699,7 @@ int ScreenDiem::Indiem(sf::RenderWindow& window, int& vitri) {
                     }
                     }
                     TinhchiList::getInstance().Nodes[vitri]->Dssvdk.inDanhSach() ; 
+                    Data::popup("CAP NHAT THANH CONG ") ; 
             }
             if (thoat.isClicked(mousePos)) {
                 return 0 ; 
@@ -658,13 +710,15 @@ int ScreenDiem::Indiem(sf::RenderWindow& window, int& vitri) {
             field.updateCursor();
         }
         
-        for (auto& field : nhap) {
-            field.processInput(event);
-        }
+        // for (auto& field : nhap) {
+        //     field.processInput(event);
+        // }
         }
 
      // Vẽ tất cả các thành phần lên cửa sổ
        window.clear(sf::Color::White);
+        window.draw(square);
+        title1.draw(window);
         for (auto& text : info) {
             text.draw(window);
         }
@@ -688,11 +742,11 @@ int ScreenDiem::baseIn(sf::RenderWindow& window) {
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
     }
-    Text title(541.f, 31.f, 618.f ,118.f ,  "QUAN LY SINH VIEN", font, sf::Color::Red, 40);
-   Button diemmh(1.f , 181.f ,  316.f , 71.f , "BANG DIEM MON HOC " , font , sf::Color::Red, 15) ;
-   Button diemtb(320.f , 180.f , 316.f , 71.f, "BANG THONG KE TRUNG BINH KHOA " , font , sf::Color::Red, 15) ;
-   Button diemtk(636 , 180.f ,  316.f , 71.f, "BANG DIEM TONG KET" , font , sf::Color::Red, 15) ;
-   Button thoat (1296.f, 212.f ,  87.f , 71.f, "EXIT" , font , sf::Color::Red, 15) ;
+    Text title(541.f, 31.f, 618.f ,118.f ,  "QUAN LY SINH VIEN", font, sf::Color(218, 110, 50), 40);
+   Button diemmh(1.f , 181.f ,  316.f , 71.f , "BANG DIEM MON HOC " , font , sf::Color(218, 110, 50), 15) ;
+   Button diemtb(320.f , 180.f , 316.f , 71.f, "BANG THONG KE TRUNG BINH KHOA " , font , sf::Color(218, 110, 50), 15) ;
+   Button diemtk(636 , 180.f ,  316.f , 71.f, "BANG DIEM TONG KET" , font , sf::Color(218, 110, 50), 15) ;
+   Button thoat (1296.f, 180.f ,  87.f , 71.f, "EXIT" , font ,sf::Color(218, 110, 50), 15) ;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -729,6 +783,7 @@ int ScreenDiem::baseIn(sf::RenderWindow& window) {
 }
 
 int ScreenDiem::baseIn1(sf::RenderWindow& window) {
+    cout << "DA DI VAO HAM IN DIEM CUA MOT LOP TINH CHI \n" ;
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
@@ -740,12 +795,12 @@ int ScreenDiem::baseIn1(sf::RenderWindow& window) {
     // Text muc(0.f, 188.f, 108.f, 29.f, "IN BANG DIEM MON HOC ", font, sf::Color::Red, 15);
     // Text title(504.f, 188.f,512.f, 21.f, "HOC KI", font, sf::Color::Red, 15);
     // Text title2(508.f, 227.f, 512.f, 21.f, "HOC KI", font, sf::Color::Red, 15);
-    InputField nk(572.f , 400.f , 150.f , 27.f , font ) ; 
-    InputField hk(568.f , 494.f , 150.f , 27.f , font ) ; 
-    InputField nhom1(1058.f ,   407.f , 150.f , 27.f , font ) ; 
-    InputField ma(1057.f , 494.f , 150.f , 27.f , font ) ; 
-    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font , sf::Color::Red, 15) ; 
-    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
+    InputField nk(572.f , 400.f , 150.f , 30.f , font ) ; 
+    InputField hk(568.f , 494.f , 150.f , 30.f , font ) ; 
+    InputField nhom1(1058.f,407.f , 150.f , 30.f , font ) ; 
+    InputField ma(1057.f , 494.f , 150.f , 30.f , font ) ; 
+    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font , sf::Color(218, 110, 50), 15) ; 
+    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font , sf::Color(218, 110, 50), 15) ; 
     nk.setSelected(true) ; 
     hk.setSelected(true) ; 
     nhom1.setSelected(true) ; 
@@ -773,11 +828,18 @@ int ScreenDiem::baseIn1(sf::RenderWindow& window) {
             // tim vi tri lop tinh chi 
             int vitri = 0  ; 
             int temp = TinhchiList::getInstance().KTLOPTC(TinhchiList::getInstance(),nienkhoa,hochi,nhom,ma1) ; 
-            if(temp != 0){
+            if(temp == -1)
+            {
+                Data::popup("LOP TINH CHI KHONG PHU HOP VUI LONG NHAP LAI") ;
+                break ; 
+            } else{
+            if(temp != -1){
                 temp = vitri ; 
             }
+            cout << "VI TRI CUA LOP TINH CHI " << vitri ;
             diemMH(window,vitri) ; 
             return 0 ; 
+            }
         }
         if(thoat.isClicked(mousePos)){
             return 0 ; 
@@ -803,16 +865,76 @@ int ScreenDiem::baseIn1(sf::RenderWindow& window) {
     }
     return 0; // Trả về số của màn hình chính hoặc màn hình trước
 }
+int ScreenDiem::diemMH(sf::RenderWindow& window , int vitri) {
+    cout << "DA DEN HAM DIEM MON HOC\n" ; 
+     sf::Font font;
+    if (!font.loadFromFile("Font/arial.ttf")) {
+        return -1; // Trả về lỗi nếu không tải được font
+    }
+    LopTinChi* tc = TinhchiList::getInstance().Nodes[vitri] ; 
+    Text title1(497.f, 37.f, 512.f ,39.f ,  "BANG DIEM MON HOC " + tc->MAMH , font, sf::Color::Red, 40);
+    Text title2(497.f,77.f, 150.f, 39.f, "NIEN KHOA : " + (tc->NienKhoa) + "  " + "HOC KI : " + std::to_string(tc->HocKy) +"   "  +"NHOM : " + std::to_string(tc->Nhom), font, sf::Color::Red, 15); 
+    Button thoat (1485.f , 61.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
+     // Khởi tạo các nút điều hướng
+    Button nextPageBtn(876.f, 838.f, 92.f, 50.f, "<=", font, sf::Color(218, 110, 50), 15);
+    Button prevPageBtn(728.f, 838.f, 92.f, 50.f, "=>", font, sf::Color(218, 110, 50), 15);
+
+    baocao.clear() ; 
+    Data::diemmhtc(diemPath,font,tc->MALOPTC) ; 
+    cout << "SO LUONG TEXT HIEN TAI " << baocao.size() ;
+    int displayFrom = 0;
+    int itemsPerPage = 40;
+    while (window.isOpen()) {
+        sf::Event event;
+        // size_t displayLimit = std::min(displayFrom + itemsPerPage,baocao.size());
+         long long displayLimit = (displayFrom + itemsPerPage) > static_cast<int>(baocao.size()) ? static_cast<int>(baocao.size()) : (displayFrom + itemsPerPage);
+        while (window.pollEvent(event)) {
+             if (event.type == sf::Event::Closed) {
+            window.close();
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
+            if (nextPageBtn.isClicked(mousePos)) {
+                    if (displayFrom + itemsPerPage < static_cast<int>(baocao.size())) {
+                        displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
+                    }
+                }
+
+                if (prevPageBtn.isClicked(mousePos)) {
+                    if (displayFrom - itemsPerPage >= 0) {
+                        displayFrom -= itemsPerPage; // Quay lại trang trước
+                    }
+                }
+        if(thoat.isClicked(mousePos)){
+            return 0 ; 
+        }
+    }
+    }
+        window.clear(sf::Color::White);
+         for (int i = displayFrom; i < displayLimit; i++){
+            if (static_cast<int>(baocao.size()) <= i)
+                break;
+            baocao[i].draw(window);
+        }
+        title1.draw(window);
+        title2.draw(window);
+        thoat.draw(window);
+        nextPageBtn.draw(window) ; 
+        prevPageBtn.draw(window) ; 
+        window.display();
+    }
+    return 0; // Trả về số của màn hình chính hoặc màn hình trước
+}
 int ScreenDiem::baseIn2(sf::RenderWindow& window) {
+    cout << "DEN HAM IN DIEM TRUNG BINH KHOA HOC " ;
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
     }
       // Khởi tạo các phần tử giao diện
     Text malop(306.f, 401.f, 150.f ,27.f ,"MALOP", font, sf::Color::Red, 15);
-    InputField nk(572.f , 400.f , 150.f , 27.f , font ) ; 
-    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font , sf::Color::Red, 15) ; 
-    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
+    InputField nk(572.f , 400.f , 150.f , 30.f , font ) ; 
+    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font ,sf::Color(218, 110, 50), 15) ; 
+    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font ,sf::Color(218, 110, 50), 15) ; 
     nk.setSelected(true) ; 
     while (window.isOpen()) {
         sf::Event event;
@@ -825,8 +947,14 @@ int ScreenDiem::baseIn2(sf::RenderWindow& window) {
             nk.handleMouseClick(mousePos) ; 
         if(in.isClicked(mousePos)){
             string malop = nk.getInput(); 
-            diemTB(window,malop) ; 
-            return 0 ; 
+            if(DS_LOPSV::getInstance().KTMaLop(DS_LOPSV::getInstance(),malop,DS_LOPSV::getInstance().n) == 0){
+                Data::popup("MA LOP KHONG TON TAI ") ;
+                break; 
+            }else{
+                diemTB(window,malop) ; 
+                return 0 ; 
+            }
+           
         }
         if(thoat.isClicked(mousePos)){
             return 0 ; 
@@ -843,87 +971,8 @@ int ScreenDiem::baseIn2(sf::RenderWindow& window) {
     }
     return 0; // Trả về số của màn hình chính hoặc màn hình trước
 }
-int ScreenDiem::baseIn3(sf::RenderWindow& window) {
-     sf::Font font;
-    if (!font.loadFromFile("Font/arial.ttf")) {
-        return -1; // Trả về lỗi nếu không tải được font
-    }
-      // Khởi tạo các phần tử giao diện
-    Text malop(306.f, 401.f, 150.f ,27.f ,"MALOP", font, sf::Color::Red, 15);
-    InputField nk(572.f , 400.f , 150.f , 27.f , font ) ; 
-    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font , sf::Color::Red, 15) ; 
-    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
-    nk.setSelected(true) ; 
-    while (window.isOpen()) {
-        sf::Event event;
-        if (nk.isSelected()) nk.textCursor(nk.getInput());
-        while (window.pollEvent(event)) {
-             if (event.type == sf::Event::Closed) {
-            window.close();
-        } else if (event.type == sf::Event::MouseButtonPressed) {
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
-            nk.handleMouseClick(mousePos) ; 
-        if(in.isClicked(mousePos)){
-            string malop = nk.getInput(); 
-            diemTK(window,malop) ; 
-            return 0 ; 
-        }
-        if(thoat.isClicked(mousePos)){
-            return 0 ; 
-        }
-        }
-        nk.processInput(event) ;
-        }
-        window.clear(sf::Color::White);
-        malop.draw(window);
-        thoat.draw(window);
-        in.draw(window) ; 
-        nk.draw(window) ; 
-        window.display();
-    }
-    return 0; // Trả về số của màn hình chính hoặc màn hình trước
-}
-int ScreenDiem::diemMH(sf::RenderWindow& window , int vitri) {
-     sf::Font font;
-    if (!font.loadFromFile("Font/arial.ttf")) {
-        return -1; // Trả về lỗi nếu không tải được font
-    }
-    LopTinChi* tc = TinhchiList::getInstance().Nodes[vitri] ; 
-    Text title1(497.f, 37.f, 512.f ,39.f ,  "BANG DIEM MON HOC " + tc->MAMH , font, sf::Color::Red, 40);
-    Text title2(497.f,77.f, 150.f, 39.f, "NIEN KHOA : " + (tc->NienKhoa) + "HOC KI : " + std::to_string(tc->HocKy) + "NHOM : " + std::to_string(tc->Nhom), font, sf::Color::Red, 15); 
-    Button thoat (1485.f , 61.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
-    baocao.clear() ; 
-    Data::diemmhtc(diemPath,font,vitri) ; 
-    cout << baocao.size() ; 
-    int displayFrom = 0;
-    int itemsPerPage = 40;
-    while (window.isOpen()) {
-        sf::Event event;
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(baocao.size()));
-        while (window.pollEvent(event)) {
-             if (event.type == sf::Event::Closed) {
-            window.close();
-        } else if (event.type == sf::Event::MouseButtonPressed) {
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
-        if(thoat.isClicked(mousePos)){
-            return 0 ; 
-        }
-    }
-    }
-        window.clear(sf::Color::White);
-         for (int i = displayFrom; i < displayLimit; i++){
-            if (baocao.size() <= i)
-                break;
-            baocao[i].draw(window);
-        }
-        title1.draw(window);
-        title2.draw(window);
-        thoat.draw(window);
-        window.display();
-    }
-    return 0; // Trả về số của màn hình chính hoặc màn hình trước
-}
 int ScreenDiem::diemTB(sf::RenderWindow& window , string& malop ) {
+    cout << "DA DEN HAM DIEM TRUNG BINH KHOA HOC " ;
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
@@ -938,25 +987,40 @@ int ScreenDiem::diemTB(sf::RenderWindow& window , string& malop ) {
                 vitri = temp;
             } 
             }
-            cout << vitri ; 
-            cout << "den day " ; 
+            cout << "VI TRI CUA LOP " << vitri ;
       // Khởi tạo các phần tử giao diện
-    Text title1(497.f, 37.f, 512.f ,39.f , "NAMG THONG KE DIEM TRUNG BINH KHOA HOC "  , font, sf::Color::Red, 40);
+    Text title1(497.f, 37.f, 512.f ,39.f , "BAMG THONG KE DIEM TRUNG BINH KHOA HOC "  , font, sf::Color::Red, 40);
     Text title2(497.f,77.f, 150.f, 39.f, "LOP : " + malop , font, sf::Color::Red, 15);
     Button thoat (1485.f , 61.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
+    // Khởi tạo các nút điều hướng
+    Button nextPageBtn(876.f, 838.f, 92.f, 50.f, "<=", font, sf::Color(218, 110, 50), 15);
+    Button prevPageBtn(728.f, 838.f, 92.f, 50.f, "=>", font, sf::Color(218, 110, 50), 15);
+
     baocao.clear() ; 
     Data::diemtb(diemPath,font,vitri) ; 
-    cout << baocao.size() ; 
+    cout <<"SO LUONG TEXT HIEN TAI " << baocao.size() ;
     int displayFrom = 0;
     int itemsPerPage = 40;
     while (window.isOpen()) {
         sf::Event event;
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(baocao.size()));
+        // size_t displayLimit = std::min(displayFrom + itemsPerPage,baocao.size());
+         long long displayLimit = (displayFrom + itemsPerPage) > static_cast<int>(baocao.size()) ? static_cast<int>(baocao.size()) : (displayFrom + itemsPerPage);
         while (window.pollEvent(event)) {
              if (event.type == sf::Event::Closed) {
             window.close();
         } else if (event.type == sf::Event::MouseButtonPressed) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
+             if (nextPageBtn.isClicked(mousePos)) {
+                    if (displayFrom + itemsPerPage < static_cast<int>(baocao.size())) {
+                        displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
+                    }
+                }
+
+                if (prevPageBtn.isClicked(mousePos)) {
+                    if (displayFrom - itemsPerPage >= 0) {
+                        displayFrom -= itemsPerPage; // Quay lại trang trước
+                    }
+                }
         if(thoat.isClicked(mousePos)){
             return 0 ; 
         }
@@ -964,23 +1028,73 @@ int ScreenDiem::diemTB(sf::RenderWindow& window , string& malop ) {
     }
         window.clear(sf::Color::White);
          for (int i = displayFrom; i < displayLimit; i++){
-            if (baocao.size() <= i)
+            if (static_cast<int>(baocao.size()) <= i)
                 break;
             baocao[i].draw(window);
         }
         title1.draw(window);
         title2.draw(window);
         thoat.draw(window);
+        nextPageBtn.draw(window) ; 
+        prevPageBtn.draw(window) ; 
+        window.display();
+    }
+    return 0; // Trả về số của màn hình chính hoặc màn hình trước
+}
+int ScreenDiem::baseIn3(sf::RenderWindow& window) {
+    cout << "DEN HAM IN DIEM TONG KET " ; 
+     sf::Font font;
+    if (!font.loadFromFile("Font/arial.ttf")) {
+        return -1; // Trả về lỗi nếu không tải được font
+    }
+      // Khởi tạo các phần tử giao diện
+    Text malop(306.f, 401.f, 150.f ,27.f ,"MALOP", font, sf::Color::Red, 15);
+    InputField nk(572.f , 400.f , 150.f , 30.f , font ) ; 
+    Button in (572.f , 598.f ,  150.f , 43.f , "IN " , font , sf::Color(218, 110, 50), 15) ; 
+    Button thoat (797.f , 605.f ,  150.f , 43.f , "THOAT  " , font , sf::Color(218, 110, 50), 15) ; 
+    nk.setSelected(true) ; 
+    while (window.isOpen()) {
+        sf::Event event;
+        if (nk.isSelected()) nk.textCursor(nk.getInput());
+        while (window.pollEvent(event)) {
+             if (event.type == sf::Event::Closed) {
+            window.close();
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
+            nk.handleMouseClick(mousePos) ; 
+        if(in.isClicked(mousePos)){
+            string malop = nk.getInput(); 
+            if(DS_LOPSV::getInstance().KTMaLop(DS_LOPSV::getInstance(),malop,DS_LOPSV::getInstance().n) == 0){
+                Data::popup("MA LOP KHONG TON TAI ") ;
+                break  ; 
+            }else{
+                diemTK(window,malop) ; 
+                return 0 ; 
+            }
+        }
+        if(thoat.isClicked(mousePos)){
+            return 0 ; 
+        }
+        }
+        nk.processInput(event) ;
+        }
+        window.clear(sf::Color::White);
+        malop.draw(window);
+        thoat.draw(window);
+        in.draw(window) ; 
+        nk.draw(window) ; 
+    
         window.display();
     }
     return 0; // Trả về số của màn hình chính hoặc màn hình trước
 }
 int ScreenDiem::diemTK(sf::RenderWindow& window, string& malop) {
+    cout <<"DEN HAM IN DIEM TONG KET\n" ; 
      sf::Font font;
     if (!font.loadFromFile("Font/arial.ttf")) {
         return -1; // Trả về lỗi nếu không tải được font
     }
-      int vitri ; 
+            int vitri ; 
             int temp = DS_LOPSV::getInstance().KTMaLop(DS_LOPSV::getInstance(),malop,DS_LOPSV::getInstance().n);
             if(temp != 0){
             if(temp == -1)
@@ -990,24 +1104,61 @@ int ScreenDiem::diemTK(sf::RenderWindow& window, string& malop) {
                 vitri = temp;
             } 
             }
-            cout << vitri ; 
-            cout << "den day " ; 
+    cout << "VI TRI CUA LOP " << vitri ;
+    int soluongmh = 0 ; 
+    for (int i = 0; i < TinhchiList::getInstance().n; i++) {
+        bool daTonTai = false;
+        // Kiem tra xem ten mon hoc da ton tai trong vector chua
+        for (int j = 0; j < i; j++) {
+            if (TinhchiList::getInstance().Nodes[i]->MAMH == TinhchiList::getInstance().Nodes[j]->MAMH) {
+                daTonTai = true;
+                break;
+            }
+        }
+        // Neu chua ton tai, them vao vector
+        if (!daTonTai) {
+            soluongmh++;
+        }
+    }
+    cout << "SO LUONG MON HOC " << soluongmh ;
     Text title1(497.f, 37.f, 512.f ,39.f ,  "BANG DIEM TONG KET "  , font, sf::Color::Red, 40);
     Text title2(497.f,77.f, 150.f, 39.f, "LOP : " + malop , font, sf::Color::Red, 15);
     Button thoat (1485.f , 61.f ,  150.f , 43.f , "THOAT  " , font , sf::Color::Red, 15) ; 
+     // Khởi tạo các nút điều hướng
+    Button nextPageBtn(876.f, 838.f, 92.f, 50.f, "<=", font, sf::Color(218, 110, 50), 15);
+    Button prevPageBtn(728.f, 838.f, 92.f, 50.f, "=>", font, sf::Color(218, 110, 50), 15);
+
     baocao.clear() ; 
     Data::diemtk(diemPath,font,vitri) ; 
-    cout << baocao.size() ; 
+    cout << "SO LUONG TEXT HIEN TAI " << baocao.size() ;
+    int tam = 0 ; 
+    if(soluongmh != 0)
+    {
+        tam = (soluongmh + 3)* 10 ;
+    }
+    cout << "SO LUONG TRANG HIEN THI " << temp  << endl ;
     int displayFrom = 0;
-    int itemsPerPage = 40;
+    int itemsPerPage = tam ; 
     while (window.isOpen()) {
         sf::Event event;
-        int displayLimit = std::min(displayFrom + itemsPerPage, static_cast<int>(baocao.size()));
+        // size_t displayLimit = std::min(displayFrom + itemsPerPage,baocao.size());
+        long long displayLimit = (displayFrom + itemsPerPage) > static_cast<int>(baocao.size()) ? static_cast<int>(baocao.size()) : (displayFrom + itemsPerPage);
         while (window.pollEvent(event)) {
              if (event.type == sf::Event::Closed) {
             window.close();
         } else if (event.type == sf::Event::MouseButtonPressed) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window); // Lấy vị trí chuột
+            if (nextPageBtn.isClicked(mousePos)) {
+                    if (displayFrom + itemsPerPage < static_cast<int>(baocao.size())) {
+                        displayFrom += itemsPerPage; // Chuyển sang trang tiếp theo
+                    }
+                }
+
+                if (prevPageBtn.isClicked(mousePos)) {
+                    if (displayFrom - itemsPerPage >= 0) {
+                        displayFrom -= itemsPerPage; // Quay lại trang trước
+                    }
+                }
         if(thoat.isClicked(mousePos)){
             return 0 ; 
         }
@@ -1015,13 +1166,15 @@ int ScreenDiem::diemTK(sf::RenderWindow& window, string& malop) {
     }
         window.clear(sf::Color::White);
          for (int i = displayFrom; i < displayLimit; i++){
-            if (baocao.size() <= i)
+            if (static_cast<int>(baocao.size()) <= i)
                 break;
             baocao[i].draw(window);
         }
         title1.draw(window);
         title2.draw(window);
         thoat.draw(window);
+         nextPageBtn.draw(window) ; 
+        prevPageBtn.draw(window) ; 
         window.display();
     }
     return 0; // Trả về số của màn hình chính hoặc màn hình trước
